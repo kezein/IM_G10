@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property of Friends - Buyer Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", system-ui, sans-serif;
+        }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --dark-gray: #374151;
+            --light-gray: #f3f4f6;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            background: var(--light-gray);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* LOGIN PAGE FULL SCREEN */
+        .login-page-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+        .login-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            height: 100%;
+        }
+        .login-left {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .login-left h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .login-left p {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 350px;
+        }
+        .login-right {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+        .login-form-wrapper {
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-right h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 700;
+            text-align: left;
+        }
+        .login-right small {
+            color: var(--dark-gray);
+            margin-bottom: 2rem;
+            display: block;
+            text-align: left;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .login-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-form label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: var(--light-gray);
+        }
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-right: 4rem;
+        }
+        .toggle-pwd {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+        .toggle-pwd:hover {
+            color: var(--primary-dark);
+        }
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .login-footer a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* APP LAYOUT */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: var(--dark);
+            color: white;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+        .sidebar-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+        .sidebar-logo span {
+            font-size: 1.5rem;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .nav-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            margin: 0.25rem 0.5rem;
+            border-radius: 8px;
+        }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary);
+            border-radius: 0 3px 3px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-btn.active::before {
+            opacity: 1;
+        }
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fecaca;
+        }
+        /* MAIN CONTENT */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background: var(--light-gray);
+        }
+        #pageContainer {
+            min-height: 400px;
+        }
+
+        /* CARDS & FORMS */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-header h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            font-weight: 700;
+        }
+        h3 {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        form {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        input, select, textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--light-gray);
+            transition: all 0.2s ease;
+            font-family: "Poppins", system-ui, sans-serif;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        /* BUTTONS */
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: "Poppins", system-ui, sans-serif;
+        }
+        button:not(.nav-btn):not(.logout-btn) {
+            background: var(--primary);
+            color: white;
+        }
+        button:not(.nav-btn):not(.logout-btn):hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-danger {
+            background: var(--danger) !important;
+        }
+        .btn-danger:hover {
+            background: #dc2626 !important;
+        }
+        .btn-secondary {
+            background: var(--dark-gray) !important;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: var(--dark) !important;
+        }
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        /* TABLES */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--light-gray);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        tr:hover {
+            background: var(--light-gray);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        /* TOAST */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 2000;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease forwards, slideOut 0.3s ease 2.7s forwards;
+            pointer-events: auto;
+        }
+        .toast.success {
+            background: var(--success);
+            color: white;
+        }
+        .toast.error {
+            background: var(--danger);
+            color: white;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        /* STAT CARDS */
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.2;
+        }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+            .login-left {
+                display: none;
+            }
+            .sidebar {
+                width: 0;
+                transition: width 0.3s ease;
+            }
+            .main-wrapper {
+                width: 100%;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+        code {
+            background: var(--light-gray);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+<div id="appContainer"></div>
+<div id="globalModal" class="modal"><div class="modal-content" id="modalContent"></div></div>
+
+<script>
+    // Helper functions (numeric only)
+    function allowOnlyNumbersAndDecimal(event) {
+        let val = event.target.value;
+        val = val.replace(/[^0-9.]/g, '');
+        let parts = val.split('.');
+        if (parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
+        event.target.value = val;
+    }
+    function attachNumericDecimal() {
+        document.querySelectorAll('input[data-numeric-decimal="true"]').forEach(f => {
+            f.removeEventListener('input', allowOnlyNumbersAndDecimal);
+            f.addEventListener('input', allowOnlyNumbersAndDecimal);
+        });
+    }
+    function allowOnlyDigits(event) {
+        event.target.value = event.target.value.replace(/[^0-9]/g, '');
+    }
+    function attachNumeric() {
+        document.querySelectorAll('input[data-numeric="true"]').forEach(f => {
+            f.removeEventListener('input', allowOnlyDigits);
+            f.addEventListener('input', allowOnlyDigits);
+        });
+    }
+
+    // ---------- MOCK DATA ----------
+    let buyers = [
+        { buyerId: "B-2026-001", fullName: "Juan Dela Cruz", birthdate: "1995-06-15", birthplace: "Manila", gender: "M", civilStatus: "M", citizenship: "Filipino", grossMonthlyIncome: 350000, govID: "Passport", tin: "123456789000", telNum: "0281234567", mobileNum: "09171234567", personalEmail: "juandelacruz@gmail.com", workEmail: "juan@company.com", bankName: "BDO", accountType: "Savings" },
+        { buyerId: "B-2026-002", fullName: "Maria Santos", birthdate: "1990-03-22", birthplace: "Cebu", gender: "F", civilStatus: "S", citizenship: "Filipino", grossMonthlyIncome: 120000, govID: "National ID", tin: "456789123", telNum: "", mobileNum: "09221234567", personalEmail: "maria@example.com", workEmail: "", bankName: "BPI", accountType: "Checking" }
+    ];
+    let spouses = [{ buyerId: "B-2026-001", spsName: "Maria Dela Cruz", spsBdate: "1997-03-07", spsBplace: "Cebu City", spsCitizenship: "Filipino", spsGovID: "National ID", spsTIN: "987654321000", spsTelNum: "0284567890", spsMobNum: "09181234567", spsEmailAdd: "maria@gmail.com", spsGrossMonthlyIncome: 57000 }];
+    let employments = [
+        { employmentId: "E-2026-001", buyerId: "B-2026-001", empType: "Employed", empName: "ABC Inc.", empAddress: "BGC, Makati", empTelNum: "0288991234", empEmailAdd: "hr@abc.com", occupation: "Software Engineer", position: "Senior Developer", tenure: 4, occupationRank: "Rank & File" },
+        { employmentId: "E-2026-002", buyerId: "B-2026-002", empType: "Self-Employed", empName: "Maria's Boutique", empAddress: "Cebu City", empTelNum: "", empEmailAdd: "", occupation: "Owner", position: "Proprietor", tenure: 5, occupationRank: "Business Owner" }
+    ];
+    let beneficiaries = [{ beneficiaryId: "BEN-001", buyerId: "B-2026-001", benFName: "Junior Dela Cruz", benFBdate: "2015-12-12", relationship: "Child" }];
+    let loans = [
+        { loanId: "L-10900", buyerId: "B-2026-001", unitId: "UNIT-A05", financeType: "Bank", dpTerm: 24, loanTerm: 10, purchasePurpose: "Primary Home", loanAmount: 2800000, downpayment: 670000, reservationFee: 25000, sellPrice: 3500000, orPrNum: "OR-77889", orPrDate: "2026-04-09", bookingOfficer: "James Bond", processingFee: 5000, sourceFunds: "Employment", status: "Active" }
+    ];
+    let properties = [
+        { unitId: "UNIT-A05", name: "Sunset Villa", location: "Tagaytay", price: 3500000, status: "Reserved", reservedBy: "B-2026-001" },
+        { unitId: "UNIT-B12", name: "Greenfield Apartment", location: "Makati", price: 2800000, status: "Available", reservedBy: null }
+    ];
+    let payments = [];
+    let users = [
+        { id: 1, role: "admin", username: "admin", password: "admin", fullName: "Admin User", email: "admin@system.com" },
+        { id: 2, role: "client", username: "juan", password: "juan", fullName: "Juan Dela Cruz", email: "juandelacruz@gmail.com", buyerId: "B-2026-001" }
+    ];
+    let currentUser = null;
+
+    // Toast notification
+    function showMessage(msg, type = "success") {
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function openModal(html) {
+        document.getElementById("modalContent").innerHTML = html;
+        document.getElementById("globalModal").style.display = "flex";
+        attachNumericDecimal();
+        attachNumeric();
+        document.getElementById("globalModal").onclick = (e) => { if (e.target === document.getElementById("globalModal")) closeModal(); };
+    }
+    function closeModal() { document.getElementById("globalModal").style.display = "none"; }
+
+    // LOGIN PAGE
+    function renderLoginPage() {
+        return `
+        <div class="login-page-wrapper">
+            <div class="login-container">
+                <div class="login-left">
+                    <h1>🏢 Housing Loan<br>Management System</h1>
+                    <p>Professional management of clients, loans, and properties with a streamlined interface</p>
+                </div>
+                <div class="login-right">
+                    <div class="login-form-wrapper">
+                        <h2>Sign In</h2>
+                        <small>Enter your credentials to access the portal</small>
+                        <form id="loginForm" class="login-form">
+                            <div class="form-group">
+                                <label>Username or Email</label>
+                                <input type="text" id="loginIdentifier" required>
+                            </div>
+                            <div class="form-group password-wrapper">
+                                <label>Password</label>
+                                <input type="password" id="loginPassword" required>
+                                <button type="button" class="toggle-pwd" onclick="window.togglePwd('loginPassword')">Show</button>
+                            </div>
+                            <button type="submit" class="login-btn">Sign In</button>
+                            <div class="login-footer">
+                                <a onclick="window.renderCreateAccountPage()">Create Account</a>
+                                <a onclick="alert('Reset link would be sent to your email.')">Forgot Password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
+    window.togglePwd = (id) => {
+        let f = document.getElementById(id);
+        let btn = document.querySelector(`.toggle-pwd[onclick="window.togglePwd('${id}')"]`);
+        if (f.type === "password") {
+            f.type = "text";
+            btn.textContent = "Hide";
+        } else {
+            f.type = "password";
+            btn.textContent = "Show";
+        }
+    };
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const identifier = document.getElementById("loginIdentifier").value.trim();
+        const pwd = document.getElementById("loginPassword").value;
+        const user = users.find(u => (u.username === identifier || u.email === identifier) && u.password === pwd);
+        if (user) {
+            currentUser = user;
+            showMessage(`Welcome, ${currentUser.fullName}!`, "success");
+            renderApp();
+        } else {
+            showMessage("Invalid username/email or password", "error");
+        }
+    }
+
+    // CREATE ACCOUNT
+    window.renderCreateAccountPage = function() {
+        document.getElementById("appContainer").innerHTML = `
+        <div class="app-container" style="background: white;">
+            <div style="flex: 1; padding: 2rem; overflow-y: auto;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📝 Create Account</h2>
+                    </div>
+                    <form id="createAccountForm">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Full Name *</label><input id="regFullName" maxlength="50" required></div>
+                            <div class="form-group"><label>Birthdate *</label><input type="date" id="regBirthdate" required></div>
+                            <div class="form-group"><label>Birthplace *</label><input id="regBirthplace" maxlength="50" required></div>
+                            <div class="form-group"><label>Gender *</label><select id="regGender"><option>M</option><option>F</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Civil Status *</label><select id="regCivilStatus"><option>S</option><option>M</option><option>D</option><option>P</option><option>W</option></select></div>
+                            <div class="form-group"><label>Citizenship *</label><input id="regCitizenship" value="Filipino" maxlength="20" required></div>
+                            <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="regIncome" required></div>
+                            <div class="form-group"><label>Government ID *</label><select id="regGovID"><option>Driver's License</option><option>Passport</option><option>National ID</option><option>Postal ID</option><option>Voter's ID</option><option>SSS</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="regTIN" required></div>
+                            <div class="form-group"><label>Telephone Number</label><input data-numeric="true" maxlength="15" id="regTelNum" placeholder="e.g., 0281234567"></div>
+                            <div class="form-group"><label>Mobile Number *</label><input data-numeric="true" maxlength="15" id="regMobile" required></div>
+                            <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="regEmail" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="regWorkEmail"></div>
+                            <div class="form-group"><label>Bank Name *</label><input id="regBankName" maxlength="50" required></div>
+                            <div class="form-group"><label>Account Type *</label><select id="regAccountType"><option>Savings</option><option>Checking</option><option>Payroll</option></select></div>
+                        </div>
+                        <div id="spouseSection" style="display: none;">
+                            <h3>Spouse Information</h3>
+                            <div class="form-row">
+                                <div class="form-group"><label>Spouse Full Name</label><input id="regSpouseName" maxlength="50"></div>
+                                <div class="form-group"><label>Spouse Birthdate</label><input type="date" id="regSpouseBdate"></div>
+                                <div class="form-group"><label>Spouse Birthplace</label><input id="regSpouseBplace" maxlength="50"></div>
+                                <div class="form-group"><label>Spouse Citizenship</label><input id="regSpouseCitizenship" value="Filipino" maxlength="20"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Spouse Government ID</label><input id="regSpouseGovID"></div>
+                                <div class="form-group"><label>Spouse TIN</label><input data-numeric="true" id="regSpouseTIN"></div>
+                                <div class="form-group"><label>Spouse Mobile</label><input data-numeric="true" id="regSpouseMobile"></div>
+                                <div class="form-group"><label>Spouse Email</label><input type="email" id="regSpouseEmail"></div>
+                            </div>
+                            <div class="form-group"><label>Spouse Monthly Income</label><input type="text" data-numeric-decimal="true" id="regSpouseIncome"></div>
+                        </div>
+                        <h3>Employment Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Employment Type *</label><select id="regEmpType"><option>Employed</option><option>Self-Employed</option><option>OFW-Landbased</option><option>OFW-Seafarer</option><option>Licensed Professional</option><option>With Financial Support</option></select></div>
+                            <div class="form-group"><label>Employer/Business Name *</label><input id="regEmpName" maxlength="50" required></div>
+                            <div class="form-group"><label>Employer Address *</label><input id="regEmpAddress" maxlength="100" required></div>
+                            <div class="form-group"><label>Employer Telephone</label><input data-numeric="true" id="regEmpTel"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Employer Email</label><input type="email" id="regEmpEmail"></div>
+                            <div class="form-group"><label>Occupation *</label><input id="regOccupation" maxlength="30" required></div>
+                            <div class="form-group"><label>Position *</label><input id="regPosition" maxlength="30" required></div>
+                            <div class="form-group"><label>Tenure (years) *</label><input data-numeric="true" id="regTenure" required></div>
+                        </div>
+                        <div class="form-group"><label>Occupation Rank</label><select id="regOccRank"><option>Rank & File</option><option>Manager</option><option>Top Executive</option><option>Business Owner</option><option>Others</option></select></div>
+                        <h3>Account Credentials</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Desired Username *</label><input id="regUsername" required></div>
+                            <div class="form-group password-wrapper"><label>Password *</label><input type="password" id="regPassword" required><span class="toggle-pwd" onclick="window.togglePwd('regPassword')">Show</span></div>
+                        </div>
+                        <div class="modal-buttons" style="margin-top: 2rem;">
+                            <button type="button" class="btn-secondary" onclick="window.renderLoginPageAndAttach()">Back</button>
+                            <button type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        `;
+        document.getElementById("regCivilStatus").addEventListener("change", function() {
+            document.getElementById("spouseSection").style.display = this.value === "M" ? "block" : "none";
+        });
+        document.getElementById("createAccountForm").addEventListener("submit", handleCreateAccount);
+        attachNumericDecimal();
+        attachNumeric();
+    };
+
+    function handleCreateAccount(e) {
+        e.preventDefault();
+        const civil = document.getElementById("regCivilStatus").value;
+        const newBuyerId = `B-${new Date().getFullYear()}-${String(buyers.length+1).padStart(3,"0")}`;
+        const newBuyer = {
+            buyerId: newBuyerId,
+            fullName: document.getElementById("regFullName").value,
+            birthdate: document.getElementById("regBirthdate").value,
+            birthplace: document.getElementById("regBirthplace").value,
+            gender: document.getElementById("regGender").value,
+            civilStatus: civil,
+            citizenship: document.getElementById("regCitizenship").value,
+            grossMonthlyIncome: parseFloat(document.getElementById("regIncome").value || 0),
+            govID: document.getElementById("regGovID").value,
+            tin: document.getElementById("regTIN").value,
+            telNum: document.getElementById("regTelNum").value,
+            mobileNum: document.getElementById("regMobile").value,
+            personalEmail: document.getElementById("regEmail").value,
+            workEmail: document.getElementById("regWorkEmail").value,
+            bankName: document.getElementById("regBankName").value,
+            accountType: document.getElementById("regAccountType").value
+        };
+        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.mobileNum || !newBuyer.personalEmail || !newBuyer.grossMonthlyIncome) {
+            showMessage("Please fill all required fields", "error");
+            return;
+        }
+        buyers.push(newBuyer);
+        if (civil === "M") {
+            spouses.push({
+                buyerId: newBuyerId,
+                spsName: document.getElementById("regSpouseName").value,
+                spsBdate: document.getElementById("regSpouseBdate").value,
+                spsBplace: document.getElementById("regSpouseBplace").value,
+                spsCitizenship: document.getElementById("regSpouseCitizenship").value,
+                spsGovID: document.getElementById("regSpouseGovID").value,
+                spsTIN: document.getElementById("regSpouseTIN").value,
+                spsTelNum: "",
+                spsMobNum: document.getElementById("regSpouseMobile").value,
+                spsEmailAdd: document.getElementById("regSpouseEmail").value,
+                spsGrossMonthlyIncome: parseFloat(document.getElementById("regSpouseIncome").value || 0)
+            });
+        }
+        employments.push({
+            employmentId: `E-${new Date().getFullYear()}-${String(employments.length+1).padStart(3,"0")}`,
+            buyerId: newBuyerId,
+            empType: document.getElementById("regEmpType").value,
+            empName: document.getElementById("regEmpName").value,
+            empAddress: document.getElementById("regEmpAddress").value,
+            empTelNum: document.getElementById("regEmpTel").value,
+            empEmailAdd: document.getElementById("regEmpEmail").value,
+            occupation: document.getElementById("regOccupation").value,
+            position: document.getElementById("regPosition").value,
+            tenure: parseInt(document.getElementById("regTenure").value || 0),
+            occupationRank: document.getElementById("regOccRank").value
+        });
+        users.push({
+            id: users.length + 1,
+            role: "client",
+            username: document.getElementById("regUsername").value,
+            password: document.getElementById("regPassword").value,
+            fullName: newBuyer.fullName,
+            email: newBuyer.personalEmail,
+            buyerId: newBuyerId
+        });
+        showMessage("Account created! Please log in.", "success");
+        window.renderLoginPageAndAttach();
+    }
+
+    window.renderLoginPageAndAttach = function() {
+        document.getElementById("appContainer").innerHTML = renderLoginPage();
+        const form = document.getElementById("loginForm");
+        if (form) form.addEventListener("submit", handleLogin);
+    };
+
+    // MAIN APP
+    function renderApp() {
+        const isAdmin = currentUser.role === "admin";
+        const navHtml = isAdmin ?
+            `<button class="nav-btn active" data-page="clientMgmt">👥 Clients</button>
+             <button class="nav-btn" data-page="loanMgmt">📄 Loans</button>
+             <button class="nav-btn" data-page="propertyMgmt">🏠 Properties</button>
+             <button class="nav-btn" data-page="inventory">📊 Reports</button>`
+            :
+            `<button class="nav-btn active" data-page="accountDetails">👤 My Account</button>
+             <button class="nav-btn" data-page="propertyInfo">🏡 My Property</button>
+             <button class="nav-btn" data-page="loanDetails">💰 Loan Details</button>
+             <button class="nav-btn" data-page="paymentHistory">💳 Payments</button>
+             <button class="nav-btn" data-page="beneficiaries">👪 Beneficiaries</button>`;
+        
+        document.getElementById("appContainer").innerHTML = `
+        <div class="app-container">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo"><span>🏢</span>PropertyCo</div>
+                </div>
+                <nav class="sidebar-nav" id="navButtons">${navHtml}</nav>
+                <div class="sidebar-footer">
+                    <button class="logout-btn" id="logoutBtn">🚪 Logout</button>
+                </div>
+            </div>
+            <div class="main-wrapper">
+                <div class="header">
+                    <div class="header-title" id="headerTitle">Dashboard</div>
+                    <div class="header-user">
+                        <div class="user-avatar" id="userAvatar">${currentUser.fullName.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+                        <span id="userName" style="font-weight: 600; color: var(--dark);">${currentUser.fullName}</span>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div id="pageContainer"></div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            currentUser = null;
+            window.renderLoginPageAndAttach();
+        });
+
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                switchPage(btn.dataset.page);
+            });
+        });
+
+        if (isAdmin) switchPage("clientMgmt");
+        else switchPage("accountDetails");
+    }
+
+    function switchPage(pageName) {
+        const container = document.getElementById("pageContainer");
+        const headerTitle = document.getElementById("headerTitle");
+        
+        const pageMap = {
+            clientMgmt: { title: "Client Management", render: renderClientManagement },
+            loanMgmt: { title: "Loan Applications", render: renderLoanManagement },
+            propertyMgmt: { title: "Properties", render: renderPropertyManagement },
+            inventory: { title: "Reports", render: renderInventoryReports },
+            accountDetails: { title: "My Account", render: () => renderAccountDetails(currentUser.buyerId) },
+            propertyInfo: { title: "My Property", render: () => renderPropertyInfo(currentUser.buyerId) },
+            loanDetails: { title: "Loan Details", render: () => renderLoanDetails(currentUser.buyerId) },
+            paymentHistory: { title: "Payment History", render: () => renderPaymentHistory(currentUser.buyerId) },
+            beneficiaries: { title: "Beneficiaries", render: () => renderBeneficiaries(currentUser.buyerId) }
+        };
+
+        if (pageMap[pageName]) {
+            headerTitle.textContent = pageMap[pageName].title;
+            container.innerHTML = pageMap[pageName].render();
+            attachNumericDecimal();
+            attachNumeric();
+        }
+    }
+
+    // ADMIN - CLIENT MANAGEMENT
+    function renderClientManagement() {
+        return `<div class="card">
+            <div class="card-header">
+                <h2>Buyer Management</h2>
+                <button onclick="window.showAddBuyerModal()">+ Add Buyer</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Buyer ID</th>
+                            <th>Full Name</th>
+                            <th>Birthdate</th>
+                            <th>Civil Status</th>
+                            <th>Monthly Income</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientTableBody"></tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+    function refreshClientTable() {
+        const tbody = document.getElementById("clientTableBody");
+        if (tbody) {
+            tbody.innerHTML = buyers.map(b => `
+                <tr>
+                    <td><strong>${b.buyerId}</strong></td>
+                    <td>${b.fullName}</td>
+                    <td>${b.birthdate}</td>
+                    <td>${b.civilStatus}</td>
+                    <td>₱${b.grossMonthlyIncome.toLocaleString()}</td>
+                    <td>${b.mobileNum}</td>
+                    <td>${b.personalEmail}</td>
+                    <td style="display: flex; gap: 0.5rem;">
+                        <button class="btn-small" onclick="window.editBuyer('${b.buyerId}')">Edit</button>
+                        <button class="btn-danger btn-small" onclick="window.deleteBuyer('${b.buyerId}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    }
+    window.showAddBuyerModal = () => {
+        const govIdOptions = ['Driver\'s License', 'Passport', 'National ID', 'Postal ID', 'Voter\'s ID', 'SSS'];
+        const accountTypeOptions = ['Savings', 'Checking', 'Payroll'];
+        const civilOptions = ['S', 'M', 'D', 'P', 'W'];
+        const genderOptions = ['M', 'F'];
+        const formHtml = `
+            <h3>➕ Add New Buyer</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Full Name *</label><input id="addFullName" maxlength="50" required></div>
+                <div class="form-group"><label>Birthdate *</label><input type="date" id="addBirthdate" required></div>
+                <div class="form-group"><label>Birthplace *</label><input id="addBirthplace" maxlength="50" required></div>
+                <div class="form-group"><label>Gender *</label><select id="addGender">${genderOptions.map(g=>`<option>${g}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Civil Status *</label><select id="addCivilStatus">${civilOptions.map(c=>`<option>${c}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Citizenship *</label><input id="addCitizenship" value="Filipino" maxlength="20" required></div>
+                <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="addIncome" required></div>
+                <div class="form-group"><label>Government ID *</label><select id="addGovID">${govIdOptions.map(g=>`<option>${g}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="addTIN" required></div>
+                <div class="form-group"><label>Telephone Number</label><input data-numeric="true" maxlength="15" id="addTelNum" placeholder="e.g., 0281234567"></div>
+                <div class="form-group"><label>Mobile Number *</label><input data-numeric="true" maxlength="15" id="addMobile" required></div>
+                <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="addPersonalEmail" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="addWorkEmail"></div>
+                <div class="form-group"><label>Bank Name *</label><input id="addBankName" maxlength="50" required></div>
+                <div class="form-group"><label>Account Type *</label><select id="addAccountType">${accountTypeOptions.map(a=>`<option>${a}</option>`).join('')}</select></div>
+            </div>
+            <div class="modal-buttons"><button onclick="window.saveNewBuyer()">Save</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+    window.saveNewBuyer = () => {
+        const newId = `B-${new Date().getFullYear()}-${String(buyers.length+1).padStart(3,"0")}`;
+        const newBuyer = {
+            buyerId: newId, fullName: document.getElementById("addFullName").value, birthdate: document.getElementById("addBirthdate").value,
+            birthplace: document.getElementById("addBirthplace").value, gender: document.getElementById("addGender").value,
+            civilStatus: document.getElementById("addCivilStatus").value, citizenship: document.getElementById("addCitizenship").value,
+            grossMonthlyIncome: parseFloat(document.getElementById("addIncome").value||0), govID: document.getElementById("addGovID").value,
+            tin: document.getElementById("addTIN").value, telNum: document.getElementById("addTelNum").value,
+            mobileNum: document.getElementById("addMobile").value, personalEmail: document.getElementById("addPersonalEmail").value,
+            workEmail: document.getElementById("addWorkEmail").value, bankName: document.getElementById("addBankName").value,
+            accountType: document.getElementById("addAccountType").value
+        };
+        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.mobileNum || !newBuyer.personalEmail) { showMessage("Fill required fields","error"); return; }
+        buyers.push(newBuyer);
+        refreshClientTable();
+        closeModal();
+        showMessage("Buyer added");
+    };
+    window.editBuyer = (id) => {
+        const b = buyers.find(b=>b.buyerId===id);
+        if(!b) return;
+        const govIdOptions = ['Driver\'s License', 'Passport', 'National ID', 'Postal ID', 'Voter\'s ID', 'SSS'];
+        const accountTypeOptions = ['Savings', 'Checking', 'Payroll'];
+        const civilOptions = ['S','M','D','P','W'];
+        const genderOptions = ['M','F'];
+        const formHtml = `
+            <h3>✏️ Edit Buyer</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Full Name</label><input id="editFullName" maxlength="50" value="${b.fullName}"></div>
+                <div class="form-group"><label>Birthdate</label><input type="date" id="editBirthdate" value="${b.birthdate}"></div>
+                <div class="form-group"><label>Birthplace</label><input id="editBirthplace" maxlength="50" value="${b.birthplace}"></div>
+                <div class="form-group"><label>Gender</label><select id="editGender">${genderOptions.map(g=>`<option ${b.gender===g?'selected':''}>${g}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Civil Status</label><select id="editCivilStatus">${civilOptions.map(c=>`<option ${b.civilStatus===c?'selected':''}>${c}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Citizenship</label><input id="editCitizenship" maxlength="20" value="${b.citizenship}"></div>
+                <div class="form-group"><label>Gross Monthly Income</label><input type="text" data-numeric-decimal="true" id="editIncome" value="${b.grossMonthlyIncome}"></div>
+                <div class="form-group"><label>Government ID</label><select id="editGovID">${govIdOptions.map(g=>`<option ${b.govID===g?'selected':''}>${g}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>TIN</label><input data-numeric="true" maxlength="15" id="editTIN" value="${b.tin}"></div>
+                <div class="form-group"><label>Telephone</label><input data-numeric="true" maxlength="15" id="editTelNum" value="${b.telNum}"></div>
+                <div class="form-group"><label>Mobile</label><input data-numeric="true" maxlength="15" id="editMobile" value="${b.mobileNum}"></div>
+                <div class="form-group"><label>Personal Email</label><input type="email" maxlength="50" id="editPersonalEmail" value="${b.personalEmail}"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="editWorkEmail" value="${b.workEmail}"></div>
+                <div class="form-group"><label>Bank Name</label><input id="editBankName" maxlength="50" value="${b.bankName}"></div>
+                <div class="form-group"><label>Account Type</label><select id="editAccountType">${accountTypeOptions.map(a=>`<option ${b.accountType===a?'selected':''}>${a}</option>`).join('')}</select></div>
+            </div>
+            <div class="modal-buttons"><button onclick="window.updateBuyer('${id}')">Update</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+    window.updateBuyer = (id) => {
+        const idx = buyers.findIndex(b=>b.buyerId===id);
+        if(idx!==-1){
+            buyers[idx] = {...buyers[idx], fullName: document.getElementById("editFullName").value, birthdate: document.getElementById("editBirthdate").value,
+                birthplace: document.getElementById("editBirthplace").value, gender: document.getElementById("editGender").value,
+                civilStatus: document.getElementById("editCivilStatus").value, citizenship: document.getElementById("editCitizenship").value,
+                grossMonthlyIncome: parseFloat(document.getElementById("editIncome").value||0), govID: document.getElementById("editGovID").value,
+                tin: document.getElementById("editTIN").value, telNum: document.getElementById("editTelNum").value,
+                mobileNum: document.getElementById("editMobile").value, personalEmail: document.getElementById("editPersonalEmail").value,
+                workEmail: document.getElementById("editWorkEmail").value, bankName: document.getElementById("editBankName").value,
+                accountType: document.getElementById("editAccountType").value
+            };
+            refreshClientTable();
+            closeModal();
+            showMessage("Buyer updated");
+        }
+    };
+    window.deleteBuyer = (id) => { if(confirm("Delete buyer?")){ buyers=buyers.filter(b=>b.buyerId!==id); refreshClientTable(); showMessage("Buyer deleted"); } };
+
+    // ADMIN - LOAN MANAGEMENT
+    function renderLoanManagement() {
+        return `<div class="card">
+            <div class="card-header">
+                <h2>Loan Applications</h2>
+                <button onclick="window.showAddLoanModal()">+ Add Loan</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Buyer Name</th>
+                            <th>Amount</th>
+                            <th>Finance Type</th>
+                            <th>Term (yrs)</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loanTableBody"></tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+    function refreshLoanTable() {
+        const tbody = document.getElementById("loanTableBody");
+        if(tbody){
+            tbody.innerHTML = loans.map(l=>{
+                const buyer = buyers.find(b=>b.buyerId===l.buyerId);
+                return `
+                    <tr>
+                        <td><strong>${l.loanId}</strong></td>
+                        <td>${buyer?buyer.fullName:'Unknown'}</td>
+                        <td>₱${l.loanAmount.toLocaleString()}</td>
+                        <td>${l.financeType}</td>
+                        <td>${l.loanTerm}</td>
+                        <td>${l.purchasePurpose}</td>
+                        <td><span style="background: ${l.status === 'Active' ? 'var(--success)' : l.status === 'Pending' ? 'var(--warning)' : 'var(--danger)'}; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">${l.status}</span></td>
+                        <td style="display: flex; gap: 0.5rem;">
+                            <button class="btn-small" onclick="window.approveLoan('${l.loanId}')">Approve</button>
+                            <button class="btn-danger btn-small" onclick="window.rejectLoan('${l.loanId}')">Reject</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+    window.showAddLoanModal = () => {
+        const buyerOptions = buyers.map(b=>`<option value="${b.buyerId}">${b.fullName}</option>`).join('');
+        const financeOptions = ['Bank','In-House','Pag-IBIG','Cash','Others'];
+        const purposeOptions = ['Primary Home','Vacation','Retirement','Investment','Others'];
+        const sourceOptions = ['Employment','Business','Inheritance','Remittance','Others'];
+        const statusOptions = ['Pending','Active','Rejected'];
+        const formHtml = `
+            <h3>➕ Add New Loan Application</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Buyer *</label><select id="loanBuyerId">${buyerOptions}</select></div>
+                <div class="form-group"><label>Loan Amount *</label><input type="text" data-numeric-decimal="true" id="loanAmount" required></div>
+                <div class="form-group"><label>Downpayment *</label><input type="text" data-numeric-decimal="true" id="downpayment" required></div>
+                <div class="form-group"><label>DP Term (months) *</label><input data-numeric="true" id="dpTerm" value="24" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Loan Term (years) *</label><input data-numeric="true" id="loanTerm" value="10" required></div>
+                <div class="form-group"><label>Finance Type *</label><select id="financeType">${financeOptions.map(f=>`<option>${f}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Purchase Purpose *</label><select id="purchasePurpose">${purposeOptions.map(p=>`<option>${p}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Source of Funds *</label><select id="sourceFunds">${sourceOptions.map(s=>`<option>${s}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Status *</label><select id="loanStatus">${statusOptions.map(s=>`<option>${s}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Selling Price *</label><input type="text" data-numeric-decimal="true" id="sellPrice" required></div>
+                <div class="form-group"><label>Unit ID (optional)</label><input id="unitId" placeholder="e.g., UNIT-A05"></div>
+            </div>
+            <div class="modal-buttons"><button onclick="window.saveNewLoan()">Save</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+    window.saveNewLoan = () => {
+        const buyerId = document.getElementById("loanBuyerId").value;
+        const loanAmount = parseFloat(document.getElementById("loanAmount").value||0);
+        const downpayment = parseFloat(document.getElementById("downpayment").value||0);
+        const dpTerm = parseInt(document.getElementById("dpTerm").value||0);
+        const loanTerm = parseInt(document.getElementById("loanTerm").value||0);
+        const financeType = document.getElementById("financeType").value;
+        const purchasePurpose = document.getElementById("purchasePurpose").value;
+        const sourceFunds = document.getElementById("sourceFunds").value;
+        const status = document.getElementById("loanStatus").value;
+        const sellPrice = parseFloat(document.getElementById("sellPrice").value||0);
+        const unitId = document.getElementById("unitId").value || "UNIT-NEW";
+        if(!loanAmount||!downpayment||!sellPrice){ showMessage("Fill all required fields","error"); return; }
+        const newId = `L-${Math.floor(Math.random()*90000+10000)}`;
+        loans.push({ loanId: newId, buyerId, unitId, financeType, dpTerm, loanTerm, purchasePurpose, loanAmount, downpayment, reservationFee:0, sellPrice, orPrNum:"MANUAL", orPrDate:new Date().toISOString().slice(0,10), bookingOfficer:"Admin", processingFee:0, sourceFunds, status });
+        refreshLoanTable();
+        closeModal();
+        showMessage("Loan added");
+    };
+    window.approveLoan = (id) => { let l=loans.find(l=>l.loanId===id); if(l){l.status="Active"; refreshLoanTable(); showMessage("Approved");} };
+    window.rejectLoan = (id) => { let l=loans.find(l=>l.loanId===id); if(l){l.status="Rejected"; refreshLoanTable(); showMessage("Rejected");} };
+
+    // ADMIN - PROPERTY MANAGEMENT
+    function renderPropertyManagement() {
+        return `<div class="card">
+            <div class="card-header">
+                <h2>Property Listings</h2>
+                <button onclick="window.showAddPropertyModal()">+ Add Property</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unit ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Reserved For</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="propTableBody"></tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+    function refreshPropertyTable() {
+        const tbody = document.getElementById("propTableBody");
+        if (tbody) {
+            tbody.innerHTML = properties.map(p => {
+                const reservedBuyer = p.reservedBy ? buyers.find(b => b.buyerId === p.reservedBy) : null;
+                const reservedName = reservedBuyer ? reservedBuyer.fullName : (p.status === "Reserved" ? "Unknown buyer" : "—");
+                return `
+                    <tr>
+                        <td><strong>${p.unitId}</strong></td>
+                        <td>${p.name}</td>
+                        <td>${p.location}</td>
+                        <td>₱${p.price.toLocaleString()}</td>
+                        <td><span style="background: ${p.status === 'Available' ? 'var(--success)' : p.status === 'Reserved' ? 'var(--warning)' : 'var(--dark-gray)'}; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">${p.status}</span></td>
+                        <td>${reservedName}</td>
+                        <td style="display: flex; gap: 0.5rem;">
+                            <button class="btn-small" onclick="window.editProperty('${p.unitId}')">Edit</button>
+                            <button class="btn-danger btn-small" onclick="window.deleteProperty('${p.unitId}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+    window.showAddPropertyModal = () => {
+        const buyerOptions = `<option value="">None (Available)</option>` + buyers.map(b => `<option value="${b.buyerId}">${b.fullName}</option>`).join('');
+        const formHtml = `
+            <h3>➕ Add New Property</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Unit ID *</label><input id="addUnitId" maxlength="15" required></div>
+                <div class="form-group"><label>Property Name *</label><input id="addName" maxlength="100" required></div>
+                <div class="form-group"><label>Location *</label><input id="addLocation" maxlength="100" required></div>
+                <div class="form-group"><label>Price *</label><input type="text" data-numeric-decimal="true" id="addPrice" required></div>
+            </div>
+            <div class="form-group"><label>Reserve for buyer (optional)</label><select id="addReservedFor">${buyerOptions}</select></div>
+            <div class="modal-buttons"><button onclick="window.saveNewProperty()">Save</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+    window.saveNewProperty = () => {
+        const unitId = document.getElementById("addUnitId").value;
+        const name = document.getElementById("addName").value;
+        const location = document.getElementById("addLocation").value;
+        const price = parseFloat(document.getElementById("addPrice").value || 0);
+        const reservedFor = document.getElementById("addReservedFor").value;
+        if (!unitId || !name || !price) { showMessage("Please fill required fields", "error"); return; }
+        const newProp = {
+            unitId, name, location, price,
+            status: reservedFor ? "Reserved" : "Available",
+            reservedBy: reservedFor || null
+        };
+        properties.push(newProp);
+        refreshPropertyTable();
+        closeModal();
+        showMessage("Property added");
+    };
+    window.editProperty = (unitId) => {
+        const prop = properties.find(p => p.unitId === unitId);
+        if (!prop) return;
+        const buyerOptions = `<option value="">None (Available)</option>` + buyers.map(b => `<option value="${b.buyerId}" ${prop.reservedBy === b.buyerId ? 'selected' : ''}>${b.fullName}</option>`).join('');
+        const formHtml = `
+            <h3>✏️ Edit Property</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Unit ID</label><input id="editUnitId" maxlength="15" value="${prop.unitId}" disabled></div>
+                <div class="form-group"><label>Property Name *</label><input id="editName" maxlength="100" value="${prop.name}" required></div>
+                <div class="form-group"><label>Location *</label><input id="editLocation" maxlength="100" value="${prop.location}" required></div>
+                <div class="form-group"><label>Price *</label><input type="text" data-numeric-decimal="true" id="editPrice" value="${prop.price}" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Reserve for buyer</label><select id="editReservedFor">${buyerOptions}</select></div>
+                <div class="form-group"><label>Status</label><select id="editStatus"><option ${prop.status==="Available"?"selected":""}>Available</option><option ${prop.status==="Reserved"?"selected":""}>Reserved</option><option ${prop.status==="Sold"?"selected":""}>Sold</option></select></div>
+            </div>
+            <div class="modal-buttons"><button onclick="window.updateProperty('${unitId}')">Update</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+    window.updateProperty = (unitId) => {
+        const index = properties.findIndex(p => p.unitId === unitId);
+        if (index === -1) return;
+        const reservedFor = document.getElementById("editReservedFor").value;
+        const status = document.getElementById("editStatus").value;
+        properties[index] = {
+            ...properties[index],
+            name: document.getElementById("editName").value,
+            location: document.getElementById("editLocation").value,
+            price: parseFloat(document.getElementById("editPrice").value || 0),
+            status: status,
+            reservedBy: reservedFor || null
+        };
+        refreshPropertyTable();
+        closeModal();
+        showMessage("Property updated");
+    };
+    window.deleteProperty = (unitId) => {
+        if (confirm("Delete property?")) {
+            properties = properties.filter(p => p.unitId !== unitId);
+            refreshPropertyTable();
+            showMessage("Property deleted");
+        }
+    };
+
+    // ADMIN - REPORTS
+    function renderInventoryReports() {
+        let totalSales = loans.reduce((s,l)=>s+(l.sellPrice||0),0);
+        let outstanding = loans.filter(l=>l.status==="Active").reduce((s,l)=> {
+            let paid = payments.filter(p=>p.loanId===l.loanId).reduce((sum,p)=>sum+p.amount,0);
+            return s + ((l.loanAmount||0) - (l.downpayment||0) - paid);
+        }, 0);
+        return `
+            <div class="stat-card">
+                <div><div class="stat-label">Total Sales</div><div class="stat-value">₱${totalSales.toLocaleString()}</div></div>
+                <div class="stat-icon">💰</div>
+            </div>
+            <div class="stat-card">
+                <div><div class="stat-label">Outstanding Payments</div><div class="stat-value">₱${outstanding.toLocaleString()}</div></div>
+                <div class="stat-icon">⚠️</div>
+            </div>
+            <div class="stat-card">
+                <div><div class="stat-label">Active Loans</div><div class="stat-value">${loans.filter(l=>l.status==="Active").length}</div></div>
+                <div class="stat-icon">📄</div>
+            </div>
+        `;
+    }
+
+    // CLIENT - PAGES
+    function renderAccountDetails(buyerId) { 
+        const b = buyers.find(b=>b.buyerId===buyerId);
+        return `<div class="card">
+            <div class="card-header"><h2>Account Information</h2></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div><small style="color: var(--dark-gray);">FULL NAME</small><p style="font-size: 1.1rem; font-weight: 600; color: var(--dark);">${b?.fullName}</p></div>
+                <div><small style="color: var(--dark-gray);">EMAIL</small><p style="font-size: 1.1rem; font-weight: 600; color: var(--dark);">${b?.personalEmail}</p></div>
+                <div><small style="color: var(--dark-gray);">MOBILE</small><p style="font-size: 1.1rem; font-weight: 600; color: var(--dark);">${b?.mobileNum}</p></div>
+                <div><small style="color: var(--dark-gray);">MONTHLY INCOME</small><p style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">₱${b?.grossMonthlyIncome.toLocaleString()}</p></div>
+            </div>
+        </div>`; 
+    }
+    function renderPropertyInfo(buyerId) {
+        let prop = properties.find(p => p.reservedBy === buyerId);
+        if (!prop) {
+            const loan = loans.find(l => l.buyerId === buyerId);
+            if (loan) prop = properties.find(p => p.unitId === loan.unitId);
+        }
+        if (prop) {
+            return `<div class="card"><div class="card-header"><h2>${prop.name}</h2></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;"><div><small style="color: var(--dark-gray);">LOCATION</small><p style="font-size: 1rem; font-weight: 600;">${prop.location}</p></div><div><small style="color: var(--dark-gray);">PRICE</small><p style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">₱${prop.price.toLocaleString()}</p></div><div><small style="color: var(--dark-gray);">STATUS</small><p style="font-size: 1rem; font-weight: 600;">${prop.status}</p></div></div></div>`;
+        } else {
+            return `<div class="card"><div class="card-header"><h2>My Property</h2></div><p>No property reserved yet. Please contact admin.</p></div>`;
+        }
+    }
+    function renderLoanDetails(buyerId) {
+        const loan = loans.find(l=>l.buyerId===buyerId);
+        if(!loan) {
+            return `<div class="card"><div class="card-header"><h2>Loan Details</h2></div><p>You don't have an active loan application.</p><button onclick="window.showApplyLoanModal()">Apply for Loan</button></div>`;
+        }
+        const paid = payments.filter(p=>p.loanId===loan.loanId).reduce((sum,p)=>sum+p.amount,0);
+        const remaining = loan.loanAmount - (loan.downpayment||0) - paid;
+        const monthly = loan.loanAmount / (loan.loanTerm * 12);
+        return `<div class="card"><div class="card-header"><h2>Loan Details</h2></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;"><div><small style="color: var(--dark-gray);">LOAN ID</small><p style="font-weight: 600;">${loan.loanId}</p></div><div><small style="color: var(--dark-gray);">LOAN AMOUNT</small><p style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">₱${loan.loanAmount.toLocaleString()}</p></div><div><small style="color: var(--dark-gray);">DOWNPAYMENT</small><p style="font-weight: 600;">₱${loan.downpayment.toLocaleString()}</p></div><div><small style="color: var(--dark-gray);">REMAINING BALANCE</small><p style="font-weight: 600;">₱${remaining.toLocaleString()}</p></div><div><small style="color: var(--dark-gray);">MONTHLY PAYMENT (EST.)</small><p style="font-weight: 600;">₱${monthly.toFixed(2)}</p></div><div><small style="color: var(--dark-gray);">STATUS</small><p style="font-weight: 600;">${loan.status}</p></div></div>${loan.status === 'Active' ? `<div style="margin-top: 1.5rem;"><button onclick="window.showMakePaymentModal('${loan.loanId}')">💳 Make Payment</button></div>` : ''}</div>`;
+    }
+    function renderPaymentHistory(buyerId) {
+        const loan = loans.find(l=>l.buyerId===buyerId);
+        if(!loan) return `<div class="card"><div class="card-header"><h2>Payment History</h2></div><p>No loan found.</p></div>`;
+        const myPayments = payments.filter(p=>p.loanId===loan.loanId).sort((a,b)=>new Date(b.date)-new Date(a.date));
+        return `<div class="card"><div class="card-header"><h2>Payment History</h2></div><div class="table-wrapper"><table><thead><tr><th>Date</th><th>Amount</th><th>Remaining Balance</th></tr></thead><tbody>${myPayments.map(p=>`<tr><td>${p.date}</td><td>₱${p.amount.toLocaleString()}</td><td>₱${p.remainingBalance.toLocaleString()}</td></tr>`).join('') || '<tr><td colspan="3" style="text-align: center;">No payments yet</td></tr>'}</tbody></table></div></div>`;
+    }
+    function renderBeneficiaries(buyerId) { 
+        const myBens = beneficiaries.filter(b=>b.buyerId===buyerId);
+        return `<div class="card"><div class="card-header"><h2>Beneficiaries</h2><button class="btn-small" onclick="window.addBeneficiary('${buyerId}')">+ Add</button></div><div style="display: grid; gap: 1rem;">${myBens.map(b=>`<div style="padding: 1rem; background: var(--light-gray); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;"><div><strong>${b.benFName}</strong><br><small style="color: var(--dark-gray);">Relationship: ${b.relationship}</small></div><button class="btn-danger btn-small" onclick="window.removeBeneficiary('${b.beneficiaryId}')">Remove</button></div>`).join("")}</div></div>`; 
+    }
+    window.addBeneficiary = (buyerId) => { 
+        let name=prompt("Full name"); 
+        let rel=prompt("Relationship"); 
+        if(name&&rel){ 
+            beneficiaries.push({beneficiaryId:`BEN-${Date.now()}`,buyerId,benFName:name.slice(0,50),benFBdate:new Date().toISOString().slice(0,10),relationship:rel.slice(0,20)}); 
+            switchPage("beneficiaries"); 
+        } 
+    };
+    window.removeBeneficiary = (id) => { beneficiaries=beneficiaries.filter(b=>b.beneficiaryId!==id); switchPage("beneficiaries"); };
+
+    // LOAN APPLICATION & PAYMENT
+    window.showApplyLoanModal = () => {
+        const availableProps = properties.filter(p => p.status === "Available");
+        const financeOptions = ['Bank','In-House','Pag-IBIG','Cash','Others'];
+        const purposeOptions = ['Primary Home','Vacation','Retirement','Investment','Others'];
+        const sourceOptions = ['Employment','Business','Inheritance','Remittance','Others'];
+        
+        const formHtml = `
+            <h3>📝 Apply for Loan</h3>
+            <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 0.95rem; text-transform: uppercase; font-weight: 600;">Step 1: Select Property</h4>
+            <div class="form-group">
+                <label>Available Properties *</label>
+                <select id="applyPropertySelect" onchange="window.updateLoanFormDetails()">
+                    <option value="">-- Select a property --</option>
+                    ${availableProps.map(p => `<option value="${p.unitId}" data-price="${p.price}" data-location="${p.location}" data-name="${p.name}">${p.name} - ${p.location} (₱${p.price.toLocaleString()})</option>`).join('')}
+                </select>
+            </div>
+            
+            <div id="propertyDetailsSection" style="display: none; background: var(--light-gray); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h4 style="margin-bottom: 1rem;">Property Details</h4>
+                <div class="form-row">
+                    <div class="form-group"><label>Property Name</label><input id="applyPropertyName" disabled></div>
+                    <div class="form-group"><label>Location</label><input id="applyPropertyLocation" disabled></div>
+                    <div class="form-group"><label>Unit ID</label><input id="applyPropertyUnitId" disabled></div>
+                </div>
+                <div class="form-group"><label>Selling Price</label><input id="applySellPrice" type="text" data-numeric-decimal="true" disabled></div>
+            </div>
+
+            <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--primary); font-size: 0.95rem; text-transform: uppercase; font-weight: 600;">Step 2: Loan Details</h4>
+            <div id="loanDetailsSection" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group"><label>Loan Amount *</label><input type="text" data-numeric-decimal="true" id="applyLoanAmount" required></div>
+                    <div class="form-group"><label>Downpayment *</label><input type="text" data-numeric-decimal="true" id="applyDownpayment" required></div>
+                    <div class="form-group"><label>DP Term (months)</label><input data-numeric="true" id="applyDpTerm" value="24"></div>
+                    <div class="form-group"><label>Loan Term (years) *</label><input data-numeric="true" id="applyLoanTerm" value="10" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Finance Type</label><select id="applyFinanceType">${financeOptions.map(f=>`<option>${f}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Purchase Purpose</label><select id="applyPurpose">${purposeOptions.map(p=>`<option>${p}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Source of Funds</label><select id="applySource">${sourceOptions.map(s=>`<option>${s}</option>`).join('')}</select></div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons"><button onclick="window.submitLoanApplication()">Submit Application</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+
+    window.updateLoanFormDetails = () => {
+        const select = document.getElementById("applyPropertySelect");
+        const option = select.options[select.selectedIndex];
+        
+        if (option.value === "") {
+            document.getElementById("propertyDetailsSection").style.display = "none";
+            document.getElementById("loanDetailsSection").style.display = "none";
+            return;
+        }
+        
+        const price = parseFloat(option.dataset.price);
+        const location = option.dataset.location;
+        const name = option.dataset.name;
+        
+        // Fill property details
+        document.getElementById("applyPropertyName").value = name;
+        document.getElementById("applyPropertyLocation").value = location;
+        document.getElementById("applyPropertyUnitId").value = option.value;
+        document.getElementById("applySellPrice").value = price;
+        
+        // Show sections
+        document.getElementById("propertyDetailsSection").style.display = "block";
+        document.getElementById("loanDetailsSection").style.display = "block";
+        
+        // Auto-calculate suggested loan & downpayment (80% loan, 20% down)
+        const suggestedDownpayment = price * 0.20;
+        const suggestedLoan = price * 0.80;
+        
+        document.getElementById("applyDownpayment").value = suggestedDownpayment.toFixed(2);
+        document.getElementById("applyLoanAmount").value = suggestedLoan.toFixed(2);
+        
+        attachNumericDecimal();
+    };
+
+    window.submitLoanApplication = () => {
+        const buyerId = currentUser.buyerId;
+        const unitId = document.getElementById("applyPropertyUnitId").value;
+        const loanAmount = parseFloat(document.getElementById("applyLoanAmount").value||0);
+        const downpayment = parseFloat(document.getElementById("applyDownpayment").value||0);
+        const dpTerm = parseInt(document.getElementById("applyDpTerm").value||0);
+        const loanTerm = parseInt(document.getElementById("applyLoanTerm").value||0);
+        const financeType = document.getElementById("applyFinanceType").value;
+        const purchasePurpose = document.getElementById("applyPurpose").value;
+        const sourceFunds = document.getElementById("applySource").value;
+        const sellPrice = parseFloat(document.getElementById("applySellPrice").value||0);
+        
+        if(!unitId || !loanAmount || !downpayment) { 
+            showMessage("Please select a property and fill loan details", "error"); 
+            return; 
+        }
+        
+        loans.push({ 
+            loanId: `L-${Math.floor(Math.random()*90000+10000)}`, 
+            buyerId, 
+            unitId, 
+            financeType, 
+            dpTerm, 
+            loanTerm, 
+            purchasePurpose, 
+            loanAmount, 
+            downpayment, 
+            reservationFee: 0, 
+            sellPrice, 
+            orPrNum: "APPLIED", 
+            orPrDate: new Date().toISOString().slice(0,10), 
+            bookingOfficer: "Pending", 
+            processingFee: 0, 
+            sourceFunds, 
+            status: "Pending" 
+        });
+        closeModal();
+        showMessage("Loan application submitted. Property will be reserved pending approval.");
+        switchPage("loanDetails");
+    };
+
+    window.showMakePaymentModal = (loanId) => {
+        const loan = loans.find(l=>l.loanId===loanId);
+        const paid = payments.filter(p=>p.loanId===loanId).reduce((sum,p)=>sum+p.amount,0);
+        const remaining = loan.loanAmount - (loan.downpayment||0) - paid;
+        if(remaining <= 0) { showMessage("Loan already fully paid","error"); return; }
+        const formHtml = `
+            <h3>💰 Make Payment</h3>
+            <div class="form-group"><label>Amount to Pay *</label><input type="text" data-numeric-decimal="true" id="paymentAmount" required></div>
+            <div class="form-group"><label>Remaining Balance (before payment)</label><input type="text" value="₱${remaining.toLocaleString()}" disabled></div>
+            <div class="modal-buttons"><button onclick="window.recordPayment('${loanId}')">Pay</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
+        `;
+        openModal(formHtml);
+    };
+
+    window.recordPayment = (loanId) => {
+        const amount = parseFloat(document.getElementById("paymentAmount").value||0);
+        const loan = loans.find(l=>l.loanId===loanId);
+        const paid = payments.filter(p=>p.loanId===loanId).reduce((sum,p)=>sum+p.amount,0);
+        const remainingBefore = loan.loanAmount - (loan.downpayment||0) - paid;
+        if(amount <= 0 || amount > remainingBefore) { showMessage("Invalid payment amount","error"); return; }
+        const newRemaining = remainingBefore - amount;
+        payments.push({ paymentId: `PAY-${Date.now()}`, loanId, amount, date: new Date().toISOString().slice(0,10), remainingBalance: newRemaining });
+        closeModal();
+        showMessage("Payment recorded successfully");
+        switchPage("loanDetails");
+    };
+
+    renderLoginPageAndAttach();
+    setInterval(() => {
+        if(document.getElementById("clientTableBody")) refreshClientTable();
+        if(document.getElementById("loanTableBody")) refreshLoanTable();
+        if(document.getElementById("propTableBody")) refreshPropertyTable();
+    }, 500);
+</script>
+</body>
+</html>
