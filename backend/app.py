@@ -26,7 +26,7 @@ def create_app():
     from routes.employment import employment_bp
     from routes.household import household_bp
     from routes.loans import loans_bp
-    # from routes.reports import reports_bp
+    from routes.reports import reports_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(buyers_bp)
@@ -35,7 +35,7 @@ def create_app():
     app.register_blueprint(employment_bp)
     app.register_blueprint(household_bp)
     app.register_blueprint(loans_bp)
-    # app.register_blueprint(reports_bp)
+    app.register_blueprint(reports_bp)
 
     # --- Frontend: serve the wired copy of Andre's UI ---
     @app.route("/")
