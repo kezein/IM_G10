@@ -9,8 +9,9 @@
         :root {
             --navy: #1e2a5e;
             --navy-deep: #13204a;
-            --orange: #f4a261;
-            --orange-dark: #e76f51;
+            --orange: #16a34a;
+            --orange-dark: #15803d;
+            --accent-light: #22c55e;
             --bg: #eef1f8;
             --surface: #ffffff;
             --border: #e2e8f0;
@@ -222,6 +223,7 @@
             letter-spacing: -0.4px;
             border-bottom: none;
             padding-bottom: 0;
+            display: block;
         }
         .login-right-sub {
             font-size: 0.9rem;
@@ -417,6 +419,8 @@
             letter-spacing: -0.3px;
             padding-bottom: 0.75rem;
             border-bottom: 2px solid #f0f3f8;
+            display: flex;
+            align-items: center;
         }
         h3 {
             font-size: 1rem;
@@ -424,6 +428,8 @@
             color: #2c3e66;
             font-family: "Fraunces", Georgia, serif;
             font-weight: 600;
+            display: flex;
+            align-items: center;
         }
         form {
             display: flex;
@@ -446,23 +452,25 @@
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--orange);
-            box-shadow: 0 0 0 3px rgba(244,162,97,0.18);
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,0.18);
         }
         button {
-            background: linear-gradient(135deg, #f4a261, #f6b27a);
-            color: #1e2a5e;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
             border: none;
             padding: 0.6rem 1.2rem;
             border-radius: 999px;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.2s;
+            font-family: "DM Sans", sans-serif;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
         }
         button:hover {
-            background: linear-gradient(135deg, #e76f51, #f4a261);
+            background: linear-gradient(135deg, #15803d, #16a34a);
             color: white;
             transform: none;
+            box-shadow: 0 4px 14px rgba(22,163,74,0.35);
         }
         .btn-danger {
             background: #ef4444;
@@ -796,6 +804,31 @@
     }
     function closeModal() { document.getElementById("globalModal").style.display = "none"; }
 
+    // ====== SVG ICON SYSTEM ======
+    const IP = {
+        clients:   '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        loans:     '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+        home:      '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        reports:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        user:      '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        dollar:    '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        card:      '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>',
+        family:    '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        logout:    '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+        plus:      '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+        edit:      '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+        clipboard: '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/>',
+        payment:   '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M9.5 10h4a1.5 1.5 0 0 1 0 3H9.5m4 0H9.5v3"/>',
+    };
+    // Nav icon: currentColor inherits from button text color (white default, navy on hover)
+    function ni(key) {
+        return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;flex-shrink:0;">${IP[key]||''}</svg>`;
+    }
+    // Section icon: green rounded square + white icon, used in h2/h3
+    function si(key) {
+        return `<span style="display:inline-flex;align-items:center;justify-content:center;min-width:30px;width:30px;height:30px;background:#16a34a;border-radius:8px;margin-right:10px;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IP[key]||''}</svg></span>`;
+    }
+
     // LOGIN PAGE
     function renderLoginPage() {
         return `
@@ -901,7 +934,7 @@
     function renderCreateAccountPage() {
         document.getElementById("mainContent").innerHTML = `
         <div class="card">
-            <h2>📝 Create Account (Buyer Registration)</h2>
+            <h2>${si('clipboard')}Create Account (Buyer Registration)</h2>
             <form id="createAccountForm" style="display: flex; flex-direction: column; gap: 1rem;">
                 <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
                     <div class="form-group"><label>Full Name *</label><input id="regFullName" maxlength="50" required></div>
@@ -1063,17 +1096,17 @@
         header.style.display = "flex";
         const isAdmin = currentUser.role === "admin";
         const navHtml = isAdmin ?
-            `<button class="nav-btn" data-page="clientMgmt">👥 Client Management</button>
-             <button class="nav-btn" data-page="loanMgmt">📄 Loan Management</button>
-             <button class="nav-btn" data-page="propertyMgmt">🏠 Property Management</button>
-             <button class="nav-btn" data-page="inventory">📊 Reports</button>`
+            `<button class="nav-btn" data-page="clientMgmt">${ni('clients')} Client Management</button>
+             <button class="nav-btn" data-page="loanMgmt">${ni('loans')} Loan Management</button>
+             <button class="nav-btn" data-page="propertyMgmt">${ni('home')} Property Management</button>
+             <button class="nav-btn" data-page="inventory">${ni('reports')} Reports</button>`
             :
-            `<button class="nav-btn" data-page="accountDetails">👤 My Account</button>
-             <button class="nav-btn" data-page="propertyInfo">🏡 My Property</button>
-             <button class="nav-btn" data-page="loanDetails">💰 Loan Details</button>
-             <button class="nav-btn" data-page="paymentHistory">💳 Payment History</button>
-             <button class="nav-btn" data-page="beneficiaries">👪 Beneficiaries</button>`;
-        navDiv.innerHTML = navHtml + `<button class="nav-btn logout-btn" id="logoutBtn">🚪 Logout</button>`;
+            `<button class="nav-btn" data-page="accountDetails">${ni('user')} My Account</button>
+             <button class="nav-btn" data-page="propertyInfo">${ni('home')} My Property</button>
+             <button class="nav-btn" data-page="loanDetails">${ni('dollar')} Loan Details</button>
+             <button class="nav-btn" data-page="paymentHistory">${ni('card')} Payment History</button>
+             <button class="nav-btn" data-page="beneficiaries">${ni('family')} Beneficiaries</button>`;
+        navDiv.innerHTML = navHtml + `<button class="nav-btn logout-btn" id="logoutBtn">${ni('logout')} Logout</button>`;
         document.getElementById("mainContent").innerHTML = `<div id="pageContainer"></div>`;
         document.querySelectorAll(".nav-btn").forEach(btn => {
             if (btn.id !== "logoutBtn") btn.addEventListener("click", () => switchPage(btn.dataset.page));
@@ -1116,7 +1149,7 @@
     // ADMIN: CLIENT MANAGEMENT
     function renderClientManagement() {
         return `<div class="card">
-            <h2>Buyer Management</h2>
+            <h2>${si('clients')}Buyer Management</h2>
             <button onclick="showAddBuyerModal()">+ Add Buyer</button>
             <div class="table-wrapper">
                 <table>
@@ -1160,7 +1193,7 @@
         const civilOptions = ['S', 'M', 'D', 'P', 'W'];
         const genderOptions = ['M', 'F'];
         const formHtml = `
-            <h3>➕ Add New Buyer</h3>
+            <h3>${si('plus')}Add New Buyer</h3>
             <form id="addBuyerForm">
                 <div class="form-group"><label>Full Name *</label><input id="addFullName" maxlength="50" required></div>
                 <div class="form-group"><label>Birthdate *</label><input type="date" id="addBirthdate" required></div>
@@ -1212,7 +1245,7 @@
         const civilOptions = ['S','M','D','P','W'];
         const genderOptions = ['M','F'];
         const formHtml = `
-            <h3>✏️ Edit Buyer</h3>
+            <h3>${si('edit')}Edit Buyer</h3>
             <form id="editBuyerForm">
                 <div class="form-group"><label>Full Name</label><input id="editFullName" maxlength="50" value="${b.fullName}"></div>
                 <div class="form-group"><label>Birthdate</label><input type="date" id="editBirthdate" value="${b.birthdate}"></div>
@@ -1270,7 +1303,7 @@
     // ADMIN: LOAN MANAGEMENT
     function renderLoanManagement() {
         return `<div class="card">
-            <h2>Loan Applications</h2>
+            <h2>${si('loans')}Loan Applications</h2>
             <button onclick="showAddLoanModal()">+ Add Loan Application</button>
             <div class="table-wrapper">
                 <table>
@@ -1319,7 +1352,7 @@
         const statusOptions = ['Pending','Active','Rejected','Paid'];
         const bookingOfficerOptions = bookingOfficers.map(o=>`<option>${o}</option>`).join('');
         const formHtml = `
-            <h3>➕ Add New Loan Application</h3>
+            <h3>${si('plus')}Add New Loan Application</h3>
             <form id="addLoanForm">
                 <div class="form-group"><label>Buyer *</label><select id="loanBuyerId">${buyerOptions}</select></div>
                 <div class="form-group"><label>Loan Amount *</label><input type="text" data-numeric-decimal="true" id="loanAmount" required></div>
@@ -1395,7 +1428,7 @@
         const statusOptions = ['Pending','Active','Rejected','Paid'];
         const bookingOfficerOptions = bookingOfficers.map(o=>`<option ${loan.bookingOfficer===o?'selected':''}>${o}</option>`).join('');
         const formHtml = `
-            <h3>✏️ Edit Loan</h3>
+            <h3>${si('edit')}Edit Loan</h3>
             <form id="editLoanForm">
                 <div class="form-group"><label>Loan Amount</label><input type="text" data-numeric-decimal="true" id="editLoanAmount" value="${loan.loanAmount}"></div>
                 <div class="form-group"><label>Downpayment</label><input type="text" data-numeric-decimal="true" id="editDownpayment" value="${loan.downpayment}"></div>
@@ -1447,7 +1480,7 @@
     // ADMIN: PROPERTY MANAGEMENT
     function renderPropertyManagement() {
         return `<div class="card">
-            <h2>Property Listings</h2>
+            <h2>${si('home')}Property Listings</h2>
             <button onclick="showAddPropertyModal()">+ Add Property</button>
             <div class="table-wrapper">
                 <table>
@@ -1490,7 +1523,7 @@
     window.showAddPropertyModal = () => {
         const buyerOptions = `<option value="">None (Available)</option>` + buyers.map(b => `<option value="${b.buyerId}">${b.fullName}</option>`).join('');
         const formHtml = `
-            <h3>➕ Add New Property</h3>
+            <h3>${si('plus')}Add New Property</h3>
             <form id="addPropertyForm">
                 <div class="form-group"><label>Unit ID *</label><input id="addUnitId" maxlength="15" required></div>
                 <div class="form-group"><label>Property Name *</label><input id="addName" maxlength="100" required></div>
@@ -1524,7 +1557,7 @@
         if (!prop) return;
         const buyerOptions = `<option value="">None (Available)</option>` + buyers.map(b => `<option value="${b.buyerId}" ${prop.reservedBy === b.buyerId ? 'selected' : ''}>${b.fullName}</option>`).join('');
         const formHtml = `
-            <h3>✏️ Edit Property</h3>
+            <h3>${si('edit')}Edit Property</h3>
             <form id="editPropertyForm">
                 <div class="form-group"><label>Unit ID</label><input id="editUnitId" maxlength="15" value="${prop.unitId}" disabled></div>
                 <div class="form-group"><label>Property Name *</label><input id="editName" maxlength="100" value="${prop.name}" required></div>
@@ -1569,36 +1602,36 @@
             let paid = payments.filter(p=>p.loanId===l.loanId).reduce((sum,p)=>sum+p.amount,0);
             return s + ((l.loanAmount||0) - (l.downpayment||0) - paid);
         }, 0);
-        return `<div class="card"><h2>📊 Reports</h2><p>💰 Total Sales: ₱${totalSales.toLocaleString()}</p><p>⚠️ Outstanding Payments: ₱${outstanding.toLocaleString()}</p></div>`;
+        return `<div class="card"><h2>${si('reports')}Reports</h2><p><strong>Total Sales:</strong> ₱${totalSales.toLocaleString()}</p><p><strong>Outstanding Payments:</strong> ₱${outstanding.toLocaleString()}</p></div>`;
     }
 
     // CLIENT DASHBOARD
     function renderAccountDetails(buyerId) { 
-        if (!buyerId) return `<div class="card"><h2>My Account</h2><p>No buyer profile linked. Please contact admin to complete registration.</p></div>`;
+        if (!buyerId) return `<div class="card"><h2>${si('user')}My Account</h2><p>No buyer profile linked. Please contact admin to complete registration.</p></div>`;
         const b = buyers.find(b=>b.buyerId===buyerId); 
-        return `<div class="card"><h2>My Account</h2><p><strong>Name:</strong> ${b?.fullName}</p><p><strong>Email:</strong> ${b?.personalEmail}</p><p><strong>Mobile:</strong> ${b?.mobileNum}</p><p><strong>Income:</strong> ₱${b?.grossMonthlyIncome.toLocaleString()}</p></div>`; 
+        return `<div class="card"><h2>${si('user')}My Account</h2><p><strong>Name:</strong> ${b?.fullName}</p><p><strong>Email:</strong> ${b?.personalEmail}</p><p><strong>Mobile:</strong> ${b?.mobileNum}</p><p><strong>Income:</strong> ₱${b?.grossMonthlyIncome.toLocaleString()}</p></div>`; 
     }
     function renderPropertyInfo(buyerId) {
-        if (!buyerId) return `<div class="card"><h2>My Property</h2><p>No buyer profile – cannot reserve property.</p></div>`;
+        if (!buyerId) return `<div class="card"><h2>${si('home')}My Property</h2><p>No buyer profile – cannot reserve property.</p></div>`;
         let prop = properties.find(p => p.reservedBy === buyerId);
         if (!prop) {
             const loan = loans.find(l => l.buyerId === buyerId);
             if (loan) prop = properties.find(p => p.unitId === loan.unitId);
         }
         if (prop) {
-            return `<div class="card"><h2>My Property</h2><p><strong>${prop.name}</strong> (${prop.location})</p><p>Price: ₱${prop.price.toLocaleString()}</p><p>Status: ${prop.status}</p></div>`;
+            return `<div class="card"><h2>${si('home')}My Property</h2><p><strong>${prop.name}</strong> (${prop.location})</p><p>Price: ₱${prop.price.toLocaleString()}</p><p>Status: ${prop.status}</p></div>`;
         } else {
-            return `<div class="card"><h2>My Property</h2><p>No property reserved yet. Contact admin.</p></div>`;
+            return `<div class="card"><h2>${si('home')}My Property</h2><p>No property reserved yet. Contact admin.</p></div>`;
         }
     }
     function renderLoanDetails(buyerId) {
-        if (!buyerId) return `<div class="card"><h2>Loan Details</h2><p>No buyer profile – cannot apply for loan.</p></div>`;
+        if (!buyerId) return `<div class="card"><h2>${si('dollar')}Loan Details</h2><p>No buyer profile – cannot apply for loan.</p></div>`;
         let currentLoan = loans.find(l => l.buyerId === buyerId && (l.status === "Pending" || l.status === "Active"));
         if (currentLoan) {
             const paid = payments.filter(p=>p.loanId===currentLoan.loanId).reduce((sum,p)=>sum+p.amount,0);
             const remaining = currentLoan.loanAmount - (currentLoan.downpayment||0) - paid;
             const monthly = currentLoan.loanAmount / (currentLoan.loanTerm * 12);
-            return `<div class="card"><h2>Loan Details</h2>
+            return `<div class="card"><h2>${si('dollar')}Loan Details</h2>
                 <p><strong>Loan ID:</strong> ${currentLoan.loanId}</p>
                 <p><strong>Amount:</strong> ₱${currentLoan.loanAmount.toLocaleString()}</p>
                 <p><strong>Downpayment:</strong> ₱${currentLoan.downpayment.toLocaleString()}</p>
@@ -1613,7 +1646,7 @@
         }
         let anyLoan = loans.find(l => l.buyerId === buyerId);
         if (anyLoan) {
-            return `<div class="card"><h2>Loan Details (Previous Loan)</h2>
+            return `<div class="card"><h2>${si('dollar')}Loan Details (Previous Loan)</h2>
                 <p><strong>Loan ID:</strong> ${anyLoan.loanId}</p>
                 <p><strong>Amount:</strong> ₱${anyLoan.loanAmount.toLocaleString()}</p>
                 <p><strong>Status:</strong> ${anyLoan.status}</p>
@@ -1623,14 +1656,14 @@
                 <button onclick="showApplyLoanModal()">Apply for New Loan</button>
             </div>`;
         }
-        return `<div class="card"><h2>Loan Details</h2><p>You don't have any loan application.</p><button onclick="showApplyLoanModal()">Apply for Loan</button></div>`;
+        return `<div class="card"><h2>${si('dollar')}Loan Details</h2><p>You don't have any loan application.</p><button onclick="showApplyLoanModal()">Apply for Loan</button></div>`;
     }
     function renderPaymentHistory(buyerId) {
-        if (!buyerId) return `<div class="card"><h2>Payment History</h2><p>No buyer profile.</p></div>`;
+        if (!buyerId) return `<div class="card"><h2>${si('card')}Payment History</h2><p>No buyer profile.</p></div>`;
         const loan = loans.find(l=>l.buyerId===buyerId);
-        if(!loan) return `<div class="card"><h2>Payment History</h2><p>No loan found.</p></div>`;
+        if(!loan) return `<div class="card"><h2>${si('card')}Payment History</h2><p>No loan found.</p></div>`;
         const myPayments = payments.filter(p=>p.loanId===loan.loanId).sort((a,b)=>new Date(b.date)-new Date(a.date));
-        return `<div class="card"><h2>Payment History</h2>
+        return `<div class="card"><h2>${si('card')}Payment History</h2>
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -1648,11 +1681,11 @@
         </div>`;
     }
     function renderBeneficiaries(buyerId) { 
-        if (!buyerId) return `<div class="card"><h2>Beneficiaries</h2><p>No buyer profile.</p></div>`;
+        if (!buyerId) return `<div class="card"><h2>${si('family')}Beneficiaries</h2><p>No buyer profile.</p></div>`;
         const myBens = beneficiaries.filter(b=>b.buyerId===buyerId); 
         // API wiring: pass BOTH the BeneficiaryID and the name to delete, because the
         // beneficiary table has a composite PK (BeneficiaryID, BenF_Name).
-        return `<div class="card"><h2>Beneficiaries</h2><button onclick="addBeneficiary('${buyerId}')">+ Add</button><ul>${myBens.map(b=>`<li>${b.benFName} (${b.relationship}) <button class="btn-danger" onclick="removeBeneficiary('${b.beneficiaryId}', '${(b.benFName||'').replace(/'/g,"\\'")}')">Delete</button></li>`).join("")}</ul></div>`;
+        return `<div class="card"><h2>${si('family')}Beneficiaries</h2><button onclick="addBeneficiary('${buyerId}')">+ Add</button><ul>${myBens.map(b=>`<li>${b.benFName} (${b.relationship}) <button class="btn-danger" onclick="removeBeneficiary('${b.beneficiaryId}', '${(b.benFName||'').replace(/'/g,"\\'")}')">Delete</button></li>`).join("")}</ul></div>`;
     }
     // API wiring: create a beneficiary via POST /api/beneficiaries, then reload + re-render.
     window.addBeneficiary = async (buyerId) => {
@@ -1685,7 +1718,7 @@
         const sourceOptions = ['Employment','Business','Inheritance','Remittance','Others'];
         const propertyOptions = availableProps.map(p => `<option value="${p.unitId}" data-price="${p.price}">${p.name} (${p.location}) - ₱${p.price.toLocaleString()}</option>`).join('');
         const formHtml = `
-            <h3>📝 Apply for Loan</h3>
+            <h3>${si('clipboard')}Apply for Loan</h3>
             <form id="applyLoanForm">
                 <div class="form-group"><label>Select Property *</label><select id="applyPropertyId">${propertyOptions}</select></div>
                 <div class="form-group"><label>Selling Price (for reference)</label><input type="text" id="applySellPriceDisplay" readonly style="background:#f3f4f6;"></div>
@@ -1766,7 +1799,7 @@
         const remaining = loan.loanAmount - (loan.downpayment||0) - paid;
         if(remaining <= 0) { showMessage("Loan already fully paid","error"); return; }
         const formHtml = `
-            <h3>💰 Make Payment</h3>
+            <h3>${si('payment')}Make Payment</h3>
             <form id="paymentForm">
                 <div class="form-group"><label>Amount to Pay *</label><input type="text" data-numeric-decimal="true" id="paymentAmount" required></div>
                 <div class="form-group"><label>Remaining Balance (before payment)</label><input type="text" value="₱${remaining.toLocaleString()}" disabled></div>
