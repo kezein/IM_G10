@@ -130,11 +130,11 @@ IM_G10/
 
 | Name | Role | Contributions |
 |---|---|---|
-| **Lawrence Panes** | Backend Developer | Flask REST API, MySQL integration, backend-frontend wiring, UI redesign & green theme |
-| **Andrei** | Frontend Developer | SPA architecture, UI components, page layout and design |
-| **Izy** | Database Analyst | Database schema design, 10 SQL report queries |
-| **Paul** | Frontend Developer | UI components, frontend support |
-| **Kezia** | Documentation / QA | System documentation, testing |
+| **Lawrence** | Flask Backend / Python | Flask REST API, MySQL integration, backend-frontend wiring, UI redesign & green theme |
+| **Andrei** | Frontend | SPA architecture, UI components, page layout and design |
+| **Izy** | Database & SQL | Database schema design, SQL report queries |
+| **Kezia** | Backend Integration | Backend integration, API connection, system wiring |
+| **Paul** | Documentation & Integration | System documentation, integration support |
 
 ---
 
