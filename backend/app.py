@@ -6,15 +6,35 @@ the frontend always receives the same { ok, error } shape.
 
 Run with:  python app.py   ->  http://localhost:5000
 """
+import datetime
+import decimal
 from flask import Flask, jsonify, render_template
+from flask.json.provider import DefaultJSONProvider
 from mysql.connector import Error as MySQLError
 
 from config import Config
 
 
+class MySQLJSONProvider(DefaultJSONProvider):
+    """
+    Custom JSON serializer so MySQL date/decimal types become clean strings.
+    Without this, date columns come back as 'Wed, 03 May 1995 00:00:00 GMT'
+    instead of '1995-05-03', which breaks frontend date input fields.
+    """
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)):
+            return obj.isoformat()          # -> "1995-05-03"
+        if isinstance(obj, decimal.Decimal):
+            return float(obj)               # -> 85000.0
+        return super().default(obj)
+
+
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = Config.SECRET_KEY
+    # Use custom JSON provider so dates/decimals serialize cleanly.
+    app.json_provider_class = MySQLJSONProvider
+    app.json = MySQLJSONProvider(app)
 
     # --- Register blueprints ---
     # These are uncommented one at a time as each blueprint file is added
