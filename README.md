@@ -133,7 +133,7 @@ IM_G10/
 | **Lawrence** | Flask Backend / Python | Flask REST API, MySQL integration, backend-frontend wiring, UI redesign & green theme |
 | **Andrei** | Frontend | SPA architecture, UI components, page layout and design |
 | **Izy** | Database & SQL | Database schema design, SQL report queries |
-| **Kezia** | Backend Integration | Backend integration, API connection, system wiring |
+| **Kezia** | QA Tester | System testing, bug reporting, quality assurance |
 | **Paul** | Documentation & Integration | System documentation, integration support |
 
 ---
