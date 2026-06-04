@@ -670,8 +670,7 @@
             BuyerID: b.buyerId, BuyerName: b.fullName, Birthdate: b.birthdate,
             Birthplace: b.birthplace, GovID: b.govID, TIN: b.tin, Gender: b.gender,
             Civil_Status: b.civilStatus,
-            // Address is NOT NULL in the DB but the UI has no field for it; send a
-            // placeholder on create so the INSERT succeeds, preserve it on edit.
+            // Address is NOT NULL in the DB; "N/A" is a defensive fallback only.
             Address: b.address || "N/A",
             Citizenship: b.citizenship, Gross_MonthlyIncome: b.grossMonthlyIncome,
             Tel_Num: b.telNum, Mobile_Num: b.mobileNum, Personal_Email: b.personalEmail,
@@ -943,6 +942,7 @@
                     <div class="form-group"><label>Gender *</label><select id="regGender"><option>M</option><option>F</option></select></div>
                     <div class="form-group"><label>Civil Status *</label><select id="regCivilStatus"><option>S</option><option>M</option><option>D</option><option>P</option><option>W</option></select></div>
                     <div class="form-group"><label>Citizenship *</label><input id="regCitizenship" value="Filipino" maxlength="20" required></div>
+                    <div class="form-group"><label>Address *</label><input id="regAddress" maxlength="100" required></div>
                     <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="regIncome" required></div>
                     <div class="form-group"><label>Government ID *</label><select id="regGovID"><option>Driver's License</option><option>Passport</option><option>National ID</option><option>Postal ID</option><option>Voter's ID</option><option>SSS</option></select></div>
                     <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="regTIN" required></div>
@@ -1015,6 +1015,7 @@
             gender: document.getElementById("regGender").value,
             civilStatus: civil,
             citizenship: document.getElementById("regCitizenship").value,
+            address: document.getElementById("regAddress").value,
             grossMonthlyIncome: parseFloat(document.getElementById("regIncome").value || 0),
             govID: document.getElementById("regGovID").value,
             tin: document.getElementById("regTIN").value,
@@ -1025,7 +1026,7 @@
             bankName: document.getElementById("regBankName").value,
             accountType: document.getElementById("regAccountType").value
         };
-        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.mobileNum || !newBuyer.personalEmail || !newBuyer.grossMonthlyIncome) {
+        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.address || !newBuyer.mobileNum || !newBuyer.personalEmail || !newBuyer.grossMonthlyIncome) {
             showMessage("Please fill all required fields", "error");
             return;
         }
@@ -1033,8 +1034,6 @@
         // Backend buyer login uses BuyerID + last name as the password, so the
         // separate `users` table / regUsername+regPassword fields have no API
         // counterpart and are intentionally dropped here.
-        // NOTE: the buyer table requires Address (NOT NULL); the registration form
-        // has no Address field, so mapBuyerToDb() sends "N/A" as a placeholder.
         const buyerRes = await API.send("POST", "/api/buyers", mapBuyerToDb(newBuyer));
         if (!buyerRes || !buyerRes.ok) {
             showMessage((buyerRes && buyerRes.error) || "Could not create buyer", "error");
@@ -1055,7 +1054,11 @@
                 spsEmailAdd: document.getElementById("regSpouseEmail").value,
                 spsGrossMonthlyIncome: parseFloat(document.getElementById("regSpouseIncome").value || 0)
             };
-            await API.send("POST", "/api/spouse", mapSpouseToDb(spouseObj));
+            const spouseRes = await API.send("POST", "/api/spouse", mapSpouseToDb(spouseObj));
+            if (!spouseRes || !spouseRes.ok) {
+                showMessage((spouseRes && spouseRes.error) || "Buyer created, but spouse could not be saved", "error");
+                return;
+            }
         }
         // API wiring: create employment via API.
         const empObj = {
@@ -1201,6 +1204,7 @@
                 <div class="form-group"><label>Gender *</label><select id="addGender">${genderOptions.map(g=>`<option>${g}</option>`).join('')}</select></div>
                 <div class="form-group"><label>Civil Status *</label><select id="addCivilStatus">${civilOptions.map(c=>`<option>${c}</option>`).join('')}</select></div>
                 <div class="form-group"><label>Citizenship *</label><input id="addCitizenship" value="Filipino" maxlength="20" required></div>
+                <div class="form-group"><label>Address *</label><input id="addAddress" maxlength="100" required></div>
                 <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="addIncome" required></div>
                 <div class="form-group"><label>Government ID *</label><select id="addGovID">${govIdOptions.map(g=>`<option>${g}</option>`).join('')}</select></div>
                 <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="addTIN" required></div>
@@ -1221,15 +1225,15 @@
             buyerId: newId, fullName: document.getElementById("addFullName").value, birthdate: document.getElementById("addBirthdate").value,
             birthplace: document.getElementById("addBirthplace").value, gender: document.getElementById("addGender").value,
             civilStatus: document.getElementById("addCivilStatus").value, citizenship: document.getElementById("addCitizenship").value,
+            address: document.getElementById("addAddress").value,
             grossMonthlyIncome: parseFloat(document.getElementById("addIncome").value||0), govID: document.getElementById("addGovID").value,
             tin: document.getElementById("addTIN").value, telNum: document.getElementById("addTelNum").value,
             mobileNum: document.getElementById("addMobile").value, personalEmail: document.getElementById("addPersonalEmail").value,
             workEmail: document.getElementById("addWorkEmail").value, bankName: document.getElementById("addBankName").value,
             accountType: document.getElementById("addAccountType").value
         };
-        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.mobileNum || !newBuyer.personalEmail) { showMessage("Fill required fields","error"); return; }
+        if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.address || !newBuyer.mobileNum || !newBuyer.personalEmail) { showMessage("Fill required fields","error"); return; }
         // API wiring: POST the new buyer to the DB, reload, then refresh the table.
-        // (Address is NOT NULL in the DB; mapBuyerToDb sends "N/A" placeholder.)
         const res = await API.send("POST", "/api/buyers", mapBuyerToDb(newBuyer));
         if (!res || !res.ok) { showMessage((res && res.error) || "Could not add buyer", "error"); return; }
         await loadAllData();
@@ -1253,6 +1257,7 @@
                 <div class="form-group"><label>Gender</label><select id="editGender">${genderOptions.map(g=>`<option ${b.gender===g?'selected':''}>${g}</option>`).join('')}</select></div>
                 <div class="form-group"><label>Civil Status</label><select id="editCivilStatus">${civilOptions.map(c=>`<option ${b.civilStatus===c?'selected':''}>${c}</option>`).join('')}</select></div>
                 <div class="form-group"><label>Citizenship</label><input id="editCitizenship" maxlength="20" value="${b.citizenship}"></div>
+                <div class="form-group"><label>Address</label><input id="editAddress" maxlength="100" value="${b.address || ''}"></div>
                 <div class="form-group"><label>Gross Monthly Income</label><input type="text" data-numeric-decimal="true" id="editIncome" value="${b.grossMonthlyIncome}"></div>
                 <div class="form-group"><label>Government ID</label><select id="editGovID">${govIdOptions.map(g=>`<option ${b.govID===g?'selected':''}>${g}</option>`).join('')}</select></div>
                 <div class="form-group"><label>TIN</label><input data-numeric="true" maxlength="15" id="editTIN" value="${b.tin}"></div>
@@ -1274,6 +1279,7 @@
             const updated = {...buyers[idx], fullName: document.getElementById("editFullName").value, birthdate: document.getElementById("editBirthdate").value,
                 birthplace: document.getElementById("editBirthplace").value, gender: document.getElementById("editGender").value,
                 civilStatus: document.getElementById("editCivilStatus").value, citizenship: document.getElementById("editCitizenship").value,
+                address: document.getElementById("editAddress").value,
                 grossMonthlyIncome: parseFloat(document.getElementById("editIncome").value||0), govID: document.getElementById("editGovID").value,
                 tin: document.getElementById("editTIN").value, telNum: document.getElementById("editTelNum").value,
                 mobileNum: document.getElementById("editMobile").value, personalEmail: document.getElementById("editPersonalEmail").value,
