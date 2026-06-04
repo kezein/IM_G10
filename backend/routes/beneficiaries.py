@@ -13,6 +13,9 @@ beneficiaries_bp = Blueprint("beneficiaries", __name__)
 
 COLUMNS = ["BeneficiaryID", "BuyerID", "BenF_Name", "BenF_Bdate", "Relationship"]
 REQUIRED = ["BeneficiaryID", "BenF_Name"]   # the two PK parts
+# varchar lengths from the schema. Used to reject over-long values with a clean
+# 400 instead of letting MySQL raise a raw "Data too long" 503 (see finding 1.6).
+COLUMN_LIMITS = {"BeneficiaryID": 15, "BuyerID": 15, "BenF_Name": 50, "Relationship": 20}
 
 
 @beneficiaries_bp.route("/api/beneficiaries", methods=["GET"])
@@ -47,6 +50,10 @@ def create_beneficiary():
     missing = [c for c in REQUIRED if not body.get(c)]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+    too_long = next((c for c, lim in COLUMN_LIMITS.items()
+                     if body.get(c) and len(str(body[c])) > lim), None)
+    if too_long:
+        return jsonify(ok=False, error=f"{too_long} too long (max {COLUMN_LIMITS[too_long]} characters)"), 400
     placeholders = ", ".join(["%s"] * len(COLUMNS))
     col_list = ", ".join(COLUMNS)
     values = [body.get(c) for c in COLUMNS]
@@ -106,5 +113,7 @@ def delete_beneficiary():
         if affected == 0:
             return jsonify(ok=False, error="Beneficiary not found"), 404
         return jsonify(ok=True, data={"deleted": {"id": ben_id, "name": name}})
+    except IntegrityError:
+        return jsonify(ok=False, error="Cannot delete: other records still reference this beneficiary"), 409
     except MySQLError as e:
         return jsonify(ok=False, error=f"Database error: {e}"), 503
