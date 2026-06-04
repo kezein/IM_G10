@@ -5,6 +5,7 @@ CRUD for the `employment` table. Primary key: EmploymentID.
 from flask import Blueprint, request, jsonify
 from mysql.connector import Error as MySQLError, IntegrityError
 from db import query_all, query_one, execute
+from routes.validation import first_invalid
 
 employment_bp = Blueprint("employment", __name__)
 
@@ -44,6 +45,10 @@ def create_employment():
     missing = [c for c in REQUIRED if body.get(c) in (None, "")]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+    bad = first_invalid(body, email_fields=["Emp_EmailAdd"],
+                        numeric_fields=["Tenure"])
+    if bad:
+        return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400
     placeholders = ", ".join(["%s"] * len(COLUMNS))
     col_list = ", ".join(COLUMNS)
     values = [body.get(c) for c in COLUMNS]

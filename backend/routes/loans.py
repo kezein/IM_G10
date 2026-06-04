@@ -7,6 +7,7 @@ import datetime
 from flask import Blueprint, request, jsonify
 from mysql.connector import Error as MySQLError, IntegrityError
 from db import query_all, query_one, execute
+from routes.validation import first_invalid
 
 loans_bp = Blueprint("loans", __name__)
 
@@ -60,6 +61,13 @@ def create_loan():
     missing = [c for c in REQUIRED if body.get(c) in (None, "")]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+    bad = first_invalid(
+        body,
+        numeric_fields=["LoanAmount", "Downpayment", "ReservationFee", "Sell_Price",
+                        "DP_Term", "Loan_Term"],
+    )
+    if bad:
+        return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400
 
     # Auto-generate LoanID server-side (users never type it).
     year = datetime.datetime.now().year

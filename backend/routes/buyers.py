@@ -12,6 +12,7 @@ Endpoints:
 from flask import Blueprint, request, jsonify
 from mysql.connector import Error as MySQLError, IntegrityError
 from db import query_all, query_one, execute
+from routes.validation import first_invalid
 
 buyers_bp = Blueprint("buyers", __name__)
 
@@ -55,6 +56,13 @@ def create_buyer():
     missing = [c for c in REQUIRED if not body.get(c)]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+    bad = first_invalid(
+        body,
+        email_fields=["Personal_Email", "Work_Email"],
+        numeric_fields=["Gross_MonthlyIncome"],
+    )
+    if bad:
+        return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400
 
     # Build "INSERT INTO buyer (col, col, ...) VALUES (%s, %s, ...)" safely.
     placeholders = ", ".join(["%s"] * len(COLUMNS))

@@ -6,6 +6,7 @@ Most columns are optional (a single buyer has no spouse).
 from flask import Blueprint, request, jsonify
 from mysql.connector import Error as MySQLError, IntegrityError
 from db import query_all, query_one, execute
+from routes.validation import first_invalid
 
 spouse_bp = Blueprint("spouse", __name__)
 
@@ -49,6 +50,10 @@ def create_spouse():
     missing = [c for c in REQUIRED if not body.get(c)]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+    bad = first_invalid(body, email_fields=["Sps_EmailAdd"],
+                        numeric_fields=["Sps_GrossMonthlyIncome"])
+    if bad:
+        return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400
 
     placeholders = ", ".join(["%s"] * len(COLUMNS))
     col_list = ", ".join(COLUMNS)
