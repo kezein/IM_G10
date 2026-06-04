@@ -16,7 +16,12 @@ COLUMNS = [
     "ReservationFee", "Sell_Price", "OrPr_Num", "OrPr_Date",
     "Booking_Officer", "ProcessingFee",
 ]
-REQUIRED = COLUMNS   # every loan column is NOT NULL in the schema
+# Columns the buyer must supply. LoanID is auto-generated; the staff-assigned
+# columns (OrPr_*, Booking_Officer, ProcessingFee) get neutral defaults until
+# staff fill them in, and are displayed as "—" in the UI (no schema change).
+STAFF_DEFAULTS = {"OrPr_Num": "", "Booking_Officer": "", "ProcessingFee": 0}
+REQUIRED = [c for c in COLUMNS if c not in
+            ("LoanID", "OrPr_Num", "OrPr_Date", "Booking_Officer", "ProcessingFee")]
 
 
 def next_loan_id(existing_ids, year):
@@ -55,14 +60,33 @@ def create_loan():
     missing = [c for c in REQUIRED if body.get(c) in (None, "")]
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
+
+    # Auto-generate LoanID server-side (users never type it).
+    year = datetime.datetime.now().year
+    existing = [r["LoanID"] for r in query_all("SELECT LoanID FROM loan")]
+    loan_id = next_loan_id(existing, year)
+
+    # Build the full value set: client values + neutral staff defaults + today's
+    # OrPr_Date placeholder (NOT NULL date column; rendered as "—" in the UI).
+    today = datetime.date.today().isoformat()
+    values = []
+    for c in COLUMNS:
+        if c == "LoanID":
+            values.append(loan_id)
+        elif c == "OrPr_Date":
+            values.append(body.get(c) or today)
+        elif c in STAFF_DEFAULTS:
+            values.append(body.get(c) if body.get(c) not in (None, "") else STAFF_DEFAULTS[c])
+        else:
+            values.append(body.get(c))
+
     placeholders = ", ".join(["%s"] * len(COLUMNS))
     col_list = ", ".join(COLUMNS)
-    values = [body.get(c) for c in COLUMNS]
     try:
         execute(f"INSERT INTO loan ({col_list}) VALUES ({placeholders})", values)
-        return jsonify(ok=True, data=query_one("SELECT * FROM loan WHERE LoanID = %s", (body["LoanID"],)))
+        return jsonify(ok=True, data=query_one("SELECT * FROM loan WHERE LoanID = %s", (loan_id,)))
     except IntegrityError:
-        return jsonify(ok=False, error=f"Loan '{body['LoanID']}' already exists"), 409
+        return jsonify(ok=False, error=f"Loan '{loan_id}' already exists"), 409
     except MySQLError as e:
         return jsonify(ok=False, error=f"Database error: {e}"), 503
 
