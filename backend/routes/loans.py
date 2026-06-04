@@ -2,6 +2,8 @@
 loans.py
 CRUD for the `loan` table. Primary key: LoanID.
 """
+import re
+import datetime
 from flask import Blueprint, request, jsonify
 from mysql.connector import Error as MySQLError, IntegrityError
 from db import query_all, query_one, execute
@@ -15,6 +17,17 @@ COLUMNS = [
     "Booking_Officer", "ProcessingFee",
 ]
 REQUIRED = COLUMNS   # every loan column is NOT NULL in the schema
+
+
+def next_loan_id(existing_ids, year):
+    """Return the next loan id 'L-YYYY-NNN' for `year`, based on existing ids."""
+    pattern = re.compile(rf"^L-{year}-(\d+)$")
+    max_n = 0
+    for lid in existing_ids:
+        m = pattern.match(lid or "")
+        if m:
+            max_n = max(max_n, int(m.group(1)))
+    return f"L-{year}-{max_n + 1:03d}"
 
 
 @loans_bp.route("/api/loans", methods=["GET"])
