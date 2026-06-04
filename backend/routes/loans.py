@@ -123,5 +123,7 @@ def delete_loan(loan_id):
         if affected == 0:
             return jsonify(ok=False, error="Loan not found"), 404
         return jsonify(ok=True, data={"deleted": loan_id})
+    except IntegrityError:
+        return jsonify(ok=False, error="Cannot delete: other records still reference this record"), 409
     except MySQLError as e:
         return jsonify(ok=False, error=f"Database error: {e}"), 503

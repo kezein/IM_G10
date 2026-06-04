@@ -94,5 +94,7 @@ def delete_spouse(buyer_id):
         if affected == 0:
             return jsonify(ok=False, error="Spouse not found"), 404
         return jsonify(ok=True, data={"deleted": buyer_id})
+    except IntegrityError:
+        return jsonify(ok=False, error="Cannot delete: other records still reference this record"), 409
     except MySQLError as e:
         return jsonify(ok=False, error=f"Database error: {e}"), 503

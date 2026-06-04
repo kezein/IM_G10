@@ -80,5 +80,7 @@ def delete_household(hh_id):
         if affected == 0:
             return jsonify(ok=False, error="Household not found"), 404
         return jsonify(ok=True, data={"deleted": hh_id})
+    except IntegrityError:
+        return jsonify(ok=False, error="Cannot delete: other records still reference this record"), 409
     except MySQLError as e:
         return jsonify(ok=False, error=f"Database error: {e}"), 503
