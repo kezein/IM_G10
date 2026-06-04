@@ -17,6 +17,13 @@ COLUMNS = [
 REQUIRED = ["BuyerID"]   # only the key is mandatory; spouse details are optional
 
 
+def _nullify(value):
+    """Treat blank/whitespace-only strings as SQL NULL for optional columns."""
+    if isinstance(value, str) and value.strip() == "":
+        return None
+    return value
+
+
 @spouse_bp.route("/api/spouse", methods=["GET"])
 def list_spouse():
     try:
@@ -45,7 +52,10 @@ def create_spouse():
 
     placeholders = ", ".join(["%s"] * len(COLUMNS))
     col_list = ", ".join(COLUMNS)
-    values = [body.get(c) for c in COLUMNS]
+    # Spouse detail columns are all nullable. The form sends "" for blank optional
+    # fields; turn those into NULL so columns like Sps_Bdate (a DATE) don't get an
+    # empty string, which MySQL strict mode rejects ("Incorrect date value").
+    values = [_nullify(body.get(c)) for c in COLUMNS]
     try:
         execute(f"INSERT INTO spouse ({col_list}) VALUES ({placeholders})", values)
         return jsonify(ok=True, data=query_one("SELECT * FROM spouse WHERE BuyerID = %s", (body["BuyerID"],)))
@@ -62,7 +72,7 @@ def update_spouse(buyer_id):
     if not fields:
         return jsonify(ok=False, error="No fields to update"), 400
     set_clause = ", ".join(f"{c} = %s" for c in fields)
-    values = [body[c] for c in fields] + [buyer_id]
+    values = [_nullify(body[c]) for c in fields] + [buyer_id]
     try:
         affected = execute(f"UPDATE spouse SET {set_clause} WHERE BuyerID = %s", values)
         if affected == 0:
