@@ -447,6 +447,27 @@
             font-size: 0.72rem;
             color: #8a93a3;
         }
+        /* Reports drill-down: one expandable row per report (see finding 3). */
+        .report-item { border: 1px solid #e3e9f2; border-radius: 12px; margin-bottom: 0.5rem; overflow: hidden; }
+        .report-toggle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+            background: #f6f9fc;
+            color: #1f2937;
+            border: none;
+            border-radius: 0;
+            padding: 0.7rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .report-toggle:hover { background: #eef3f9; }
+        .report-caret { color: #16a34a; flex-shrink: 0; }
+        .report-detail { display: none; padding: 0; }
+        .report-detail.open { display: block; padding: 0.5rem 1rem 1rem; }
         input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.9rem;
@@ -1171,6 +1192,7 @@
                 refreshPropertyTable();
             } else {
                 container.innerHTML = renderInventoryReports();
+                loadReportList();
             }
         } else {
             const buyerId = currentUser.buyerId;
@@ -1647,15 +1669,61 @@
         }
     };
 
-    // REPORTS 
+    // REPORTS
     function renderInventoryReports() {
         let totalSales = loans.reduce((s,l)=>s+(l.sellPrice||0),0);
         let outstanding = loans.filter(l=>l.status==="Active").reduce((s,l)=> {
             let paid = payments.filter(p=>p.loanId===l.loanId).reduce((sum,p)=>sum+p.amount,0);
             return s + ((l.loanAmount||0) - (l.downpayment||0) - paid);
         }, 0);
-        return `<div class="card"><h2>${si('reports')}Reports</h2><p><strong>Total Sales:</strong> ₱${totalSales.toLocaleString()}</p><p><strong>Outstanding Payments:</strong> ₱${outstanding.toLocaleString()}</p></div>`;
+        return `<div class="card"><h2>${si('reports')}Reports</h2>
+            <p><strong>Total Sales:</strong> ₱${totalSales.toLocaleString()}</p>
+            <p><strong>Outstanding Payments:</strong> ₱${outstanding.toLocaleString()}</p></div>
+        <div class="card"><h2>${si('reports')}Detailed Reports</h2>
+            <p class="field-hint" style="font-size:0.8rem">Click a report to expand the records behind it.</p>
+            <div id="reportList">Loading reports…</div></div>`;
     }
+    // API wiring: load the report menu (GET /api/reports), render one expandable
+    // row per report. The detail rows are fetched lazily when a report is opened.
+    async function loadReportList() {
+        const listEl = document.getElementById("reportList");
+        if (!listEl) return;
+        const res = await API.get("/api/reports");
+        if (!res || !res.ok) { listEl.innerHTML = `<p style="color:#dc2626">Could not load reports.</p>`; return; }
+        listEl.innerHTML = res.data.map(r => `
+            <div class="report-item">
+                <button class="report-toggle" onclick="toggleReport(${r.number})">
+                    <span>#${r.number} — ${r.description}</span>
+                    <span id="reportCaret${r.number}" class="report-caret">▸</span>
+                </button>
+                <div class="report-detail" id="reportDetail${r.number}"></div>
+            </div>`).join("");
+    }
+    // API wiring: fetch one report's rows (GET /api/reports/q<n>) and render them
+    // inline as a table. A second click collapses the drill-down.
+    window.toggleReport = async (n) => {
+        const detail = document.getElementById(`reportDetail${n}`);
+        const caret = document.getElementById(`reportCaret${n}`);
+        if (!detail) return;
+        if (detail.classList.contains("open")) {
+            detail.classList.remove("open");
+            detail.innerHTML = "";
+            if (caret) caret.textContent = "▸";
+            return;
+        }
+        detail.classList.add("open");
+        detail.innerHTML = `<p class="field-hint" style="font-size:0.8rem">Loading…</p>`;
+        if (caret) caret.textContent = "▾";
+        const res = await API.get(`/api/reports/q${n}`);
+        if (!res || !res.ok) { detail.innerHTML = `<p style="color:#dc2626">${(res && res.error) || "Could not load report."}</p>`; return; }
+        const rows = (res.data && res.data.rows) || [];
+        if (rows.length === 0) { detail.innerHTML = `<p class="field-hint" style="font-size:0.8rem">No records match this report.</p>`; return; }
+        const cols = Object.keys(rows[0]);
+        detail.innerHTML = `<div class="table-wrapper"><table>
+            <thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead>
+            <tbody>${rows.map(row=>`<tr>${cols.map(c=>`<td>${row[c] === null ? "—" : row[c]}</td>`).join("")}</tr>`).join("")}</tbody>
+        </table></div>`;
+    };
 
     // CLIENT DASHBOARD
     function renderAccountDetails(buyerId) { 
