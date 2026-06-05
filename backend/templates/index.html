@@ -713,6 +713,13 @@
         }
         return true;
     }
+    // Civil-status codes stored in the DB, paired with the words shown to users
+    // (finding 5.1). The single-letter code stays the <option> value, so what is
+    // sent to / read from the DB is unchanged — only the display label is friendlier.
+    const CIVIL_STATUS = [["S","Single"],["M","Married"],["D","Divorced"],["P","Separated"],["W","Widowed"]];
+    const civilStatusOptions = (selected) =>
+        CIVIL_STATUS.map(([c,l]) => `<option value="${c}"${selected===c?" selected":""}>${l}</option>`).join("");
+    const civilStatusLabel = (code) => (CIVIL_STATUS.find(([c]) => c === code) || [code, code])[1];
 
     // ============================================================
     // API wiring: helper that talks to the Flask backend.
@@ -1041,7 +1048,7 @@
                     <div class="form-group"><label>Birthdate *</label><input type="date" id="regBirthdate" required></div>
                     <div class="form-group"><label>Birthplace *</label><input id="regBirthplace" maxlength="50" required></div>
                     <div class="form-group"><label>Gender *</label><select id="regGender"><option>M</option><option>F</option></select></div>
-                    <div class="form-group"><label>Civil Status *</label><select id="regCivilStatus"><option>S</option><option>M</option><option>D</option><option>P</option><option>W</option></select></div>
+                    <div class="form-group"><label>Civil Status *</label><select id="regCivilStatus">${civilStatusOptions()}</select></div>
                     <div class="form-group"><label>Citizenship *</label><input id="regCitizenship" value="Filipino" maxlength="20" required></div>
                     <div class="form-group"><label>Address *</label><input id="regAddress" maxlength="100" required></div>
                     <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="regIncome" required></div>
@@ -1301,7 +1308,7 @@
                     <td>${b.buyerId}</td>
                     <td>${b.fullName}</td>
                     <td>${b.birthdate}</td>
-                    <td>${b.civilStatus}</td>
+                    <td>${civilStatusLabel(b.civilStatus)}</td>
                     <td>₱${b.grossMonthlyIncome.toLocaleString()}</td>
                     <td>${b.mobileNum}</td>
                     <td>${b.personalEmail}</td>
@@ -1313,7 +1320,6 @@
     window.showAddBuyerModal = () => {
         const govIdOptions = ['Driver\'s License', 'Passport', 'National ID', 'Postal ID', 'Voter\'s ID', 'SSS'];
         const accountTypeOptions = ['Savings', 'Checking', 'Payroll'];
-        const civilOptions = ['S', 'M', 'D', 'P', 'W'];
         const genderOptions = ['M', 'F'];
         const formHtml = `
             <h3>${si('plus')}Add New Buyer</h3>
@@ -1322,7 +1328,7 @@
                 <div class="form-group"><label>Birthdate *</label><input type="date" id="addBirthdate" required></div>
                 <div class="form-group"><label>Birthplace *</label><input id="addBirthplace" maxlength="50" required></div>
                 <div class="form-group"><label>Gender *</label><select id="addGender">${genderOptions.map(g=>`<option>${g}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Civil Status *</label><select id="addCivilStatus">${civilOptions.map(c=>`<option>${c}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Civil Status *</label><select id="addCivilStatus">${civilStatusOptions()}</select></div>
                 <div class="form-group"><label>Citizenship *</label><input id="addCitizenship" value="Filipino" maxlength="20" required></div>
                 <div class="form-group"><label>Address *</label><input id="addAddress" maxlength="100" required></div>
                 <div class="form-group"><label>Gross Monthly Income *</label><input type="text" data-numeric-decimal="true" id="addIncome" required></div>
@@ -1371,7 +1377,6 @@
         if(!b) return;
         const govIdOptions = ['Driver\'s License', 'Passport', 'National ID', 'Postal ID', 'Voter\'s ID', 'SSS'];
         const accountTypeOptions = ['Savings', 'Checking', 'Payroll'];
-        const civilOptions = ['S','M','D','P','W'];
         const genderOptions = ['M','F'];
         const formHtml = `
             <h3>${si('edit')}Edit Buyer</h3>
@@ -1380,7 +1385,7 @@
                 <div class="form-group"><label>Birthdate</label><input type="date" id="editBirthdate" value="${b.birthdate}"></div>
                 <div class="form-group"><label>Birthplace</label><input id="editBirthplace" maxlength="50" value="${b.birthplace}"></div>
                 <div class="form-group"><label>Gender</label><select id="editGender">${genderOptions.map(g=>`<option ${b.gender===g?'selected':''}>${g}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Civil Status</label><select id="editCivilStatus">${civilOptions.map(c=>`<option ${b.civilStatus===c?'selected':''}>${c}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Civil Status</label><select id="editCivilStatus">${civilStatusOptions(b.civilStatus)}</select></div>
                 <div class="form-group"><label>Citizenship</label><input id="editCitizenship" maxlength="20" value="${b.citizenship}"></div>
                 <div class="form-group"><label>Address</label><input id="editAddress" maxlength="100" value="${b.address || ''}"></div>
                 <div class="form-group"><label>Gross Monthly Income</label><input type="text" data-numeric-decimal="true" id="editIncome" value="${b.grossMonthlyIncome}"></div>
