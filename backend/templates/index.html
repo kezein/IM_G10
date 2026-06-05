@@ -1395,9 +1395,9 @@
         const sellPrice = parseFloat(document.getElementById("sellPrice").value||0);
         const unitId = document.getElementById("unitId").value || "UNIT-NEW";
         if(!loanAmount||!downpayment||!sellPrice||!reservationFee||!processingFee){ showMessage("Fill all required fields","error"); return; }
-        const newId = `L-${Math.floor(Math.random()*90000+10000)}`;
+        // LoanID is assigned server-side (loans.py next_loan_id); the client no longer invents one.
         const newLoan = {
-            loanId: newId, buyerId, unitId, financeType, dpTerm, loanTerm, purchasePurpose,
+            buyerId, unitId, financeType, dpTerm, loanTerm, purchasePurpose,
             loanAmount, downpayment, reservationFee, processingFee, sellPrice,
             orPrNum:"MANUAL", orPrDate:new Date().toISOString().slice(0,10),
             bookingOfficer, sourceFunds, status
@@ -1642,8 +1642,8 @@
                 <p><strong>Amount:</strong> ₱${currentLoan.loanAmount.toLocaleString()}</p>
                 <p><strong>Downpayment:</strong> ₱${currentLoan.downpayment.toLocaleString()}</p>
                 <p><strong>Reservation Fee:</strong> ₱${currentLoan.reservationFee?.toLocaleString() || 0}</p>
-                <p><strong>Processing Fee:</strong> ₱${currentLoan.processingFee?.toLocaleString() || 0}</p>
-                <p><strong>Booking Officer:</strong> ${currentLoan.bookingOfficer || "Not assigned"}</p>
+                <p><strong>Processing Fee:</strong> ${currentLoan.processingFee ? '₱'+currentLoan.processingFee.toLocaleString() : "—"}</p>
+                <p><strong>Booking Officer:</strong> ${currentLoan.bookingOfficer || "Not yet assigned"}</p>
                 <p><strong>Remaining Balance:</strong> ₱${remaining.toLocaleString()}</p>
                 <p><strong>Monthly Payment (est.):</strong> ₱${monthly.toFixed(2)}</p>
                 <p><strong>Status:</strong> ${currentLoan.status}</p>
@@ -1656,7 +1656,7 @@
                 <p><strong>Loan ID:</strong> ${anyLoan.loanId}</p>
                 <p><strong>Amount:</strong> ₱${anyLoan.loanAmount.toLocaleString()}</p>
                 <p><strong>Status:</strong> ${anyLoan.status}</p>
-                <p><strong>Booking Officer:</strong> ${anyLoan.bookingOfficer || "Not assigned"}</p>
+                <p><strong>Booking Officer:</strong> ${anyLoan.bookingOfficer || "Not yet assigned"}</p>
                 <hr>
                 <p>You can apply for a new loan now.</p>
                 <button onclick="showApplyLoanModal()">Apply for New Loan</button>
@@ -1765,14 +1765,10 @@
         if (!buyerId) { showMessage("No buyer profile linked. Please contact admin.", "error"); return; }
         if (!unitId) { showMessage("Please select a property", "error"); return; }
         if (!loanAmount || !downpayment) { showMessage("Please fill all required fields", "error"); return; }
-        const existingLoan = loans.find(l => l.buyerId === buyerId && (l.status === "Pending" || l.status === "Active"));
-        if (existingLoan) {
-            showMessage("You already have an active or pending loan. Please complete it before applying for a new one.", "error");
-            return;
-        }
-        const newId = `L-${Math.floor(Math.random()*90000+10000)}`;
+        // LoanID is assigned server-side (see loans.py next_loan_id); the client no
+        // longer invents one. Staff-assigned fields (OR/PR number, booking officer,
+        // processing fee) are left blank for staff to fill — the backend defaults them.
         const newLoan = {
-            loanId: newId,
             buyerId: buyerId,
             unitId: unitId,
             financeType: financeType,
@@ -1782,11 +1778,11 @@
             loanAmount: loanAmount,
             downpayment: downpayment,
             reservationFee: 0,
-            processingFee: 0,
+            processingFee: "",
             sellPrice: sellingPrice,
-            orPrNum: "APPLIED",
-            orPrDate: new Date().toISOString().slice(0,10),
-            bookingOfficer: "Pending Assignment",
+            orPrNum: "",
+            orPrDate: "",
+            bookingOfficer: "",
             sourceFunds: sourceFunds,
             status: "Pending"
         };
