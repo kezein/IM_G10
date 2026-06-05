@@ -498,6 +498,18 @@
         .ben-name { font-weight: 700; color: #1f2937; }
         .ben-card-head button { padding: 0.3rem 0.6rem; font-size: 0.72rem; }
         .ben-meta { margin: 0.15rem 0; font-size: 0.82rem; color: #4b5563; }
+        /* Out-of-scope notice, e.g. the frontend-only Property section (finding 5.2). */
+        .scope-note {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid #f59e0b;
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.82rem;
+            color: #92400e;
+            line-height: 1.5;
+        }
         input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.9rem;
@@ -1622,7 +1634,13 @@
     function renderPropertyManagement() {
         return `<div class="card">
             <h2>${si('home')}Property Listings</h2>
-            <button onclick="showAddPropertyModal()">+ Add Property</button>
+            <div class="scope-note">
+                <strong>Demo only — not saved to the database.</strong>
+                Properties are sample data held in the browser by design (there is no
+                property table in the schema). Adding or deleting here changes the
+                on-screen list for this session only.
+            </div>
+            <button onclick="showAddPropertyModal()" title="Demo only: not persisted to the database">+ Add Property (demo)</button>
             <div class="table-wrapper">
                 <table>
                     <thead>
