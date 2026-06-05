@@ -440,6 +440,13 @@
             flex: 1;
             min-width: 180px;
         }
+        /* Inline format hint shown under a validated field (see finding 2). */
+        .field-hint {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.72rem;
+            color: #8a93a3;
+        }
         input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.9rem;
@@ -634,6 +641,27 @@
             f.addEventListener('input', allowOnlyDigits);
         });
     }
+    function allowOnlyLetters(event) {
+        event.target.value = event.target.value.replace(/[^A-Za-z ]/g, '');
+    }
+    function attachAlpha() {
+        document.querySelectorAll('input[data-alpha="true"]').forEach(f => {
+            f.removeEventListener('input', allowOnlyLetters);
+            f.addEventListener('input', allowOnlyLetters);
+        });
+    }
+    // Shared format checks. These mirror the light server-side guards in
+    // routes/validation.py so the client and backend agree on what is valid.
+    function isValidEmail(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v || "").trim()); }
+    function isAlphaSpaces(v) { return /^[A-Za-z ]+$/.test((v || "").trim()); }
+    // Run an ordered list of {ok, message} checks; on the first failure, show the
+    // message and return false so the caller can stop before hitting the API.
+    function validateForm(checks) {
+        for (const c of checks) {
+            if (!c.ok) { showMessage(c.message, "error"); return false; }
+        }
+        return true;
+    }
 
     // ============================================================
     // API wiring: helper that talks to the Flask backend.
@@ -799,6 +827,7 @@
         document.getElementById("globalModal").style.display = "flex";
         attachNumericDecimal();
         attachNumeric();
+        attachAlpha();
         document.getElementById("globalModal").onclick = (e) => { if (e.target === document.getElementById("globalModal")) closeModal(); };
     }
     function closeModal() { document.getElementById("globalModal").style.display = "none"; }
@@ -948,9 +977,9 @@
                     <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="regTIN" required></div>
                     <div class="form-group"><label>Telephone Number</label><input data-numeric="true" maxlength="15" id="regTelNum" placeholder="e.g., 0281234567"></div>
                     <div class="form-group"><label>Mobile Number *</label><input data-numeric="true" maxlength="15" id="regMobile" required></div>
-                    <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="regEmail" required></div>
-                    <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="regWorkEmail"></div>
-                    <div class="form-group"><label>Bank Name *</label><input id="regBankName" maxlength="50" required></div>
+                    <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="regEmail" required><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                    <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="regWorkEmail"><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                    <div class="form-group"><label>Bank Name *</label><input id="regBankName" data-alpha="true" maxlength="50" required><small class="field-hint">Letters and spaces only</small></div>
                     <div class="form-group"><label>Account Type *</label><select id="regAccountType"><option>Savings</option><option>Checking</option><option>Payroll</option></select></div>
                 </div>
                 <div id="spouseSection" style="display: none; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
@@ -1001,6 +1030,7 @@
         document.getElementById("createAccountForm").addEventListener("submit", handleCreateAccount);
         attachNumericDecimal();
         attachNumeric();
+        attachAlpha();
     }
 
     async function handleCreateAccount(e) {
@@ -1030,6 +1060,11 @@
             showMessage("Please fill all required fields", "error");
             return;
         }
+        if (!validateForm([
+            { ok: isValidEmail(newBuyer.personalEmail), message: "Please enter a valid personal email, e.g. name@example.com." },
+            { ok: !newBuyer.workEmail || isValidEmail(newBuyer.workEmail), message: "Please enter a valid work email, or leave it blank." },
+            { ok: isAlphaSpaces(newBuyer.bankName), message: "Bank name should contain letters and spaces only." },
+        ])) return;
         // API wiring: create the buyer in the DB instead of pushing to the array.
         // Backend buyer login uses BuyerID + last name as the password, so the
         // separate `users` table / regUsername+regPassword fields have no API
@@ -1147,6 +1182,7 @@
         }
         attachNumericDecimal();
         attachNumeric();
+        attachAlpha();
     }
 
     // ADMIN: CLIENT MANAGEMENT
@@ -1210,9 +1246,9 @@
                 <div class="form-group"><label>TIN *</label><input data-numeric="true" maxlength="15" id="addTIN" required></div>
                 <div class="form-group"><label>Telephone Number</label><input data-numeric="true" maxlength="15" id="addTelNum" placeholder="e.g., 0281234567"></div>
                 <div class="form-group"><label>Mobile Number *</label><input data-numeric="true" maxlength="15" id="addMobile" required></div>
-                <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="addPersonalEmail" required></div>
-                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="addWorkEmail"></div>
-                <div class="form-group"><label>Bank Name *</label><input id="addBankName" maxlength="50" required></div>
+                <div class="form-group"><label>Personal Email *</label><input type="email" maxlength="50" id="addPersonalEmail" required><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="addWorkEmail"><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                <div class="form-group"><label>Bank Name *</label><input id="addBankName" data-alpha="true" maxlength="50" required><small class="field-hint">Letters and spaces only</small></div>
                 <div class="form-group"><label>Account Type *</label><select id="addAccountType">${accountTypeOptions.map(a=>`<option>${a}</option>`).join('')}</select></div>
             </form>
             <div class="modal-buttons"><button onclick="saveNewBuyer()">Save</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
@@ -1233,6 +1269,11 @@
             accountType: document.getElementById("addAccountType").value
         };
         if (!newBuyer.fullName || !newBuyer.birthdate || !newBuyer.address || !newBuyer.mobileNum || !newBuyer.personalEmail) { showMessage("Fill required fields","error"); return; }
+        if (!validateForm([
+            { ok: isValidEmail(newBuyer.personalEmail), message: "Please enter a valid personal email, e.g. name@example.com." },
+            { ok: !newBuyer.workEmail || isValidEmail(newBuyer.workEmail), message: "Please enter a valid work email, or leave it blank." },
+            { ok: !newBuyer.bankName || isAlphaSpaces(newBuyer.bankName), message: "Bank name should contain letters and spaces only." },
+        ])) return;
         // API wiring: POST the new buyer to the DB, reload, then refresh the table.
         const res = await API.send("POST", "/api/buyers", mapBuyerToDb(newBuyer));
         if (!res || !res.ok) { showMessage((res && res.error) || "Could not add buyer", "error"); return; }
@@ -1263,9 +1304,9 @@
                 <div class="form-group"><label>TIN</label><input data-numeric="true" maxlength="15" id="editTIN" value="${b.tin}"></div>
                 <div class="form-group"><label>Telephone</label><input data-numeric="true" maxlength="15" id="editTelNum" value="${b.telNum}"></div>
                 <div class="form-group"><label>Mobile</label><input data-numeric="true" maxlength="15" id="editMobile" value="${b.mobileNum}"></div>
-                <div class="form-group"><label>Personal Email</label><input type="email" maxlength="50" id="editPersonalEmail" value="${b.personalEmail}"></div>
-                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="editWorkEmail" value="${b.workEmail}"></div>
-                <div class="form-group"><label>Bank Name</label><input id="editBankName" maxlength="50" value="${b.bankName}"></div>
+                <div class="form-group"><label>Personal Email</label><input type="email" maxlength="50" id="editPersonalEmail" value="${b.personalEmail}"><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                <div class="form-group"><label>Work Email</label><input type="email" maxlength="50" id="editWorkEmail" value="${b.workEmail}"><small class="field-hint">Must be a valid email, e.g. name@example.com</small></div>
+                <div class="form-group"><label>Bank Name</label><input id="editBankName" data-alpha="true" maxlength="50" value="${b.bankName}"><small class="field-hint">Letters and spaces only</small></div>
                 <div class="form-group"><label>Account Type</label><select id="editAccountType">${accountTypeOptions.map(a=>`<option ${b.accountType===a?'selected':''}>${a}</option>`).join('')}</select></div>
             </form>
             <div class="modal-buttons"><button onclick="updateBuyer('${id}')">Update</button><button class="btn-secondary" onclick="closeModal()">Cancel</button></div>
@@ -1286,6 +1327,11 @@
                 workEmail: document.getElementById("editWorkEmail").value, bankName: document.getElementById("editBankName").value,
                 accountType: document.getElementById("editAccountType").value
             };
+            if (!validateForm([
+                { ok: !updated.personalEmail || isValidEmail(updated.personalEmail), message: "Please enter a valid personal email, e.g. name@example.com." },
+                { ok: !updated.workEmail || isValidEmail(updated.workEmail), message: "Please enter a valid work email, or leave it blank." },
+                { ok: !updated.bankName || isAlphaSpaces(updated.bankName), message: "Bank name should contain letters and spaces only." },
+            ])) return;
             // API wiring: PUT the changes to the DB, reload, then refresh the table.
             const res = await API.send("PUT", `/api/buyers/${encodeURIComponent(id)}`, mapBuyerToDb(updated));
             if (!res || !res.ok) { showMessage((res && res.error) || "Could not update buyer", "error"); return; }
