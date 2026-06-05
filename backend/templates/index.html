@@ -233,6 +233,19 @@
         .login-form .form-group {
             margin-bottom: 1.1rem;
         }
+        /* Persistent post-signup login instructions (finding 4.6). */
+        .login-notice {
+            background: #ecfdf3;
+            border: 1px solid #abefc6;
+            border-left: 4px solid #16a34a;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            color: #14532d;
+            line-height: 1.5;
+        }
+        .login-notice ul { list-style: disc; }
         .login-form label {
             font-size: 0.72rem;
             text-transform: uppercase;
@@ -916,7 +929,7 @@
     }
 
     // LOGIN PAGE
-    function renderLoginPage() {
+    function renderLoginPage(notice = "") {
         return `
         <div class="login-container">
             <div class="login-left">
@@ -946,6 +959,7 @@
                     </svg>
                     Property of Friends, Inc.
                 </div>
+                ${notice ? `<div class="login-notice">${notice}</div>` : ""}
                 <h2>Welcome back</h2>
                 <p class="login-right-sub">Sign in to your account to continue</p>
                 <form id="loginForm" class="login-form">
@@ -1169,12 +1183,23 @@
         };
         await API.send("POST", "/api/employment", mapEmploymentToDb(empObj));
         await loadAllData();
-        showMessage(`Account created! Log in with Buyer ID ${newBuyerId} and your last name.`, "success");
-        renderLoginPageAndAttach();
+        // Persistent login instructions on the login page (finding 4.6). The toast
+        // alone vanished too quickly to remember; this banner stays until the next
+        // navigation. Backend login = Buyer ID + last name (last word of full name).
+        const lastName = (newBuyer.fullName || "").trim().split(/\s+/).pop() || "your last name";
+        const notice = `
+            <strong>Account created successfully!</strong>
+            <p style="margin:0.4rem 0">Please save these credentials — you'll need them every time you log in:</p>
+            <ul style="margin:0;padding-left:1.1rem">
+                <li><strong>Username / Buyer ID:</strong> ${newBuyerId}</li>
+                <li><strong>Password:</strong> your last name (<strong>${lastName}</strong>)</li>
+            </ul>`;
+        showMessage("Account created! See the login instructions on screen.", "success");
+        renderLoginPageAndAttach(notice);
     }
 
-    function renderLoginPageAndAttach() {
-        document.getElementById("mainContent").innerHTML = renderLoginPage();
+    function renderLoginPageAndAttach(notice = "") {
+        document.getElementById("mainContent").innerHTML = renderLoginPage(notice);
         const form = document.getElementById("loginForm");
         if (form) form.addEventListener("submit", handleLogin);
         document.getElementById("header").style.display = "none";
