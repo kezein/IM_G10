@@ -296,7 +296,10 @@
             color: #15803d;
             text-decoration: none;
             box-shadow: none;
-            transform: none;
+            /* Keep the vertical-centering transform on hover. Resetting it to
+               'none' dropped the translateY(-50%), making the label jump down
+               then snap back as the cursor left — the show/hide jitter (4.4). */
+            transform: translateY(-50%);
         }
         .login-btn {
             width: 100%;
@@ -468,6 +471,8 @@
         .report-caret { color: #16a34a; flex-shrink: 0; }
         .report-detail { display: none; padding: 0; }
         .report-detail.open { display: block; padding: 0.5rem 1rem 1rem; }
+        /* Space out adjacent action buttons in table rows (findings 4.1, 4.2). */
+        td button + button { margin-left: 0.45rem; }
         input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.9rem;
