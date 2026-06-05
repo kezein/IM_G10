@@ -473,6 +473,18 @@
         .report-detail.open { display: block; padding: 0.5rem 1rem 1rem; }
         /* Space out adjacent action buttons in table rows (findings 4.1, 4.2). */
         td button + button { margin-left: 0.45rem; }
+        /* Beneficiary cards (finding 4.5). */
+        .ben-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.85rem;
+        }
+        .ben-card { border: 1px solid #e3e9f2; border-radius: 12px; padding: 0.85rem 1rem; background: #fbfdff; }
+        .ben-card-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .ben-name { font-weight: 700; color: #1f2937; }
+        .ben-card-head button { padding: 0.3rem 0.6rem; font-size: 0.72rem; }
+        .ben-meta { margin: 0.15rem 0; font-size: 0.82rem; color: #4b5563; }
         input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.9rem;
@@ -1825,23 +1837,61 @@
             </div>
         </div>`;
     }
-    function renderBeneficiaries(buyerId) { 
+    function renderBeneficiaries(buyerId) {
         if (!buyerId) return `<div class="card"><h2>${si('family')}Beneficiaries</h2><p>No buyer profile.</p></div>`;
-        const myBens = beneficiaries.filter(b=>b.buyerId===buyerId); 
+        const myBens = beneficiaries.filter(b=>b.buyerId===buyerId);
         // API wiring: pass BOTH the BeneficiaryID and the name to delete, because the
         // beneficiary table has a composite PK (BeneficiaryID, BenF_Name).
-        return `<div class="card"><h2>${si('family')}Beneficiaries</h2><button onclick="addBeneficiary('${buyerId}')">+ Add</button><ul>${myBens.map(b=>`<li>${b.benFName} (${b.relationship}) <button class="btn-danger" onclick="removeBeneficiary('${b.beneficiaryId}', '${(b.benFName||'').replace(/'/g,"\\'")}')">Delete</button></li>`).join("")}</ul></div>`;
+        const cards = myBens.map(b => `
+            <div class="ben-card">
+                <div class="ben-card-head">
+                    <span class="ben-name">${b.benFName}</span>
+                    <button class="btn-danger" onclick="removeBeneficiary('${b.beneficiaryId}', '${(b.benFName||'').replace(/'/g,"\\'")}')">Delete</button>
+                </div>
+                <p class="ben-meta"><strong>Relationship:</strong> ${b.relationship || "—"}</p>
+                <p class="ben-meta"><strong>Birthdate:</strong> ${b.benFBdate || "—"}</p>
+                <p class="ben-meta"><strong>ID:</strong> ${b.beneficiaryId}</p>
+            </div>`).join("");
+        return `<div class="card"><h2>${si('family')}Beneficiaries</h2>
+            <button onclick="addBeneficiary('${buyerId}')">+ Add Beneficiary</button>
+            ${myBens.length ? `<div class="ben-grid">${cards}</div>` : `<p class="field-hint" style="font-size:0.85rem;margin-top:0.75rem">No beneficiaries yet.</p>`}
+        </div>`;
     }
+    // Open a proper form modal (replacing the old prompt() chain) to add a beneficiary.
+    window.addBeneficiary = (buyerId) => {
+        openModal(`
+            <h3>${si('family')}Add Beneficiary</h3>
+            <form id="benForm">
+                <div class="form-group"><label>Full Name *</label><input id="benName" maxlength="50" required></div>
+                <div class="form-group"><label>Birthdate</label><input type="date" id="benBdate"></div>
+                <div class="form-group"><label>Relationship</label><input id="benRel" data-alpha="true" maxlength="20" placeholder="e.g., Son, Daughter, Spouse"><small class="field-hint">Letters and spaces only</small></div>
+            </form>
+            <div class="modal-buttons">
+                <button onclick="saveBeneficiary('${buyerId}')">Save</button>
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>`);
+    };
     // API wiring: create a beneficiary via POST /api/beneficiaries, then reload + re-render.
-    window.addBeneficiary = async (buyerId) => {
-        let name=prompt("Full name"); let rel=prompt("Relationship");
-        if(name&&rel){
-            const ben = { beneficiaryId:`BEN-${Date.now()}`, buyerId, benFName:name.slice(0,50), benFBdate:new Date().toISOString().slice(0,10), relationship:rel.slice(0,20) };
-            const res = await API.send("POST", "/api/beneficiaries", mapBeneficiaryToDb(ben));
-            if (!res || !res.ok) { showMessage((res && res.error) || "Could not add beneficiary", "error"); return; }
-            await loadAllData();
-            switchPage("beneficiaries");
-        }
+    // BeneficiaryID is varchar(15); the old `BEN-${Date.now()}` was 17 chars and MySQL
+    // rejected it (finding 1.6). Number it sequentially from existing rows instead,
+    // which both fits the column and matches the seed-data BEN-NNN format.
+    window.saveBeneficiary = async (buyerId) => {
+        const name = document.getElementById("benName").value.trim();
+        const bdate = document.getElementById("benBdate").value;
+        const rel = document.getElementById("benRel").value.trim();
+        if (!name) { showMessage("Beneficiary name is required", "error"); return; }
+        const nums = beneficiaries.map(b => { const m = /^BEN-(\d+)$/.exec(b.beneficiaryId || ""); return m ? parseInt(m[1], 10) : 0; });
+        const nextNum = (nums.length ? Math.max(...nums) : 0) + 1;
+        const ben = {
+            beneficiaryId: `BEN-${String(nextNum).padStart(3, "0")}`,
+            buyerId, benFName: name.slice(0, 50),
+            benFBdate: bdate || null, relationship: rel.slice(0, 20),
+        };
+        const res = await API.send("POST", "/api/beneficiaries", mapBeneficiaryToDb(ben));
+        if (!res || !res.ok) { showMessage((res && res.error) || "Could not add beneficiary", "error"); return; }
+        await loadAllData();
+        closeModal();
+        switchPage("beneficiaries");
     };
     // API wiring: delete via the query-param /one route (composite PK id + name), then reload.
     window.removeBeneficiary = async (id, name) => {
