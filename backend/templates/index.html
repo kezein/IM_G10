@@ -857,6 +857,26 @@
         document.getElementById("globalModal").onclick = (e) => { if (e.target === document.getElementById("globalModal")) closeModal(); };
     }
     function closeModal() { document.getElementById("globalModal").style.display = "none"; }
+    // Styled replacement for the native confirm() dialog (finding 4.3). Resolves
+    // true if the user confirms, false otherwise. Reuses the global modal, so it is
+    // only used for table-row actions where no other modal is already open.
+    function confirmModal(message, confirmText = "Delete") {
+        return new Promise((resolve) => {
+            openModal(`
+                <h3>Please confirm</h3>
+                <p style="margin:0.5rem 0 1.25rem">${message}</p>
+                <div class="modal-buttons">
+                    <button class="btn-danger" id="confirmYes">${confirmText}</button>
+                    <button class="btn-secondary" id="confirmNo">Cancel</button>
+                </div>`);
+            const modal = document.getElementById("globalModal");
+            const finish = (result) => { closeModal(); resolve(result); };
+            document.getElementById("confirmYes").onclick = () => finish(true);
+            document.getElementById("confirmNo").onclick = () => finish(false);
+            // Dismissing via the backdrop counts as Cancel.
+            modal.onclick = (e) => { if (e.target === modal) finish(false); };
+        });
+    }
 
     // ====== SVG ICON SYSTEM ======
     const IP = {
@@ -1370,7 +1390,7 @@
     };
     // API wiring: DELETE the buyer via the API, then reload + refresh.
     window.deleteBuyer = async (id) => {
-        if(confirm("Delete buyer?")){
+        if (await confirmModal("Delete this buyer? This cannot be undone.")) {
             const res = await API.send("DELETE", `/api/buyers/${encodeURIComponent(id)}`);
             if (!res || !res.ok) { showMessage((res && res.error) || "Could not delete buyer", "error"); return; }
             await loadAllData();
@@ -1490,7 +1510,7 @@
     window.rejectLoan = (id) => { let l=loans.find(l=>l.loanId===id); if(l){l.status="Rejected"; refreshLoanTable(); showMessage("Rejected");} };
     // API wiring: DELETE the loan via the API, then reload + refresh.
     window.deleteLoan = async (id) => {
-        if(confirm("Delete loan?")){
+        if (await confirmModal("Delete this loan? This cannot be undone.")) {
             const res = await API.send("DELETE", `/api/loans/${encodeURIComponent(id)}`);
             if (!res || !res.ok) { showMessage((res && res.error) || "Could not delete loan", "error"); return; }
             await loadAllData();
@@ -1666,8 +1686,8 @@
         closeModal();
         showMessage("Property updated");
     };
-    window.deleteProperty = (unitId) => {
-        if (confirm("Delete property?")) {
+    window.deleteProperty = async (unitId) => {
+        if (await confirmModal("Delete this property? This cannot be undone.")) {
             properties = properties.filter(p => p.unitId !== unitId);
             refreshPropertyTable();
             showMessage("Property deleted");
