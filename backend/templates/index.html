@@ -810,6 +810,26 @@
             Tenure: e.tenure, Occupation_rank: e.occupationRank
         };
     }
+    function mapHousehold(r) {
+        return {
+            householdId: r.HouseholdID, buyerId: r.BuyerID,
+            householdDetails: r.Household_Details || "",
+            numChildren: Number(r.Num_children) || 0,
+            numParents: Number(r.Num_parents) || 0,
+            numOthers: Number(r.Num_others) || 0,
+            address: r.Address, homeOwnership: r.Home_Ownership,
+            lengthOfStay: r.Length_ofStay == null ? "" : Number(r.Length_ofStay)
+        };
+    }
+    function mapHouseholdToDb(h) {
+        return {
+            HouseholdID: h.householdId, BuyerID: h.buyerId,
+            Household_Details: h.householdDetails, Num_children: h.numChildren,
+            Num_parents: h.numParents, Num_others: h.numOthers,
+            Address: h.address, Home_Ownership: h.homeOwnership,
+            Length_ofStay: h.lengthOfStay === "" ? null : h.lengthOfStay
+        };
+    }
     function mapBeneficiary(r) {
         return {
             beneficiaryId: r.BeneficiaryID, buyerId: r.BuyerID, benFName: r.BenF_Name,
@@ -853,15 +873,16 @@
 
     // API wiring: load every wired dataset from the database into the existing arrays.
     async function loadAllData() {
-        const [b, s, e, ben, l] = await Promise.all([
+        const [b, s, e, ben, l, hh] = await Promise.all([
             API.get("/api/buyers"), API.get("/api/spouse"), API.get("/api/employment"),
-            API.get("/api/beneficiaries"), API.get("/api/loans"),
+            API.get("/api/beneficiaries"), API.get("/api/loans"), API.get("/api/household"),
         ]);
         buyers.length = 0;        (b.data   || []).forEach(r => buyers.push(mapBuyer(r)));
         spouses.length = 0;       (s.data   || []).forEach(r => spouses.push(mapSpouse(r)));
         employments.length = 0;   (e.data   || []).forEach(r => employments.push(mapEmployment(r)));
         beneficiaries.length = 0; (ben.data || []).forEach(r => beneficiaries.push(mapBeneficiary(r)));
         loans.length = 0;         (l.data   || []).forEach(r => loans.push(mapLoan(r)));
+        households.length = 0;    (hh.data  || []).forEach(r => households.push(mapHousehold(r)));
     }
 
     // API wiring: arrays start empty; loadAllData() fills them from the database.
@@ -869,6 +890,7 @@
     let spouses = [];
     let employments = [];
     let beneficiaries = [];
+    let households = [];
     const bookingOfficers = ["James Bond", "Sarah Johnson", "Michael Tan", "Emma Cruz", "Admin"];
     let loans = [];
     let properties = [
@@ -1102,6 +1124,18 @@
                     </div>
                 </div>
                 <div style="border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+                    <h3>Household Information</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                        <div class="form-group"><label>Number of Children *</label><input data-numeric="true" id="regHhNumChildren" value="0" required></div>
+                        <div class="form-group"><label>Number of Parents *</label><input data-numeric="true" id="regHhNumParents" value="0" required></div>
+                        <div class="form-group"><label>Number of Others *</label><input data-numeric="true" id="regHhNumOthers" value="0" required></div>
+                        <div class="form-group"><label>Home Address *</label><input id="regHhAddress" maxlength="100" required></div>
+                        <div class="form-group"><label>Home Ownership *</label><select id="regHhOwnership"><option>Owned</option><option>Rented</option><option>Owned by Parents</option><option>Mortgaged</option></select></div>
+                        <div class="form-group"><label>Household Details</label><input id="regHhDetails" maxlength="50"></div>
+                        <div class="form-group"><label>Length of Stay (years)</label><input data-numeric="true" id="regHhLengthStay"></div>
+                    </div>
+                </div>
+                <div style="border-top: 1px solid #e2e8f0; padding-top: 1rem;">
                     <h3>Account Credentials</h3>
                     <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
                         <div class="form-group"><label>Desired Username *</label><input id="regUsername" required></div>
@@ -1201,6 +1235,24 @@
             occupationRank: document.getElementById("regOccRank").value
         };
         await API.send("POST", "/api/employment", mapEmploymentToDb(empObj));
+        // API wiring: create household via API.
+        const hhObj = {
+            householdId: `H-${new Date().getFullYear()}-${String(households.length+1).padStart(3,"0")}`,
+            buyerId: newBuyerId,
+            householdDetails: document.getElementById("regHhDetails").value,
+            numChildren: parseInt(document.getElementById("regHhNumChildren").value || 0),
+            numParents: parseInt(document.getElementById("regHhNumParents").value || 0),
+            numOthers: parseInt(document.getElementById("regHhNumOthers").value || 0),
+            address: document.getElementById("regHhAddress").value,
+            homeOwnership: document.getElementById("regHhOwnership").value,
+            lengthOfStay: document.getElementById("regHhLengthStay").value === ""
+                ? "" : parseInt(document.getElementById("regHhLengthStay").value)
+        };
+        const hhRes = await API.send("POST", "/api/household", mapHouseholdToDb(hhObj));
+        if (!hhRes || !hhRes.ok) {
+            showMessage((hhRes && hhRes.error) || "Buyer created, but household could not be saved", "error");
+            return;
+        }
         await loadAllData();
         // Persistent login instructions on the login page (finding 4.6). The toast
         // alone vanished too quickly to remember; this banner stays until the next
