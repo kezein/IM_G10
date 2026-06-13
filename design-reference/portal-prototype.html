@@ -272,22 +272,20 @@
     </div>
     <div class="alert" id="authAlert"></div>
     <div id="loginForm">
-      <div class="field"><label>Buyer ID / username</label><input id="li_email" placeholder="B-2023-001 or admin"></div>
-      <div class="field"><label>Password</label><input id="li_pass" type="password" placeholder="last name, or admin password"></div>
+      <div class="field"><label>Email / username</label><input id="li_email" placeholder="you@email.com"></div>
+      <div class="field"><label>Password</label><input id="li_pass" type="password" placeholder="••••••••"></div>
       <button class="btn btn-primary btn-wide" onclick="doLogin()">Log in</button>
       <div class="auth-note">
-        <strong>Buyer:</strong> your <span class="mono">Buyer ID</span> (e.g. B-2023-001) + your <strong>last name</strong> as the password.<br>
-        <strong>Officer:</strong> <span class="mono">admin</span> / <span class="mono">admin123</span> (set in the server <span class="mono">.env</span>).<br>
-        New buyer? Create an account &amp; complete the form — your Buyer ID is issued on submit.
+        <strong>Demo buyer:</strong> juan@gmail.com / buyer123<br>
+        <strong>Demo officer (admin):</strong> officer1 / officer123<br>
+        The real system checks the <span class="mono">Users</span> table via JDBC and routes by role.
       </div>
     </div>
     <div id="regForm" style="display:none">
       <div class="field"><label>Full name</label><input id="rg_name" placeholder="Juan Dela Cruz"></div>
       <div class="field"><label>Email</label><input id="rg_email" type="email"></div>
-      <div class="auth-note" style="margin:0 0 16px">
-        No password is set here. Buyers log in with their <strong>Buyer ID + last name</strong>;
-        your Buyer ID is issued when you submit the application form.
-      </div>
+      <div class="field"><label>Password</label><input id="rg_pass" type="password"></div>
+      <div class="field"><label>Confirm password</label><input id="rg_pass2" type="password"></div>
       <button class="btn btn-primary btn-wide" onclick="doRegister()">Create account &amp; begin</button>
     </div>
   </div></div>
@@ -344,16 +342,16 @@
         <div class="step-panel" id="panel-spouse" style="display:none">
           <div class="notice">Required because your civil status is <strong>Married</strong>.</div>
           <div class="grid">
-            <div class="field"><label class="req">Spouse full name</label><input id="s_name" placeholder="e.g. Maria Dela Cruz"></div>
+            <div class="field"><label class="req">Spouse full name</label><input id="s_name"></div>
             <div class="field"><label class="req">Birthdate</label><input id="s_bdate" type="date"></div>
-            <div class="field"><label class="req">Birthplace</label><input id="s_bplace" placeholder="e.g. Quezon City"></div>
+            <div class="field"><label class="req">Birthplace</label><input id="s_bplace"></div>
             <div class="field"><label class="req">Citizenship</label><input id="s_citizen" value="Filipino"></div>
             <div class="field"><label class="req">Government ID</label>
               <select id="s_govid"><option value="">— select —</option><option>Passport</option><option>Driver's License</option><option>National ID</option><option>Postal ID</option><option>Voter's ID</option><option>SSS</option></select></div>
-            <div class="field"><label class="req">TIN</label><input id="s_tin" placeholder="e.g. 123-456-789-000"></div>
-            <div class="field"><label class="req">Mobile number</label><input id="s_mobile" placeholder="e.g. 09181234567" oninput="mobileCheck(this,'s_mHint')"><div class="hint" id="s_mHint"></div></div>
-            <div class="field"><label>Email</label><input id="s_email" type="email" placeholder="e.g. maria@email.com"></div>
-            <div class="field"><label>Gross monthly income (₱)</label><input id="s_income" type="number" min="0" placeholder="e.g. 30000"></div>
+            <div class="field"><label class="req">TIN</label><input id="s_tin"></div>
+            <div class="field"><label class="req">Mobile number</label><input id="s_mobile" oninput="mobileCheck(this,'s_mHint')"><div class="hint" id="s_mHint"></div></div>
+            <div class="field"><label>Email</label><input id="s_email" type="email"></div>
+            <div class="field"><label>Gross monthly income (₱)</label><input id="s_income" type="number" min="0"></div>
           </div>
         </div>
 
@@ -404,7 +402,7 @@
         </div>
       </div>
     </div>
-    <footer>BSIT 2-4 · Group 10 · Buyer's Information Sheet portal</footer>
+    <footer>BSIT 2-4 · Group 10 · Prototype — no real data is saved</footer>
   </div>
 </div>
 
@@ -425,10 +423,10 @@
 
   <div class="container">
     <div class="demo-strip">
-      <span><strong style="color:var(--ink)">Demo control</strong> — the 4-step status tracker below is illustrative. Your real loan particulars come from the Booking Officer in the console.</span>
+      <span><strong style="color:var(--ink)">Demo control</strong> — in production the Booking Officer advances these:</span>
       <span class="btns">
-        <button class="btn btn-line btn-sm" onclick="setStage(2)">Demo: documents verified</button>
-        <button class="btn btn-primary btn-sm" onclick="setStage(4)">Demo: advance tracker</button>
+        <button class="btn btn-line btn-sm" onclick="setStage(2)">Verify documents</button>
+        <button class="btn btn-primary btn-sm" onclick="setStage(4)">Officer closes the sale</button>
       </span>
     </div>
 
@@ -437,7 +435,7 @@
       <div class="doc-head">
         <div><h2 id="welcomeMsg">Welcome back</h2>
           <p class="lede">Your application record, its standing, and your loan particulars — updated as your purchase moves forward.</p></div>
-        <div class="serial"><span class="eyebrow">Buyer reference</span><br><span class="no mono" id="ovRef">—</span></div>
+        <div class="serial"><span class="eyebrow">Buyer reference</span><br><span class="no mono">B-2026-001</span></div>
       </div>
       <div class="rule-double doc-rules"></div>
 
@@ -449,9 +447,10 @@
           </div>
           <div class="receipt">
             <span class="eyebrow">Official reference</span>
-            <div class="big" id="rcptRef">—</div>
+            <div class="big">B-2026-001</div>
             <div class="perf"></div>
-            <div class="meta">Status: <b id="rcptStatus">Submitted</b><br>
+            <div class="meta">Filed: <b class="mono">06·10·2026</b><br>
+              Status: <b id="rcptStatus">Submitted</b><br>
               Booking officer: <b id="rcptOfficer">Unassigned</b></div>
           </div>
           <div class="rail-panel">
@@ -471,12 +470,23 @@
                 <p>Selling price, financing, and terms are entered by authorized personnel when your sale is closed (Business Rule #6).</p>
               </div>
               <div id="loanDetails" style="display:none">
-                <div id="ovLoanPicker" style="margin-bottom:16px"></div>
-                <div class="figures" id="ovLoanFigures"></div>
-                <table class="kv" id="ovLoanKv"></table>
+                <div class="figures">
+                  <div class="figure"><div class="k">Selling price</div><div class="v">₱3,500,000</div></div>
+                  <div class="figure"><div class="k">Loan amount</div><div class="v">₱2,800,000</div></div>
+                  <div class="figure"><div class="k">Downpayment</div><div class="v">₱670,000</div></div>
+                  <div class="figure"><div class="k">Monthly DP due</div><div class="v verde">₱27,250</div></div>
+                </div>
+                <table class="kv">
+                  <tr><th>Unit</th><td><span class="mono">UNIT-A05</span> — Lancaster New City, Phase 2</td></tr>
+                  <tr><th>Financing</th><td>Bank · <span class="mono">24-mo</span> DP term · <span class="mono">10-yr</span> loan term</td></tr>
+                  <tr><th>Purchase purpose</th><td>Primary home</td></tr>
+                  <tr><th>Reservation fee</th><td><span class="mono">₱25,000</span> · <span class="mono">OR-77889</span>, issued <span class="mono">09·04·2026</span></td></tr>
+                  <tr><th>Processing fee</th><td><span class="mono">₱5,000</span></td></tr>
+                  <tr><th>Booking officer</th><td>James Bond</td></tr>
+                </table>
                 <div class="bar-wrap">
                   <div class="bar"><div class="bar-fill" id="dpFill"></div></div>
-                  <div class="bar-lbl"><span>Downpayment progress <span style="opacity:.7">(illustrative)</span></span><span class="mono" id="ovDpLbl">—</span></div>
+                  <div class="bar-lbl"><span>Downpayment progress</span><span class="mono">₱134,000 / ₱670,000 · 20%</span></div>
                 </div>
               </div>
             </div>
@@ -503,12 +513,10 @@
       <div class="pending-state panel" id="payPending" style="padding:46px 20px;">
         <div class="keyline">§</div>
         <h4>Payments begin once your sale is closed</h4>
-        <p>Your payment schedule appears here once your Booking Officer records a loan for your purchase.</p>
+        <p>Your payment schedule is created when the Booking Officer records your loan. Use the demo control above to simulate it.</p>
       </div>
 
       <div id="payContent" style="display:none">
-        <div id="payLoanPicker" style="margin-bottom:18px"></div>
-        <div class="notice" style="margin-bottom:18px">The schedule and history below are an <strong>illustrative sample</strong>. Payment recording is not yet backed by the database (no Payment table in this build).</div>
         <div class="pay-grid">
           <div class="panel">
             <div class="panel-head"><h3>Downpayment progress</h3><span class="chip verde">On schedule</span></div>
@@ -568,7 +576,7 @@
       <div class="notice">Files are reviewed by your Booking Officer during <strong>document verification</strong>. Accepted formats: PDF, JPG, PNG · max 5 MB. (Prototype — files are not actually uploaded.)</div>
     </div>
 
-    <footer>BSIT 2-4 · Group 10 · Buyer's Information Sheet portal</footer>
+    <footer>BSIT 2-4 · Group 10 · Prototype — no real data is saved</footer>
   </div>
 </div>
 
@@ -578,16 +586,11 @@
     <div class="masthead-inner">
       <div class="brand"><div class="crest">PF</div>
         <div><h1>Booking Officer Console</h1><div class="sub">Property of Friends, Inc. · Authorized personnel</div></div></div>
-      <div class="session"><span class="who" id="admUserName">Administrator · <span style="color:var(--gold)">Booking Officer</span></span><button onclick="logout()">Log out</button></div>
-    </div>
-    <div class="portal-nav">
-      <button id="anav-queue" class="on" onclick="showAdminPage('queue')">Queue</button>
-      <button id="anav-reports" onclick="showAdminPage('reports')">Reports / Inventory</button>
+      <div class="session"><span class="who">James Bond · <span style="color:var(--gold)">Booking Officer</span></span><button onclick="logout()">Log out</button></div>
     </div>
   </div>
 
   <div class="container">
-    <div class="page" id="adm-queue">
     <div class="doc-head">
       <div><h2>Applications</h2>
         <p class="lede">Buyer records awaiting verification or closing. Select a record to review documents and encode loan particulars.</p></div>
@@ -607,59 +610,9 @@
 
     <div class="admin-detail" id="admDetail">
       <div class="panel">
-        <div class="panel-head">
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-            <h3 id="admBuyerName">—</h3><span class="chip paper mono" id="admBuyerId">—</span>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn btn-line btn-sm" onclick="editBuyer()">Edit</button>
-            <button class="btn btn-line btn-sm" style="color:var(--rust); border-color:var(--rust)" onclick="askDeleteBuyer()">Delete</button>
-            <button class="btn btn-line btn-sm" onclick="closeRecord()">Close ✕</button>
-          </div>
-        </div>
+        <div class="panel-head"><h3 id="admBuyerName">—</h3><span class="chip paper mono" id="admBuyerId">—</span></div>
         <div class="panel-body">
-          <div class="notice err" id="admBuyerErr" style="display:none"></div>
           <table class="kv" id="admBuyerInfo"></table>
-
-          <div id="admDelConfirm" style="display:none">
-            <div class="notice" style="border-left-color:var(--rust); background:var(--rust-pale); color:var(--rust)">
-              <strong>Delete this buyer permanently?</strong> This cannot be undone.
-              <span id="admDelSummary"></span>
-            </div>
-            <div style="display:flex; gap:8px;">
-              <button class="btn btn-primary btn-sm" style="background:var(--rust)" onclick="confirmDeleteBuyer()">Yes, delete everything</button>
-              <button class="btn btn-line btn-sm" onclick="cancelDelete()">Cancel</button>
-            </div>
-          </div>
-
-          <div id="admEditForm" style="display:none">
-            <div class="sect" style="margin-top:0">Edit buyer record</div>
-            <div class="grid">
-              <div class="field"><label class="req">Full name</label><input id="ed_name" maxlength="50"></div>
-              <div class="field"><label class="req">Birthdate</label><input id="ed_bdate" type="date"></div>
-              <div class="field"><label class="req">Birthplace</label><input id="ed_bplace" maxlength="100"></div>
-              <div class="field"><label class="req">Gender</label>
-                <select id="ed_gender"><option value="M">Male</option><option value="F">Female</option></select></div>
-              <div class="field"><label class="req">Civil status</label>
-                <select id="ed_civil"><option value="S">Single</option><option value="M">Married</option><option value="D">Divorced</option><option value="P">Separated</option><option value="W">Widowed</option></select></div>
-              <div class="field"><label class="req">Citizenship</label><input id="ed_citizen" maxlength="20"></div>
-              <div class="field"><label class="req">Address</label><input id="ed_address" maxlength="100"></div>
-              <div class="field"><label class="req">Gross monthly income (₱)</label><input id="ed_income" type="number" min="0"></div>
-              <div class="field"><label class="req">Government ID</label><input id="ed_govid" maxlength="20"></div>
-              <div class="field"><label class="req">TIN</label><input id="ed_tin" maxlength="15"></div>
-              <div class="field"><label>Telephone</label><input id="ed_tel" maxlength="15"></div>
-              <div class="field"><label class="req">Mobile number</label><input id="ed_mobile" maxlength="15"></div>
-              <div class="field"><label class="req">Personal email</label><input id="ed_email" type="email" maxlength="50"></div>
-              <div class="field"><label>Work email</label><input id="ed_workemail" type="email" maxlength="50"></div>
-              <div class="field"><label class="req">Bank name</label><input id="ed_bank" maxlength="50"></div>
-              <div class="field"><label class="req">Account type</label>
-                <select id="ed_acct"><option>Savings</option><option>Checking</option><option>Payroll</option></select></div>
-            </div>
-            <div style="display:flex; gap:8px; margin-top:6px;">
-              <button class="btn btn-primary btn-sm" onclick="saveBuyer()">Save changes</button>
-              <button class="btn btn-line btn-sm" onclick="cancelEdit()">Cancel</button>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -672,8 +625,7 @@
         <div class="panel-head"><h3>Encode loan particulars</h3><span class="chip rust" id="admLoanChip">Locked</span></div>
         <div class="panel-body">
           <div class="stamp" id="admStamp">★ Sale closed</div>
-          <div id="admLoanList"></div>
-          <div class="notice" id="admLoanNotice"></div>
+          <div class="notice" id="admLoanNotice">Verify the buyer's documents first. Loan encoding unlocks after verification (Business Rules #1 and #6).</div>
           <div id="admLoanForm" style="display:none">
             <div class="grid">
               <div class="field"><label class="req">Unit I.D.</label><input id="al_unit" placeholder="UNIT-A05" class="mono"></div>
@@ -691,19 +643,16 @@
             <div class="sect">Financing</div>
             <div class="grid">
               <div class="field"><label class="req">Finance type</label>
-                <select id="al_fin" onchange="specifyToggle('al_fin','al_fin_spec')"><option value="">— select —</option><option>Bank</option><option>In-House</option><option>Pag-IBIG</option><option>Cash</option><option>Others</option></select></div>
-              <div class="field" id="al_fin_spec_wrap" style="display:none"><label class="req">Specify finance type</label><input id="al_fin_spec" placeholder="e.g. Cooperative financing"></div>
+                <select id="al_fin"><option value="">— select —</option><option>Bank</option><option>In-House</option><option>Pag-IBIG</option><option>Cash</option><option>Others</option></select></div>
               <div class="field"><label class="req">DP term (months)</label>
                 <select id="al_dpterm"><option value="">— select —</option><option>12</option><option>15</option><option>24</option><option>30</option></select></div>
               <div class="field"><label class="req">Loan term (years)</label>
                 <select id="al_term"><option value="">— select —</option><option>3</option><option>5</option><option>10</option><option>15</option></select></div>
               <div class="field"><label class="req">Purchase purpose</label>
-                <select id="al_purpose" onchange="specifyToggle('al_purpose','al_purpose_spec')"><option value="">— select —</option><option>Primary Home</option><option>Vacation</option><option>Retirement</option><option>Investment</option><option>Others</option></select></div>
-              <div class="field" id="al_purpose_spec_wrap" style="display:none"><label class="req">Specify purchase purpose</label><input id="al_purpose_spec" placeholder="e.g. Rental income" maxlength="15"></div>
+                <select id="al_purpose"><option value="">— select —</option><option>Primary Home</option><option>Vacation</option><option>Retirement</option><option>Investment</option><option>Others</option></select></div>
               <div class="field"><label class="req">Source of funds</label>
-                <select id="al_source" onchange="specifyToggle('al_source','al_source_spec')"><option value="">— select —</option><option>Employment</option><option>Business</option><option>Inheritance</option><option>Remittance</option><option>Others</option></select></div>
-              <div class="field" id="al_source_spec_wrap" style="display:none"><label class="req">Specify source of funds</label><input id="al_source_spec" placeholder="e.g. Sale of property"></div>
-              <div class="field"><label>Booking officer</label><input id="al_officer" value="Administrator" readonly>
+                <select id="al_source"><option value="">— select —</option><option>Employment</option><option>Business</option><option>Inheritance</option><option>Remittance</option><option>Others</option></select></div>
+              <div class="field"><label>Booking officer</label><input value="James Bond" readonly>
                 <div class="hint">Auto-filled from the logged-in session.</div></div>
             </div>
             <div class="notice err" id="admErr" style="margin-top:14px"></div>
@@ -712,66 +661,18 @@
         </div>
       </div>
     </div>
-    </div><!-- /adm-queue -->
 
-    <div class="page" id="adm-reports" style="display:none">
-      <div class="doc-head">
-        <div><h2>Reports &amp; Inventory</h2>
-          <p class="lede">Ten standing reports across the buyer, loan, employment, household and beneficiary records. Click a report to run it against the live database.</p></div>
-        <div class="serial"><span class="eyebrow">Reports</span><br><span class="no mono">10</span></div>
-      </div>
-      <div class="rule-double doc-rules"></div>
-      <div class="panel">
-        <div class="panel-head"><h3>Available reports</h3><span class="eyebrow">Click a report to expand</span></div>
-        <div class="panel-body" id="reportList"></div>
-      </div>
-    </div>
-
-    <footer>BSIT 2-4 · Group 10 · Buyer's Information Sheet portal</footer>
+    <footer>BSIT 2-4 · Group 10 · Prototype — no real data is saved</footer>
   </div>
 </div>
 
 <script>
 /* ================== state ================== */
-let currentUser = null;            // { role:'buyer'|'admin', buyerId, name }
 let buyerName = '', buyerEmail = '';
-let married = false, stage = 1;    // stage = DEMO 4-step workflow (not persisted)
-let app = null;                    // buyer summary built from real DB rows
+let married = false, stage = 1;
+let app = null;
 let stepOrder = [], stepIdx = 0, maxReached = 0;
 let empCount = 0, benCount = 0;
-let myLoans = [];                  // logged-in buyer's loans (real, via mapLoan)
-let ovLoanIdx = 0, payLoanIdx = 0; // selected loan on Overview / Payments
-let isSubmitting = false;          // re-entrancy guard so a double-click can't create duplicate buyers
-
-/* ================== API + contract layer ==================
-   Transplanted from the previous wired frontend. Talks to the existing Flask
-   JSON API ({ ok, data|error }); map* convert DB column names <-> the camelCase
-   shape the render code uses. DB schema: database/profriends_inc.sql. */
-const API = {
-  async get(path) { const r = await fetch(path); return r.json(); },
-  async send(method, path, body) {
-    const r = await fetch(path, {
-      method, headers: { 'Content-Type': 'application/json' },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    return r.json();
-  },
-};
-// NOTE: the loan table has NO status column; status is client-side workflow only.
-function mapLoan(r) {
-  return {
-    loanId: r.LoanID, buyerId: r.BuyerID, unitId: r.UnitID,
-    financeType: r.Finance_Type, dpTerm: Number(r.DP_Term) || 0,
-    loanTerm: Number(r.Loan_Term) || 0, purchasePurpose: r.Purchase_Purpose,
-    sourceFunds: r.Source_Funds, loanAmount: Number(r.LoanAmount) || 0,
-    downpayment: Number(r.Downpayment) || 0,
-    reservationFee: Number(r.ReservationFee) || 0,
-    sellPrice: Number(r.Sell_Price) || 0, orPrNum: r.OrPr_Num,
-    orPrDate: r.OrPr_Date, bookingOfficer: r.Booking_Officer,
-    processingFee: Number(r.ProcessingFee) || 0,
-  };
-}
-const cut = (s, n) => (s == null ? '' : String(s)).slice(0, n);
 
 const DEMO = {
   name: 'Juan Dela Cruz', email: 'juan@gmail.com', civil: 'M', spouse: 'Maria Dela Cruz',
@@ -784,16 +685,13 @@ const DEMO = {
 const STAGES = ['Application submitted','Document verification','Loan processing','Sale closed'];
 const SDATES  = ['06·10·2026','06·11·2026','06·12·2026','06·12·2026'];
 
-/* documents (buyer) — DEMO ONLY: no Document table in the schema. */
-function baseDocs() {
-  return [
-    { name: 'Government ID', why: 'Business Rule #1 — valid government-issued identification', state: 'verified' },
-    { name: 'TIN document', why: 'BIR Form 1904 / TIN card', state: 'review' },
-    { name: 'Proof of income', why: 'Latest payslip or Certificate of Employment', state: 'missing' },
-    { name: 'Marriage certificate', why: 'Required because civil status is Married (Rule #2)', state: 'missing' }
-  ];
-}
-let docs = baseDocs();
+/* documents (buyer) */
+let docs = [
+  { name: 'Government ID (Passport)', why: 'Business Rule #1 — valid government-issued identification', state: 'verified' },
+  { name: 'TIN document', why: 'BIR Form 1904 / TIN card', state: 'review' },
+  { name: 'Proof of income', why: 'Latest payslip or Certificate of Employment', state: 'missing' },
+  { name: 'Marriage certificate', why: 'Required because civil status is Married (Rule #2)', state: 'missing' }
+];
 
 /* payments */
 let payments = [
@@ -805,19 +703,33 @@ let payments = [
   { date: '01·15·2026', or: 'OR-2026-0108', desc: 'Reservation fee', amt: 25000, bal: 645000, st: 'paid' }
 ];
 
-/* admin queue — built from the live database in loadQueue(). */
-let queue = [];
+/* admin queue */
+let queue = [
+  { id: 'B-2026-001', name: 'Juan Dela Cruz', filed: '06·10·2026', income: 350000, status: 'verification',
+    info: DEMO, docs: [
+      { name: 'Government ID (Passport)', state: 'verified' },
+      { name: 'TIN document', state: 'review' },
+      { name: 'Proof of income', state: 'missing' },
+      { name: 'Marriage certificate', state: 'missing' } ] },
+  { id: 'B-2026-002', name: 'Maria Santos', filed: '06·11·2026', income: 120000, status: 'submitted',
+    info: { name: 'Maria Santos', email: 'maria.s@email.com', civil: 'S', addr: 'Pasig City', own: 'Owned by Parents',
+      deps: '0 children · 2 parents · 0 others', emp: 'Self-Employed — MS Trading (Owner, 6 yrs)',
+      ben: 'None designated', income: 120000, mobile: '09181234567', tin: '987-654-321-000', govid: 'National ID', bank: 'BPI — Savings' },
+    docs: [
+      { name: 'Government ID (National ID)', state: 'review' },
+      { name: 'TIN document', state: 'review' },
+      { name: 'Proof of income', state: 'review' } ] },
+  { id: 'B-2026-003', name: 'Pedro Reyes', filed: '05·28·2026', income: 220000, status: 'closed',
+    info: { name: 'Pedro Reyes', email: 'p.reyes@email.com', civil: 'M', spouse: 'Lina Reyes', addr: 'Quezon City', own: 'Rented',
+      deps: '1 child · 0 parents · 0 others', emp: 'OFW-Seafarer — Maersk (Engineer, 8 yrs)',
+      ben: 'Paolo Reyes (Child)', income: 220000, mobile: '09209876543', tin: '111-222-333-000', govid: 'Passport', bank: 'BDO — Savings' },
+    docs: [
+      { name: 'Government ID (Passport)', state: 'verified' },
+      { name: 'TIN document', state: 'verified' },
+      { name: 'Proof of income', state: 'verified' },
+      { name: 'Marriage certificate', state: 'verified' } ] }
+];
 let admSel = null;
-function demoDocsFor(b) {
-  // DEMO ONLY cosmetic checklist (no Document table). Real verification is not persisted.
-  const list = [
-    { name: 'Government ID (' + b.GovID + ')', state: 'review' },
-    { name: 'TIN document', state: 'review' },
-    { name: 'Proof of income', state: 'review' }
-  ];
-  if (b.Civil_Status === 'M') list.push({ name: 'Marriage certificate', state: 'review' });
-  return list;
-}
 
 /* ================== helpers ================== */
 function $(id) { return document.getElementById(id); }
@@ -828,8 +740,8 @@ function show(screenId) {
     $(s).style.display = (s === screenId) ? (s === 'authScreen' ? 'flex' : 'block') : 'none');
 }
 
-/* toast feedback (pass sticky=true to keep it until dismissed) */
-function toast(title, msg, kind, sticky) {
+/* toast feedback */
+function toast(title, msg, kind) {
   const wrap = $('toastWrap');
   const t = document.createElement('div');
   t.className = 'toast' + (kind ? ' ' + kind : '');
@@ -838,7 +750,7 @@ function toast(title, msg, kind, sticky) {
     (msg ? '<div class="tm">' + msg + '</div>' : '') + '</div><button class="tx" aria-label="Dismiss">×</button>';
   t.querySelector('.tx').onclick = () => dismissToast(t);
   wrap.appendChild(t);
-  if (!sticky) setTimeout(() => dismissToast(t), 5000);
+  setTimeout(() => dismissToast(t), 5000);
 }
 function dismissToast(t) {
   if (!t.parentElement) return;
@@ -867,33 +779,22 @@ function switchTab(t) {
   $('authAlert').style.display = 'none';
 }
 function showAlert(m) { const a = $('authAlert'); a.textContent = m; a.style.display = 'block'; }
-// Real auth: buyers log in with BuyerID + last name; the officer uses the
-// .env admin credentials. Role is chosen by the BuyerID pattern (B-YYYY-NNN).
-async function doLogin() {
-  const id = val('li_email').trim();
-  const pass = val('li_pass');
-  if (!id || !pass) { showAlert('Enter your ID / username and password.'); return; }
-  const role = /^B-\d{4}-\d{3}$/i.test(id) ? 'buyer' : 'admin';
-  try {
-    const res = await API.send('POST', '/api/login', { role, username: id, password: pass });
-    if (!res || !res.ok) { showAlert((res && res.error) || 'Invalid credentials.'); return; }
-    currentUser = {
-      role: res.data.role,
-      name: res.data.name,
-      buyerId: res.data.role === 'buyer' ? id.toUpperCase() : null
-    };
-    if (currentUser.role === 'buyer') await openBuyerFromDb(false);
-    else await openAdminFromDb();
-  } catch (err) {
-    showAlert('Could not reach the server. Please try again.');
-  }
+function doLogin() {
+  const e = val('li_email').trim().toLowerCase();
+  const p = val('li_pass');
+  if (e === 'juan@gmail.com' && p === 'buyer123') {
+    buyerName = DEMO.name; buyerEmail = DEMO.email; app = DEMO; married = true; stage = 2;
+    openBuyer(false);
+  } else if ((e === 'officer1' || e === 'officer1@profriends.com') && p === 'officer123') {
+    openAdmin();
+  } else showAlert('Invalid credentials. Use a demo account or create one.');
 }
 function doRegister() {
   const n = val('rg_name').trim(), e = val('rg_email').trim();
-  if (!n) { showAlert('Please enter your full name.'); return; }
+  const p1 = val('rg_pass'), p2 = val('rg_pass2');
+  if (!n || !e || !p1) { showAlert('Please complete all fields.'); return; }
+  if (p1 !== p2) { showAlert('Passwords do not match.'); return; }
   buyerName = n; buyerEmail = e;
-  currentUser = null; app = null; myLoans = []; married = false; stage = 1;
-  empCount = 0; benCount = 0;
   $('b_name').value = n; $('b_email').value = e;
   openWizard();
 }
@@ -914,7 +815,6 @@ function buildOrder() {
   stepOrder.push('household','employment','beneficiary','review');
 }
 function openWizard() {
-  isSubmitting = false;
   show('wizardScreen');
   $('wUserName').textContent = buyerName;
   if (!empCount) addEmployment();
@@ -1125,179 +1025,33 @@ function jumpTo(key) {
   const idx = stepOrder.indexOf(key);
   if (idx >= 0) { stepIdx = idx; renderStep(); }
 }
-// Persist the whole application to the database. One buyer + (spouse if married)
-// + one household + EVERY employment block + EVERY beneficiary block. IDs are
-// generated client-side from current row counts (mirrors the proven flow).
-async function submitApp() {
-  if (isSubmitting) return;        // guard: ignore extra clicks while a submit is in flight
-  isSubmitting = true;
-  const btn = $('nextBtn');
-  btn.disabled = true; const oldLabel = btn.textContent; btn.textContent = 'Submitting…';
-  $('stepError').style.display = 'none';
-  try {
-    const year = new Date().getFullYear();
-    // Counts for ID generation.
-    const [bRes, hRes, eRes, bnRes] = await Promise.all([
-      API.get('/api/buyers'), API.get('/api/household'),
-      API.get('/api/employment'), API.get('/api/beneficiaries')
-    ]);
-    const data = r => (r && r.ok && Array.isArray(r.data)) ? r.data : [];
-    const buyerId = 'B-' + year + '-' + String(data(bRes).length + 1).padStart(3, '0');
-    const hhId = 'H-' + year + '-' + String(data(hRes).length + 1).padStart(3, '0');
-    const empBase = data(eRes).length;
-    const distinctBen = new Set(data(bnRes).map(x => x.BeneficiaryID)).size;
-    const benId = 'BEN-' + String(distinctBen + 1).padStart(3, '0');
-
-    // The design has no separate buyer-address field; the household residential
-    // address (NOT NULL on buyer) doubles as the buyer's address.
-    const addr = cut(val('h_addr'), 100);
-
-    // 1) Buyer — store LETTER CODES for Gender (char 1) and Civil_Status (char 2).
-    let r = await API.send('POST', '/api/buyers', {
-      BuyerID: buyerId, BuyerName: cut(val('b_name'), 50), Birthdate: val('b_bdate'),
-      Birthplace: cut(val('b_bplace'), 100), GovID: cut(val('b_govid'), 20),
-      TIN: cut(val('b_tin'), 15), Gender: val('b_gender'), Civil_Status: val('b_civil'),
-      Address: addr, Citizenship: cut(val('b_citizen'), 20),
-      Gross_MonthlyIncome: parseFloat(val('b_income')) || 0,
-      Tel_Num: cut(val('b_tel'), 15), Mobile_Num: cut(val('b_mobile'), 15),
-      Personal_Email: cut(val('b_email'), 50), Work_Email: cut(val('b_workemail'), 50),
-      Account_Type: cut(val('b_acct'), 20), Bank_Name: cut(val('b_bank'), 50)
-    });
-    if (!r || !r.ok) throw new Error((r && r.error) || 'Could not save your buyer record.');
-
-    // 2) Spouse (only when married). Blank optional fields -> null.
-    if (married) {
-      r = await API.send('POST', '/api/spouse', {
-        BuyerID: buyerId, Sps_Name: cut(val('s_name'), 50), Sps_Bdate: val('s_bdate') || null,
-        Sps_Bplace: cut(val('s_bplace'), 50), Sps_Citizenship: cut(val('s_citizen'), 20),
-        Sps_GovID: cut(val('s_govid'), 20), Sps_TIN: cut(val('s_tin'), 15), Sps_TelNum: '',
-        Sps_EmailAdd: cut(val('s_email'), 50), Sps_MobNum: cut(val('s_mobile'), 15),
-        Sps_GrossMonthlyIncome: val('s_income') ? parseFloat(val('s_income')) : null
-      });
-      if (!r || !r.ok) throw new Error((r && r.error) || 'Buyer saved, but the spouse record failed.');
-    }
-
-    // 3) Household. Home_Ownership is varchar(20): for "Others" store the spec text.
-    const hasDep = val('h_hasdep') === 'Y';
-    const ownVal = cut(val('h_own') === 'Others' ? val('h_own_spec') : val('h_own'), 20);
-    r = await API.send('POST', '/api/household', {
-      HouseholdID: hhId, BuyerID: buyerId,
-      Household_Details: cut(hasDep ? 'With dependents' : 'No dependents', 50),
-      Num_children: hasDep ? parseInt(val('h_child')) || 0 : 0,
-      Num_parents: hasDep ? parseInt(val('h_parents')) || 0 : 0,
-      Num_others: hasDep ? parseInt(val('h_others')) || 0 : 0,
-      Address: addr, Home_Ownership: ownVal,
-      Length_ofStay: val('h_stay') ? parseInt(val('h_stay')) : null
-    });
-    if (!r || !r.ok) throw new Error((r && r.error) || 'Buyer saved, but the household record failed.');
-
-    // 4) Employment — one POST per declared record (1:N).
-    const empBlocks = [...document.querySelectorAll('#empList .repeat-block')];
-    for (let i = 0; i < empBlocks.length; i++) {
-      const b = empBlocks[i];
-      const sels = b.querySelectorAll('select');                 // [type, rank]
-      const inps = b.querySelectorAll('input:not(.rank-spec)');  // [name,addr,occ,pos,tenure,tel,email]
-      const rankSpec = b.querySelector('.rank-spec');
-      const rankVal = (sels[1].value === 'Others' && rankSpec) ? rankSpec.value : sels[1].value;
-      r = await API.send('POST', '/api/employment', {
-        EmploymentID: 'E-' + year + '-' + String(empBase + i + 1).padStart(3, '0'),
-        BuyerID: buyerId, Emp_Type: cut(sels[0].value, 30), Emp_Name: cut(inps[0].value, 50),
-        Emp_Address: cut(inps[1].value, 100), Emp_TelNum: cut(inps[5] ? inps[5].value : '', 15),
-        Emp_EmailAdd: cut(inps[6] ? inps[6].value : '', 50), Occupation: cut(inps[2].value, 30),
-        Position: cut(inps[3].value, 30), Tenure: parseInt(inps[4].value) || 0,
-        Occupation_rank: cut(rankVal, 30)
-      });
-      if (!r || !r.ok) throw new Error((r && r.error) || 'An employment record failed to save.');
-    }
-
-    // 5) Beneficiaries — one POST per row, all sharing this buyer's BeneficiaryID.
-    const benBlocks = [...document.querySelectorAll('#benList .repeat-block')];
-    for (const b of benBlocks) {
-      const inps = b.querySelectorAll('input');                  // [name, bdate, relationship]
-      if (!inps[0].value.trim()) continue;
-      r = await API.send('POST', '/api/beneficiaries', {
-        BeneficiaryID: benId, BuyerID: buyerId, BenF_Name: cut(inps[0].value, 50),
-        BenF_Bdate: inps[1].value || null, Relationship: cut(inps[2].value, 20)
-      });
-      if (!r || !r.ok) throw new Error((r && r.error) || 'A beneficiary record failed to save.');
-    }
-
-    // Done — log the new buyer in and load their dashboard from the database.
-    currentUser = { role: 'buyer', buyerId: buyerId, name: val('b_name') };
-    const lastName = (val('b_name') || '').trim().split(/\s+/).pop() || 'your last name';
-    toast('Application submitted', 'Your Buyer ID is ' + buyerId + '. Next time, log in with this ID and your last name ("' + lastName + '") as the password.', 'info', true);
-    await openBuyerFromDb(true);
-  } catch (err) {
-    isSubmitting = false;   // allow a retry after a genuine failure
-    const e = $('stepError');
-    e.textContent = err.message || 'Submission failed. Please try again.';
-    e.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } finally {
-    btn.disabled = false; btn.textContent = oldLabel;
-  }
+function submitApp() {
+  app = {
+    name: val('b_name'), bdate: val('b_bdate'), bplace: val('b_bplace'),
+    gender: val('b_gender') === 'M' ? 'Male' : 'Female',
+    email: val('b_email'), workemail: val('b_workemail'),
+    civil: val('b_civil'), civilWord: civilWord(val('b_civil')), spouse: val('s_name'),
+    citizen: val('b_citizen'), tel: val('b_tel'),
+    addr: val('h_addr'), own: ownDisplay(), stay: val('h_stay'),
+    deps: depDisplay(),
+    emp: document.querySelectorAll('#empList .repeat-block').length + ' record/s declared',
+    ben: document.querySelectorAll('#benList .repeat-block').length + ' designated',
+    income: parseFloat(val('b_income')) || 0,
+    mobile: val('b_mobile'), tin: val('b_tin'), govid: val('b_govid'),
+    bankName: val('b_bank'), acct: val('b_acct'), bank: val('b_bank') + ' — ' + val('b_acct')
+  };
+  if (!married) docs = docs.filter(d => d.name !== 'Marriage certificate');
+  stage = 1;
+  openBuyer(true);
 }
 
 /* ================== buyer portal ================== */
-// Load the logged-in buyer's records from the database and open the dashboard.
-async function openBuyerFromDb(justSubmitted) {
-  const id = currentUser.buyerId;
-  const [bRes, sRes, eRes, hRes, bnRes, lRes] = await Promise.all([
-    API.get('/api/buyers/' + encodeURIComponent(id)),
-    API.get('/api/spouse/' + encodeURIComponent(id)),
-    API.get('/api/employment'), API.get('/api/household'),
-    API.get('/api/beneficiaries'), API.get('/api/loans')
-  ]);
-  if (!bRes || !bRes.ok) { showAlert('Could not load your record. Please try again.'); show('authScreen'); return; }
-  const buyer = bRes.data;
-  const spouse = (sRes && sRes.ok) ? sRes.data : null;
-  const list = r => (r && r.ok && Array.isArray(r.data)) ? r.data : [];
-  const emps = list(eRes).filter(x => x.BuyerID === id);
-  const hh = list(hRes).find(x => x.BuyerID === id) || null;
-  const bens = list(bnRes).filter(x => x.BuyerID === id);
-  myLoans = list(lRes).filter(x => x.BuyerID === id).map(mapLoan);
-
-  buyerName = buyer.BuyerName;
-  married = buyer.Civil_Status === 'M';
-  docs = baseDocs().filter(d => married || d.name !== 'Marriage certificate');
-  app = buildAppFromDb(buyer, spouse, emps, hh, bens);
-  ovLoanIdx = 0; payLoanIdx = 0;
-  openBuyer(justSubmitted);
-}
-// Shape the DB rows into the camelCase summary the render code expects.
-function buildAppFromDb(b, s, emps, hh, bens) {
-  const depTxt = hh
-    ? (Number(hh.Num_children || 0) + ' children · ' + Number(hh.Num_parents || 0) + ' parents · ' + Number(hh.Num_others || 0) + ' others')
-    : 'No household on file';
-  const empTxt = emps.length
-    ? emps.map(e => e.Emp_Type + ' — ' + e.Emp_Name + ' (' + e.Occupation + ', ' + e.Tenure + ' yrs)').join('; ')
-    : 'None declared';
-  const benTxt = bens.length
-    ? bens.map(x => x.BenF_Name + (x.Relationship ? ' (' + x.Relationship + ')' : '')).join(', ')
-    : 'None designated';
-  return {
-    name: b.BuyerName, bdate: b.Birthdate, bplace: b.Birthplace,
-    gender: b.Gender === 'M' ? 'Male' : b.Gender === 'F' ? 'Female' : b.Gender,
-    civil: b.Civil_Status, civilWord: civilWord(b.Civil_Status),
-    spouse: s ? (s.Sps_Name || '') : '',
-    citizen: b.Citizenship, tel: b.Tel_Num || '', workemail: b.Work_Email || '',
-    email: b.Personal_Email,
-    addr: hh ? hh.Address : b.Address, own: hh ? hh.Home_Ownership : '—',
-    stay: (hh && hh.Length_ofStay != null) ? String(hh.Length_ofStay) : '',
-    deps: depTxt, emp: empTxt, ben: benTxt,
-    income: Number(b.Gross_MonthlyIncome) || 0,
-    mobile: b.Mobile_Num, tin: b.TIN, govid: b.GovID,
-    bankName: b.Bank_Name, acct: b.Account_Type, bank: b.Bank_Name + ' — ' + b.Account_Type
-  };
-}
 function openBuyer(justSubmitted) {
   show('buyerScreen');
   $('dUserName').textContent = buyerName;
-  $('ovRef').textContent = currentUser ? currentUser.buyerId : '—';
-  $('rcptRef').textContent = currentUser ? currentUser.buyerId : '—';
   $('welcomeMsg').textContent = justSubmitted ? 'Application received, ' + firstName() : 'Welcome back, ' + firstName();
   showPage('overview');
-  renderStage(); renderSummary(); renderDocs(); renderLoanParticulars(); renderPayments();
+  renderStage(); renderSummary(); renderDocs(); renderPayments();
 }
 function firstName() { return buyerName.split(' ')[0] || buyerName; }
 function showPage(p) {
@@ -1307,8 +1061,6 @@ function showPage(p) {
   });
   window.scrollTo({ top: 0 });
 }
-// DEMO 4-step workflow ledger (not persisted). Loan particulars are real and
-// handled separately by renderLoanParticulars().
 function renderStage() {
   const lg = $('ledger'); lg.innerHTML = '';
   for (let i = 0; i < 4; i++) {
@@ -1321,55 +1073,26 @@ function renderStage() {
       (done ? '<span class="tick">Recorded ✓</span>' : now ? '<span class="tick">In progress</span>' : '') + '</div>';
     lg.appendChild(d);
   }
-  renderNotifs();
+  const chip = $('loanChip');
+  if (stage >= 4) {
+    chip.textContent = 'Closed'; chip.className = 'chip verde';
+    $('rcptStatus').textContent = 'Sale closed';
+    $('rcptOfficer').textContent = 'James Bond';
+    $('loanPending').style.display = 'none';
+    $('loanDetails').style.display = 'block';
+    $('editBtn').style.display = 'none';
+    $('closedStamp').classList.add('show');
+    setTimeout(() => { $('dpFill').style.width = '20%'; }, 150);
+  } else if (stage >= 2) {
+    chip.textContent = 'In verification'; chip.className = 'chip paper';
+    $('rcptStatus').textContent = 'Under verification';
+  } else {
+    chip.textContent = 'Pending'; chip.className = 'chip gold';
+    $('rcptStatus').textContent = 'Submitted';
+  }
+  renderNotifs(); renderPayments();
 }
 function setStage(s) { stage = Math.max(stage, s); renderStage(); }
-
-// Real loan particulars from /api/loans (one panel, with a picker for >1 loan).
-function renderLoanParticulars() {
-  const has = myLoans.length > 0;
-  const chip = $('loanChip');
-  $('loanPending').style.display = has ? 'none' : 'block';
-  $('loanDetails').style.display = has ? 'block' : 'none';
-  $('editBtn').style.display = has ? 'none' : '';
-  if (!has) {
-    chip.textContent = 'Pending'; chip.className = 'chip gold';
-    $('closedStamp').classList.remove('show');
-    $('rcptStatus').textContent = 'Submitted';
-    $('rcptOfficer').textContent = 'Unassigned';
-    return;
-  }
-  chip.textContent = myLoans.length > 1 ? (myLoans.length + ' loans') : 'Recorded';
-  chip.className = 'chip verde';
-  $('closedStamp').classList.add('show');
-  $('rcptStatus').textContent = 'Sale closed';
-  if (ovLoanIdx >= myLoans.length) ovLoanIdx = 0;
-  $('ovLoanPicker').innerHTML = myLoans.length > 1
-    ? '<div class="field" style="margin:0"><label>Select loan</label><select onchange="ovLoanIdx=this.selectedIndex; renderOneLoan();">' +
-      myLoans.map((l, i) => '<option' + (i === ovLoanIdx ? ' selected' : '') + '>' + l.loanId + ' · ' + l.unitId + '</option>').join('') + '</select></div>'
-    : '';
-  renderOneLoan();
-}
-function renderOneLoan() {
-  const l = myLoans[ovLoanIdx]; if (!l) return;
-  const monthlyDp = l.dpTerm ? Math.round(l.downpayment / l.dpTerm) : 0;
-  $('ovLoanFigures').innerHTML =
-    fig('Selling price', peso(l.sellPrice)) + fig('Loan amount', peso(l.loanAmount)) +
-    fig('Downpayment', peso(l.downpayment)) + fig('Monthly DP due', peso(monthlyDp), true);
-  $('ovLoanKv').innerHTML =
-    kvRow('Unit', '<span class="mono">' + l.unitId + '</span>') +
-    kvRow('Financing', l.financeType + ' · <span class="mono">' + l.dpTerm + '-mo</span> DP term · <span class="mono">' + l.loanTerm + '-yr</span> loan term') +
-    kvRow('Purchase purpose', l.purchasePurpose) +
-    kvRow('Reservation fee', '<span class="mono">' + peso(l.reservationFee) + '</span> · <span class="mono">' + (l.orPrNum || '—') + '</span>') +
-    kvRow('Processing fee', '<span class="mono">' + peso(l.processingFee) + '</span>') +
-    kvRow('Booking officer', l.bookingOfficer || '—');
-  $('rcptOfficer').textContent = l.bookingOfficer || '—';
-  const paid = Math.round(l.downpayment * 0.2);
-  $('ovDpLbl').textContent = peso(paid) + ' / ' + peso(l.downpayment) + ' · 20%';
-  setTimeout(() => { $('dpFill').style.width = '20%'; }, 120);
-}
-function fig(k, v, verde) { return '<div class="figure"><div class="k">' + k + '</div><div class="v' + (verde ? ' verde' : '') + '">' + v + '</div></div>'; }
-function kvRow(k, v) { return '<tr><th>' + k + '</th><td>' + v + '</td></tr>'; }
 function renderSummary() {
   const a = app || DEMO;
   // DEMO fallback fields
@@ -1399,27 +1122,22 @@ function renderSummary() {
       pair('Employment', a.emp, true) + pair('Beneficiaries', a.ben) + pair('Bank account', a.bank));
 }
 function renderNotifs() {
-  const ref = currentUser ? currentUser.buyerId : '—';
   const items = [];
-  if (myLoans.length) items.push(['—', 'Loan ' + myLoans[0].loanId + ' recorded by your Booking Officer. Particulars are now on record.']);
-  if (stage >= 2) items.push(['—', 'Documents passed verification. (demo)']);
-  items.push(['—', 'Application received under reference ' + ref + '.']);
+  if (stage >= 4) items.push(['06·12·2026', 'Sale closed by Booking Officer James Bond. Loan particulars are now on record.']);
+  if (stage >= 3) items.push(['06·12·2026', 'Your application moved to loan processing.']);
+  if (stage >= 2) items.push(['06·11·2026', 'Documents passed verification.']);
+  items.push(['06·10·2026', 'Application received under reference B-2026-001.']);
   $('notifList').innerHTML = items.map(n =>
     '<div class="notif-item"><div class="when">' + n[0] + '</div><div>' + n[1] + '</div></div>').join('');
 }
 
-/* ---- payments page (DEMO schedule; loan reference + picker are real) ---- */
+/* ---- payments page ---- */
 function renderPayments() {
-  const has = myLoans.length > 0;
-  $('payPending').style.display = has ? 'none' : 'block';
-  $('payContent').style.display = has ? 'block' : 'none';
-  if (!has) { $('payLoanRef').textContent = '—'; return; }
-  if (payLoanIdx >= myLoans.length) payLoanIdx = 0;
-  $('payLoanRef').textContent = myLoans[payLoanIdx].loanId;
-  $('payLoanPicker').innerHTML = myLoans.length > 1
-    ? '<div class="field" style="margin:0"><label>Select loan</label><select onchange="payLoanIdx=this.selectedIndex; renderPayments();">' +
-      myLoans.map((l, i) => '<option' + (i === payLoanIdx ? ' selected' : '') + '>' + l.loanId + ' · ' + l.unitId + '</option>').join('') + '</select></div>'
-    : '';
+  const closed = stage >= 4;
+  $('payPending').style.display = closed ? 'none' : 'block';
+  $('payContent').style.display = closed ? 'block' : 'none';
+  $('payLoanRef').textContent = closed ? 'L-10900' : '—';
+  if (!closed) return;
   const chipFor = { paid: '<span class="chip verde">Paid</span>', due: '<span class="chip gold">Due soon</span>', verify: '<span class="chip paper">For verification</span>' };
   $('payRows').innerHTML = payments.map(p =>
     '<tr><td class="mono">' + p.date + '</td><td class="mono">' + p.or + '</td><td>' + p.desc + '</td>' +
@@ -1469,68 +1187,23 @@ function uploadDoc(i) {
   inp.click();
 }
 function editApp() {
-  toast('Edit your application', 'Online editing isn’t available in this build. Please contact your Booking Officer to amend a submitted application.', 'info');
+  if (stage >= 2) { toast('Editing locked', 'Your application is under verification and can no longer be edited. Please contact your booking officer.', 'warn'); return; }
+  openWizard();
 }
 
 /* ================== admin portal ================== */
-async function openAdminFromDb() {
-  show('adminScreen');
-  $('admUserName').innerHTML = (currentUser ? currentUser.name : 'Administrator') + ' · <span style="color:var(--gold)">Booking Officer</span>';
-  $('admDetail').style.display = 'none';
-  showAdminPage('queue');
-  await loadQueue();
-  loadReports();
-}
-function showAdminPage(p) {
-  ['queue', 'reports'].forEach(k => {
-    $('adm-' + k).style.display = (k === p) ? 'block' : 'none';
-    $('anav-' + k).className = (k === p) ? 'on' : '';
-  });
-  window.scrollTo({ top: 0 });
-}
-// Build the queue from the live database (buyers + related rows + loans).
-async function loadQueue() {
-  const [bRes, eRes, hRes, bnRes, sRes, lRes] = await Promise.all([
-    API.get('/api/buyers'), API.get('/api/employment'), API.get('/api/household'),
-    API.get('/api/beneficiaries'), API.get('/api/spouse'), API.get('/api/loans')
-  ]);
-  const list = r => (r && r.ok && Array.isArray(r.data)) ? r.data : [];
-  const emps = list(eRes), hhs = list(hRes), bens = list(bnRes), sps = list(sRes), loans = list(lRes);
-  queue = list(bRes).map(b => {
-    const id = b.BuyerID;
-    return {
-      id, name: b.BuyerName, filed: '—', income: Number(b.Gross_MonthlyIncome) || 0,
-      status: loans.some(l => l.BuyerID === id) ? 'closed' : 'open',
-      raw: b,   // raw DB columns, used to prefill the edit form
-      info: buildAppFromDb(b, sps.find(x => x.BuyerID === id) || null,
-        emps.filter(e => e.BuyerID === id), hhs.find(h => h.BuyerID === id) || null,
-        bens.filter(x => x.BuyerID === id)),
-      loans: loans.filter(l => l.BuyerID === id).map(mapLoan),
-      // raw child rows, so a delete can remove them first (FK RESTRICT, no cascade)
-      children: {
-        loans: loans.filter(l => l.BuyerID === id),
-        bens: bens.filter(x => x.BuyerID === id),
-        emps: emps.filter(e => e.BuyerID === id),
-        hhs: hhs.filter(h => h.BuyerID === id),
-        hasSpouse: sps.some(x => x.BuyerID === id)
-      },
-      docs: demoDocsFor(b)
-    };
-  });
-  renderQueue();
-}
-// Status is derived from real data (does the buyer have any loans?) — there is
-// no status column in the schema.
+function openAdmin() { show('adminScreen'); renderQueue(); }
 function statusChip(s) {
-  return s === 'closed'
-    ? '<span class="chip verde">Has loan(s)</span>'
-    : '<span class="chip gold">For loan encoding</span>';
+  return s === 'closed' ? '<span class="chip verde">Sale closed</span>' :
+         s === 'verified' ? '<span class="chip paper">Verified — for loan</span>' :
+         s === 'verification' ? '<span class="chip gold">In verification</span>' :
+         '<span class="chip gold">Submitted</span>';
 }
 function renderQueue() {
   $('admRows').innerHTML = queue.map((q, i) =>
     '<tr class="app-row" onclick="openRecord(' + i + ')"><td class="mono">' + q.id + '</td><td>' + q.name + '</td>' +
     '<td class="mono">' + q.filed + '</td><td class="r mono">' + peso(q.income) + '</td><td>' + statusChip(q.status) + '</td></tr>').join('');
-  $('admPending').textContent = queue.filter(q => q.status === 'open').length;
+  $('admPending').textContent = queue.filter(q => q.status !== 'closed').length;
 }
 function openRecord(i) {
   admSel = i;
@@ -1540,7 +1213,7 @@ function openRecord(i) {
   $('admBuyerId').textContent = q.id;
   const a = q.info;
   const rows = [
-    ['Civil status', a.civilWord + (a.spouse ? ' — spouse: ' + a.spouse : '')],
+    ['Civil status', a.civil + (a.spouse ? ' — spouse: ' + a.spouse : '')],
     ['Government ID', a.govid], ['TIN', '<span class="mono">' + a.tin + '</span>'],
     ['Mobile', '<span class="mono">' + a.mobile + '</span>'],
     ['Gross monthly income', '<span class="mono">' + peso(a.income) + '</span>'],
@@ -1548,109 +1221,9 @@ function openRecord(i) {
     ['Employment', a.emp], ['Beneficiaries', a.ben], ['Bank', a.bank]
   ];
   $('admBuyerInfo').innerHTML = rows.map(r => '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>').join('');
-  // reset the edit / delete sub-UI to its default (read) state
-  $('admBuyerInfo').style.display = '';
-  $('admEditForm').style.display = 'none';
-  $('admDelConfirm').style.display = 'none';
-  $('admBuyerErr').style.display = 'none';
   renderAdmDocs();
   renderAdmLoan();
   $('admDetail').scrollIntoView({ behavior: 'smooth' });
-}
-// Collapse the open record.
-function closeRecord() {
-  $('admDetail').style.display = 'none';
-  admSel = null;
-}
-// ----- Edit (update) a buyer record -> PUT /api/buyers/<id> -----
-function editBuyer() {
-  const b = queue[admSel].raw;
-  $('admDelConfirm').style.display = 'none';
-  $('admBuyerErr').style.display = 'none';
-  $('ed_name').value = b.BuyerName || '';
-  $('ed_bdate').value = b.Birthdate || '';
-  $('ed_bplace').value = b.Birthplace || '';
-  $('ed_gender').value = b.Gender || 'M';
-  $('ed_civil').value = b.Civil_Status || 'S';
-  $('ed_citizen').value = b.Citizenship || '';
-  $('ed_address').value = b.Address || '';
-  $('ed_income').value = b.Gross_MonthlyIncome != null ? b.Gross_MonthlyIncome : '';
-  $('ed_govid').value = b.GovID || '';
-  $('ed_tin').value = b.TIN || '';
-  $('ed_tel').value = b.Tel_Num || '';
-  $('ed_mobile').value = b.Mobile_Num || '';
-  $('ed_email').value = b.Personal_Email || '';
-  $('ed_workemail').value = b.Work_Email || '';
-  $('ed_bank').value = b.Bank_Name || '';
-  $('ed_acct').value = b.Account_Type || 'Savings';
-  $('admBuyerInfo').style.display = 'none';
-  $('admEditForm').style.display = 'block';
-}
-function cancelEdit() {
-  $('admEditForm').style.display = 'none';
-  $('admBuyerInfo').style.display = '';
-}
-async function saveBuyer() {
-  const id = queue[admSel].id;
-  const req = ['ed_name','ed_bdate','ed_bplace','ed_citizen','ed_address','ed_income','ed_govid','ed_tin','ed_mobile','ed_email','ed_bank'];
-  for (const f of req) if (!val(f).trim()) { showAdmBuyerErr('Please complete all required fields.'); return; }
-  const body = {
-    BuyerName: cut(val('ed_name'), 50), Birthdate: val('ed_bdate'), Birthplace: cut(val('ed_bplace'), 100),
-    Gender: val('ed_gender'), Civil_Status: val('ed_civil'), Citizenship: cut(val('ed_citizen'), 20),
-    Address: cut(val('ed_address'), 100), Gross_MonthlyIncome: parseFloat(val('ed_income')) || 0,
-    GovID: cut(val('ed_govid'), 20), TIN: cut(val('ed_tin'), 15), Tel_Num: cut(val('ed_tel'), 15),
-    Mobile_Num: cut(val('ed_mobile'), 15), Personal_Email: cut(val('ed_email'), 50),
-    Work_Email: cut(val('ed_workemail'), 50), Bank_Name: cut(val('ed_bank'), 50), Account_Type: cut(val('ed_acct'), 20)
-  };
-  const r = await API.send('PUT', '/api/buyers/' + encodeURIComponent(id), body);
-  if (!r || !r.ok) { showAdmBuyerErr((r && r.error) || 'Could not save changes.'); return; }
-  await loadQueue();                              // refresh from DB so the change is reflected
-  const idx = queue.findIndex(q => q.id === id);
-  if (idx >= 0) openRecord(idx);
-  toast('Record updated', id + ' saved to the database.', '');
-}
-// ----- Delete a buyer record -> DELETE /api/buyers/<id> -----
-function askDeleteBuyer() {
-  $('admEditForm').style.display = 'none';
-  $('admBuyerInfo').style.display = '';
-  $('admBuyerErr').style.display = 'none';
-  const c = queue[admSel].children;
-  const parts = [];
-  if (c.loans.length) parts.push(c.loans.length + ' loan(s)');
-  if (c.bens.length) parts.push(c.bens.length + ' beneficiary(ies)');
-  if (c.emps.length) parts.push(c.emps.length + ' employment record(s)');
-  if (c.hhs.length) parts.push(c.hhs.length + ' household record(s)');
-  if (c.hasSpouse) parts.push('the spouse record');
-  $('admDelSummary').innerHTML = parts.length
-    ? ' It will also remove this buyer’s ' + parts.join(', ') + '.'
-    : ' This buyer has no related records.';
-  $('admDelConfirm').style.display = 'block';
-}
-function cancelDelete() { $('admDelConfirm').style.display = 'none'; }
-// Delete the buyer AND its child rows. FK is RESTRICT (no DB cascade), so we
-// remove children first via the existing endpoints, then the buyer.
-async function confirmDeleteBuyer() {
-  const q = queue[admSel];
-  const id = q.id, name = q.name, c = q.children;
-  const ok = (r, what) => { if (!r || !r.ok) throw new Error((r && r.error) || ('Failed to delete a ' + what + ' record.')); };
-  try {
-    for (const l of c.loans) ok(await API.send('DELETE', '/api/loans/' + encodeURIComponent(l.LoanID)), 'loan');
-    for (const x of c.bens) ok(await API.send('DELETE', '/api/beneficiaries/one?id=' + encodeURIComponent(x.BeneficiaryID) + '&name=' + encodeURIComponent(x.BenF_Name)), 'beneficiary');
-    for (const e of c.emps) ok(await API.send('DELETE', '/api/employment/' + encodeURIComponent(e.EmploymentID)), 'employment');
-    for (const h of c.hhs) ok(await API.send('DELETE', '/api/household/' + encodeURIComponent(h.HouseholdID)), 'household');
-    if (c.hasSpouse) ok(await API.send('DELETE', '/api/spouse/' + encodeURIComponent(id)), 'spouse');
-    ok(await API.send('DELETE', '/api/buyers/' + encodeURIComponent(id)), 'buyer');
-    closeRecord();
-    await loadQueue();
-    toast('Record deleted', name + ' (' + id + ') and all related records were removed from the database.', '');
-  } catch (err) {
-    $('admDelConfirm').style.display = 'none';
-    showAdmBuyerErr(err.message || 'Could not delete this buyer.');
-  }
-}
-function showAdmBuyerErr(msg) {
-  const e = $('admBuyerErr'); e.textContent = msg; e.style.display = 'block';
-  e.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 function renderAdmDocs() {
   const q = queue[admSel];
@@ -1661,46 +1234,44 @@ function renderAdmDocs() {
   };
   $('admDocList').innerHTML = q.docs.map((d, i) =>
     '<div class="doc-item"><div class="name">' + d.name + '</div><div class="right">' + states[d.state] +
-    (d.state !== 'verified' ? '<button class="btn btn-line btn-sm" onclick="verifyDoc(' + i + ')">Mark verified</button>' : '') +
+    (d.state !== 'verified' && q.status !== 'closed' ? '<button class="btn btn-line btn-sm" onclick="verifyDoc(' + i + ')">Mark verified</button>' : '') +
     '</div></div>').join('');
   const allOk = q.docs.every(d => d.state === 'verified');
   const chip = $('admDocChip');
-  if (allOk) { chip.textContent = 'Complete'; chip.className = 'chip verde'; }
+  if (q.status === 'closed' || allOk) { chip.textContent = 'Complete'; chip.className = 'chip verde'; }
   else { chip.textContent = 'For review'; chip.className = 'chip gold'; }
 }
-// DEMO ONLY: verification isn't persisted (no Document table). Cosmetic only.
 function verifyDoc(i) {
   const q = queue[admSel];
   q.docs[i].state = 'verified';
-  toast('Marked verified', q.docs[i].name + ' confirmed. (demo — not saved to the database)', '');
-  renderAdmDocs();
+  const allOk = q.docs.every(d => d.state === 'verified');
+  if (allOk && q.status !== 'closed') { q.status = 'verified'; toast('Documents verified', 'All requirements checked. Loan encoding is now unlocked.', ''); }
+  else toast('Marked verified', q.docs[i].name + ' confirmed.', '');
+  renderAdmDocs(); renderAdmLoan(); renderQueue();
 }
-// Real loan panel: always open. A buyer may hold multiple loans (one per unit);
-// recording one never locks out additional loans.
 function renderAdmLoan() {
   const q = queue[admSel];
   const chip = $('admLoanChip');
-  if (q.loans.length) {
-    $('admLoanList').innerHTML =
-      '<div class="sect" style="margin-top:0">Recorded loans (' + q.loans.length + ')</div>' +
-      '<div class="table-scroll"><table class="data-table" style="margin-bottom:16px">' +
-      '<thead><tr><th>Loan ID</th><th>Unit</th><th>Finance</th><th class="r">Loan amt</th><th class="r">Sell price</th></tr></thead><tbody>' +
-      q.loans.map(l => '<tr><td class="mono">' + l.loanId + '</td><td class="mono">' + l.unitId + '</td><td>' + l.financeType +
-        '</td><td class="r mono">' + peso(l.loanAmount) + '</td><td class="r mono">' + peso(l.sellPrice) + '</td></tr>').join('') +
-      '</tbody></table></div>';
+  const stamp = $('admStamp');
+  stamp.classList.remove('show');
+  if (q.status === 'closed') {
+    chip.textContent = 'Recorded'; chip.className = 'chip verde';
+    $('admLoanNotice').style.display = 'block';
+    $('admLoanNotice').className = 'notice verde';
+    $('admLoanNotice').innerHTML = 'Loan recorded under <strong class="mono">L-10900</strong>. The buyer can now view their particulars and payment schedule.';
+    $('admLoanForm').style.display = 'none';
+    stamp.classList.add('show');
+  } else if (q.status === 'verified') {
+    chip.textContent = 'Unlocked'; chip.className = 'chip gold';
+    $('admLoanNotice').style.display = 'none';
+    $('admLoanForm').style.display = 'block';
   } else {
-    $('admLoanList').innerHTML = '';
+    chip.textContent = 'Locked'; chip.className = 'chip rust';
+    $('admLoanNotice').style.display = 'block';
+    $('admLoanNotice').className = 'notice';
+    $('admLoanNotice').innerHTML = 'Verify the buyer\'s documents first. Loan encoding unlocks after verification (Business Rules #1 and #6).';
+    $('admLoanForm').style.display = 'none';
   }
-  chip.textContent = q.loans.length ? (q.loans.length + ' recorded') : 'No loans yet';
-  chip.className = q.loans.length ? 'chip verde' : 'chip gold';
-  $('admStamp').classList.toggle('show', q.loans.length > 0);
-  $('admLoanNotice').style.display = 'block';
-  $('admLoanNotice').className = 'notice';
-  $('admLoanNotice').innerHTML = q.loans.length
-    ? 'This buyer already holds ' + q.loans.length + ' loan(s). You may encode an <strong>additional</strong> loan for another unit below.'
-    : 'Encode the loan particulars for this buyer’s unit purchase (Business Rule #6).';
-  $('admLoanForm').style.display = 'block';
-  $('al_officer').value = currentUser ? currentUser.name : 'Administrator';
 }
 function loanMath() {
   const sp = parseFloat(val('al_price')) || 0, la = parseFloat(val('al_amount')) || 0, dp = parseFloat(val('al_dp')) || 0;
@@ -1711,67 +1282,17 @@ function loanMath() {
   else if (diff > 0) { h.textContent = peso(diff) + ' of the selling price not yet covered.'; h.className = 'hint'; }
   else { h.textContent = '✗ Loan + downpayment exceeds the selling price.'; h.className = 'hint bad'; }
 }
-// Record a loan against the selected buyer. LoanID is auto-generated server-side.
-async function closeSale() {
+function closeSale() {
   const required = ['al_unit','al_price','al_amount','al_dp','al_resfee','al_procfee','al_orpr','al_orprdate','al_fin','al_dpterm','al_term','al_purpose','al_source'];
   for (const id of required) if (!val(id).trim()) {
     const e = $('admErr'); e.textContent = 'Please complete all loan fields (Business Rule #5).'; e.style.display = 'block'; return;
   }
-  // When a dropdown is "Others", require and use its "please specify" value.
-  const pick = (sel, spec) => val(sel) === 'Others' ? val(spec).trim() : val(sel);
-  if ((val('al_fin') === 'Others' && !val('al_fin_spec').trim()) ||
-      (val('al_purpose') === 'Others' && !val('al_purpose_spec').trim()) ||
-      (val('al_source') === 'Others' && !val('al_source_spec').trim())) {
-    const e = $('admErr'); e.textContent = 'Please specify the value for the field(s) set to “Others”.'; e.style.display = 'block'; return;
-  }
   const sp = parseFloat(val('al_price')), la = parseFloat(val('al_amount')), dp = parseFloat(val('al_dp'));
   if (la + dp > sp) { const e = $('admErr'); e.textContent = 'Loan amount + downpayment cannot exceed the selling price.'; e.style.display = 'block'; return; }
   $('admErr').style.display = 'none';
-  const q = queue[admSel];
-  const r = await API.send('POST', '/api/loans', {
-    BuyerID: q.id, UnitID: cut(val('al_unit'), 15), Finance_Type: cut(pick('al_fin', 'al_fin_spec'), 20),
-    DP_Term: parseInt(val('al_dpterm')) || 0, Loan_Term: parseInt(val('al_term')) || 0,
-    Purchase_Purpose: cut(pick('al_purpose', 'al_purpose_spec'), 15), Source_Funds: cut(pick('al_source', 'al_source_spec'), 30),
-    LoanAmount: la, Downpayment: dp, ReservationFee: parseFloat(val('al_resfee')) || 0,
-    Sell_Price: sp, OrPr_Num: cut(val('al_orpr'), 30), OrPr_Date: val('al_orprdate'),
-    Booking_Officer: cut(val('al_officer'), 30), ProcessingFee: parseFloat(val('al_procfee')) || 0
-  });
-  if (!r || !r.ok) { const e = $('admErr'); e.textContent = (r && r.error) || 'Could not record the loan.'; e.style.display = 'block'; return; }
-  q.loans.push(mapLoan(r.data));
-  q.status = 'closed';
-  ['al_unit','al_price','al_amount','al_dp','al_orpr','al_orprdate','al_fin_spec','al_purpose_spec','al_source_spec'].forEach(id => { $(id).value = ''; });
-  ['al_fin','al_dpterm','al_term','al_purpose','al_source'].forEach(id => { $(id).selectedIndex = 0; });
-  ['al_fin_spec_wrap','al_purpose_spec_wrap','al_source_spec_wrap'].forEach(id => { $(id).style.display = 'none'; });
-  $('loanHint').textContent = '';
-  renderAdmLoan(); renderQueue();
-  toast('Loan recorded', q.name + '\u2019s loan ' + r.data.LoanID + ' is on record. You can encode another unit for this buyer, or open another record.', '');
-}
-/* ---- reports / inventory (officer console) ---- */
-async function loadReports() {
-  const res = await API.get('/api/reports');
-  const menu = (res && res.ok && Array.isArray(res.data)) ? res.data : [];
-  $('reportList').innerHTML = menu.map(m =>
-    '<div class="doc-item" style="flex-direction:column; align-items:stretch; cursor:pointer" onclick="toggleReport(' + m.number + ', this)">' +
-      '<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%">' +
-        '<div><span class="mono" style="color:var(--gold)">#' + String(m.number).padStart(2, '0') + '</span>&nbsp;&nbsp;' + m.description + '</div>' +
-        '<span class="chip paper">Run \u25b8</span></div>' +
-      '<div class="rep-body" style="display:none; width:100%; margin-top:12px"></div>' +
-    '</div>').join('');
-}
-async function toggleReport(n, el) {
-  const body = el.querySelector('.rep-body');
-  if (body.style.display === 'block') { body.style.display = 'none'; return; }
-  body.style.display = 'block';
-  body.innerHTML = '<div class="hint">Running\u2026</div>';
-  const res = await API.get('/api/reports/q' + n);
-  if (!res || !res.ok) { body.innerHTML = '<div class="hint bad">' + ((res && res.error) || 'Could not run report.') + '</div>'; return; }
-  const rows = (res.data && res.data.rows) || [];
-  if (!rows.length) { body.innerHTML = '<div class="hint">No rows returned.</div>'; return; }
-  const cols = Object.keys(rows[0]);
-  body.innerHTML = '<div class="table-scroll"><table class="data-table"><thead><tr>' +
-    cols.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>' +
-    rows.map(rw => '<tr>' + cols.map(c => '<td>' + (rw[c] == null ? '\u2014' : rw[c]) + '</td>').join('') + '</tr>').join('') +
-    '</tbody></table></div>';
+  queue[admSel].status = 'closed';
+  renderAdmLoan(); renderAdmDocs(); renderQueue();
+  toast('Sale closed', queue[admSel].name + '\u2019s loan recorded under L-10900. The buyer can now view their particulars and payment schedule.', '');
 }
 </script>
 </body>

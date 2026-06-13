@@ -7,3 +7,8 @@ venv/
 # Secrets — never commit real DB passwords
 backend/.env
 .env
+
+# Transient dev-server logs
+backend/_run_out.log
+backend/_run_err.log
+*.log
