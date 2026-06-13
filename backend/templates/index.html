@@ -196,6 +196,16 @@
   .cat-tab { background: none; border: 1px solid var(--line); border-radius: 2px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 10px; color: var(--mist); }
   .cat-tab.on { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
   .cat-tab b { font-family: 'IBM Plex Mono', monospace; margin-left: 4px; }
+  /* queue as a stacked list (reads better than a table in the narrow column) */
+  .q-list { display: flex; flex-direction: column; }
+  .q-item { padding: 11px 8px; border-bottom: 1px dotted var(--line); cursor: pointer; border-left: 3px solid transparent; }
+  .q-item:last-child { border-bottom: none; }
+  .q-item:hover { background: var(--paper); }
+  .q-item.sel { background: var(--verde-pale); border-left-color: var(--verde); }
+  .q-item-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .q-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .q-id { font-size: 11px; color: var(--mist); margin-top: 3px; display: block; }
+  .q-empty { color: var(--mist); padding: 16px 8px; font-size: 13px; }
   .grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); }
   .grid .field { margin-bottom: 6px; }
   .req::after { content: " *"; color: var(--rust); }
@@ -625,11 +635,8 @@
               <button class="cat-tab" data-f="open" onclick="setAdmFilter('open')">For loan encoding<b id="cnt-open">0</b></button>
             </div>
           </div>
-          <div class="panel-body table-scroll" style="padding-top:6px">
-            <table class="data-table">
-              <thead><tr><th>Buyer ID</th><th>Name</th><th>Status</th></tr></thead>
-              <tbody id="admRows"></tbody>
-            </table>
+          <div class="panel-body" style="padding-top:6px">
+            <div id="admRows" class="q-list"></div>
           </div>
         </div>
       </div>
@@ -1593,9 +1600,11 @@ function renderQueue() {
     .filter(({ q }) => !term || q.id.toLowerCase().includes(term) || q.name.toLowerCase().includes(term));
   $('admRows').innerHTML = rows.length
     ? rows.map(({ q, i }) =>
-        '<tr class="app-row" onclick="openRecord(' + i + ')"><td class="mono">' + q.id + '</td><td>' + q.name + '</td>' +
-        '<td>' + statusChip(q.status) + '</td></tr>').join('')
-    : '<tr><td colspan="3" style="color:var(--mist); padding:14px 2px;">No matching records.</td></tr>';
+        '<div class="q-item' + (i === admSel ? ' sel' : '') + '" onclick="openRecord(' + i + ')">' +
+          '<div class="q-item-top"><span class="q-name">' + q.name + '</span>' + statusChip(q.status) + '</div>' +
+          '<span class="q-id mono">' + q.id + '</span>' +
+        '</div>').join('')
+    : '<div class="q-empty">No matching records.</div>';
   // counts (over the whole queue, independent of the active filter/search)
   const nClosed = queue.filter(q => q.status === 'closed').length;
   const nOpen = queue.filter(q => q.status === 'open').length;
@@ -1629,6 +1638,7 @@ function openRecord(i) {
   $('admBuyerErr').style.display = 'none';
   renderAdmDocs();
   renderAdmLoan();
+  renderQueue();   // refresh the list to highlight the selected item
   $('admDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 // Collapse the open record (show the placeholder again).
@@ -1636,6 +1646,7 @@ function closeRecord() {
   $('admDetail').style.display = 'none';
   $('admPlaceholder').style.display = '';
   admSel = null;
+  renderQueue();   // clear the selected highlight
 }
 // ----- Edit (update) a buyer record -> PUT /api/buyers/<id> -----
 function editBuyer() {
