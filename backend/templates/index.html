@@ -181,6 +181,14 @@
   .app-row { cursor: pointer; }
   .app-row:hover td { background: var(--paper); }
   .admin-detail { display: none; }
+  /* two-column queue (left) + selected record (right), so a long queue
+     doesn't push the detail far down the page */
+  .adm-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px; align-items: start; }
+  .adm-detail-col { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+  @media (max-width: 920px) {
+    .adm-split { grid-template-columns: 1fr; }
+    .adm-detail-col { position: static; max-height: none; overflow: visible; }
+  }
   .grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); }
   .grid .field { margin-bottom: 6px; }
   .req::after { content: " *"; color: var(--rust); }
@@ -595,17 +603,27 @@
     </div>
     <div class="rule-double doc-rules"></div>
 
-    <div class="panel">
-      <div class="panel-head"><h3>Queue</h3><span class="eyebrow">Click a row to open</span></div>
-      <div class="panel-body table-scroll">
-        <table class="data-table">
-          <thead><tr><th>Buyer ID</th><th>Name</th><th>Filed</th><th class="r">Income</th><th>Status</th></tr></thead>
-          <tbody id="admRows"></tbody>
-        </table>
+    <div class="adm-split">
+      <div class="adm-queue-col">
+        <div class="panel">
+          <div class="panel-head"><h3>Queue</h3><span class="eyebrow">Click a row to open</span></div>
+          <div class="panel-body table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Buyer ID</th><th>Name</th><th>Filed</th><th class="r">Income</th><th>Status</th></tr></thead>
+              <tbody id="admRows"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="admin-detail" id="admDetail">
+      <div class="adm-detail-col">
+        <div class="panel" id="admPlaceholder">
+          <div class="pending-state"><div class="keyline">§</div>
+            <h4>Select a record</h4>
+            <p>Choose a buyer from the queue to review their details, verify documents, and encode loan particulars.</p></div>
+        </div>
+
+        <div class="admin-detail" id="admDetail">
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -711,7 +729,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- /admDetail -->
+      </div><!-- /adm-detail-col -->
+    </div><!-- /adm-split -->
     </div><!-- /adm-queue -->
 
     <div class="page" id="adm-reports" style="display:none">
@@ -1082,7 +1102,7 @@ function benSummaryList() {
   blocks.forEach((b, i) => {
     const inps = b.querySelectorAll('input');
     if (blocks.length > 1) out += '<div class="rev-sub">Beneficiary ' + (i + 1) + '</div>';
-    out += '<div class="info-pairs">' + pair('Name', inps[0].value) + pair('Birthdate', inps[1].value) + pair('Relationship', inps[2].value) + '</div>';
+    out += '<div class="info-pairs">' + pair('Name', inps[0].value) + pair('Birthdate', fmtDate(inps[1].value)) + pair('Relationship', inps[2].value) + '</div>';
   });
   return out;
 }
@@ -1095,7 +1115,7 @@ function revGroup(title, table, body, stepKey) {
 function buildReview() {
   let h = '';
   h += revGroup('Personal information', 'Buyer', '<div class="info-pairs">' +
-    pair('Full name', val('b_name')) + pair('Birthdate', val('b_bdate')) +
+    pair('Full name', val('b_name')) + pair('Birthdate', fmtDate(val('b_bdate'))) +
     pair('Birthplace', val('b_bplace')) + pair('Gender', val('b_gender') === 'M' ? 'Male' : val('b_gender') === 'F' ? 'Female' : '') +
     pair('Civil status', civilWord(val('b_civil'))) + pair('Citizenship', val('b_citizen')) +
     pair('Government ID', val('b_govid')) + pair('TIN', val('b_tin')) +
@@ -1105,7 +1125,7 @@ function buildReview() {
     pair('Bank', val('b_bank') ? val('b_bank') + ' — ' + val('b_acct') : '') + '</div>', 'personal');
 
   if (married) h += revGroup('Spouse information', 'Spouse', '<div class="info-pairs">' +
-    pair('Name', val('s_name')) + pair('Birthdate', val('s_bdate')) +
+    pair('Name', val('s_name')) + pair('Birthdate', fmtDate(val('s_bdate'))) +
     pair('Birthplace', val('s_bplace')) + pair('Citizenship', val('s_citizen')) +
     pair('Government ID', val('s_govid')) + pair('TIN', val('s_tin')) +
     pair('Mobile', val('s_mobile')) + pair('Email', val('s_email')) +
@@ -1358,9 +1378,9 @@ function renderOneLoan() {
     fig('Downpayment', peso(l.downpayment)) + fig('Monthly DP due', peso(monthlyDp), true);
   $('ovLoanKv').innerHTML =
     kvRow('Unit', '<span class="mono">' + l.unitId + '</span>') +
-    kvRow('Financing', l.financeType + ' · <span class="mono">' + l.dpTerm + '-mo</span> DP term · <span class="mono">' + l.loanTerm + '-yr</span> loan term') +
+    kvRow('Financing', l.financeType + SEP + '<span class="mono">' + l.dpTerm + '-mo</span> DP term' + SEP + '<span class="mono">' + l.loanTerm + '-yr</span> loan term') +
     kvRow('Purchase purpose', l.purchasePurpose) +
-    kvRow('Reservation fee', '<span class="mono">' + peso(l.reservationFee) + '</span> · <span class="mono">' + (l.orPrNum || '—') + '</span>') +
+    kvRow('Reservation fee', '<span class="mono">' + peso(l.reservationFee) + '</span>' + SEP + 'OR/PR ' + '<span class="mono">' + (l.orPrNum || '—') + '</span>') +
     kvRow('Processing fee', '<span class="mono">' + peso(l.processingFee) + '</span>') +
     kvRow('Booking officer', l.bookingOfficer || '—');
   $('rcptOfficer').textContent = l.bookingOfficer || '—';
@@ -1370,6 +1390,15 @@ function renderOneLoan() {
 }
 function fig(k, v, verde) { return '<div class="figure"><div class="k">' + k + '</div><div class="v' + (verde ? ' verde' : '') + '">' + v + '</div></div>'; }
 function kvRow(k, v) { return '<tr><th>' + k + '</th><td>' + v + '</td></tr>'; }
+// Spaced vertical divider between inline detail segments.
+const SEP = '<span style="color:var(--line); margin:0 10px;">|</span>';
+// Format an ISO date (YYYY-MM-DD) as month-day-year, e.g. "May 3, 1995".
+function fmtDate(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+  if (!m) return s || '';
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return months[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1];
+}
 function renderSummary() {
   const a = app || DEMO;
   // DEMO fallback fields
@@ -1383,7 +1412,7 @@ function renderSummary() {
 
   $('appSummary').innerHTML =
     g('Personal', 
-      pair('Full name', a.name) + pair('Birthdate', bdate) + pair('Birthplace', bplace) +
+      pair('Full name', a.name) + pair('Birthdate', fmtDate(bdate)) + pair('Birthplace', bplace) +
       pair('Gender', gender) + pair('Civil status', civilW + (a.civil === 'M' && a.spouse ? ' — ' + a.spouse : '')) +
       pair('Citizenship', citizen)) +
     g('Identification &amp; income',
@@ -1477,6 +1506,7 @@ async function openAdminFromDb() {
   show('adminScreen');
   $('admUserName').innerHTML = (currentUser ? currentUser.name : 'Administrator') + ' · <span style="color:var(--gold)">Booking Officer</span>';
   $('admDetail').style.display = 'none';
+  $('admPlaceholder').style.display = '';
   showAdminPage('queue');
   await loadQueue();
   loadReports();
@@ -1535,6 +1565,7 @@ function renderQueue() {
 function openRecord(i) {
   admSel = i;
   const q = queue[i];
+  $('admPlaceholder').style.display = 'none';
   $('admDetail').style.display = 'block';
   $('admBuyerName').textContent = q.name;
   $('admBuyerId').textContent = q.id;
@@ -1555,11 +1586,12 @@ function openRecord(i) {
   $('admBuyerErr').style.display = 'none';
   renderAdmDocs();
   renderAdmLoan();
-  $('admDetail').scrollIntoView({ behavior: 'smooth' });
+  $('admDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-// Collapse the open record.
+// Collapse the open record (show the placeholder again).
 function closeRecord() {
   $('admDetail').style.display = 'none';
+  $('admPlaceholder').style.display = '';
   admSel = null;
 }
 // ----- Edit (update) a buyer record -> PUT /api/buyers/<id> -----
