@@ -183,12 +183,19 @@
   .admin-detail { display: none; }
   /* two-column queue (left) + selected record (right), so a long queue
      doesn't push the detail far down the page */
-  .adm-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px; align-items: start; }
+  .adm-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 24px; align-items: start; }
   .adm-detail-col { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
   @media (max-width: 920px) {
     .adm-split { grid-template-columns: 1fr; }
     .adm-detail-col { position: static; max-height: none; overflow: visible; }
   }
+  /* queue search + category filter */
+  .q-search { width: 100%; padding: 9px 12px; border: 1px solid var(--line); background: var(--white); font-family: 'Archivo', sans-serif; font-size: 13px; color: var(--ink); border-radius: 2px; }
+  .q-search:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,155,63,0.18); }
+  .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cat-tab { background: none; border: 1px solid var(--line); border-radius: 2px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 10px; color: var(--mist); }
+  .cat-tab.on { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+  .cat-tab b { font-family: 'IBM Plex Mono', monospace; margin-left: 4px; }
   .grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); }
   .grid .field { margin-bottom: 6px; }
   .req::after { content: " *"; color: var(--rust); }
@@ -606,10 +613,21 @@
     <div class="adm-split">
       <div class="adm-queue-col">
         <div class="panel">
-          <div class="panel-head"><h3>Queue</h3><span class="eyebrow">Click a row to open</span></div>
-          <div class="panel-body table-scroll">
+          <div class="panel-head"><h3>Queue</h3><span class="eyebrow" id="admQueueCount">—</span></div>
+          <div class="panel-body" style="padding-bottom:10px">
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+              <input id="admSearchBox" class="q-search" placeholder="Search Buyer ID or name…" oninput="admSearch=this.value; renderQueue()">
+              <button class="btn btn-line btn-sm" onclick="doAdmSearch()">Search</button>
+            </div>
+            <div class="cat-tabs" id="admFilterTabs">
+              <button class="cat-tab on" data-f="all" onclick="setAdmFilter('all')">All<b id="cnt-all">0</b></button>
+              <button class="cat-tab" data-f="closed" onclick="setAdmFilter('closed')">Has loan(s)<b id="cnt-closed">0</b></button>
+              <button class="cat-tab" data-f="open" onclick="setAdmFilter('open')">For loan encoding<b id="cnt-open">0</b></button>
+            </div>
+          </div>
+          <div class="panel-body table-scroll" style="padding-top:6px">
             <table class="data-table">
-              <thead><tr><th>Buyer ID</th><th>Name</th><th>Filed</th><th class="r">Income</th><th>Status</th></tr></thead>
+              <thead><tr><th>Buyer ID</th><th>Name</th><th>Status</th></tr></thead>
               <tbody id="admRows"></tbody>
             </table>
           </div>
@@ -828,6 +846,8 @@ let payments = [
 /* admin queue — built from the live database in loadQueue(). */
 let queue = [];
 let admSel = null;
+let admFilter = 'all';   // 'all' | 'closed' (has loan) | 'open' (for loan encoding)
+let admSearch = '';      // search text (Buyer ID or name)
 function demoDocsFor(b) {
   // DEMO ONLY cosmetic checklist (no Document table). Real verification is not persisted.
   const list = [
@@ -1508,6 +1528,9 @@ async function openAdminFromDb() {
   $('admDetail').style.display = 'none';
   $('admPlaceholder').style.display = '';
   showAdminPage('queue');
+  admFilter = 'all'; admSearch = '';
+  $('admSearchBox').value = '';
+  document.querySelectorAll('#admFilterTabs .cat-tab').forEach(b => b.classList.toggle('on', b.dataset.f === 'all'));
   await loadQueue();
   loadReports();
 }
@@ -1556,11 +1579,31 @@ function statusChip(s) {
     ? '<span class="chip verde">Has loan(s)</span>'
     : '<span class="chip gold">For loan encoding</span>';
 }
+function setAdmFilter(f) {
+  admFilter = f;
+  document.querySelectorAll('#admFilterTabs .cat-tab').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  renderQueue();
+}
+function doAdmSearch() { admSearch = val('admSearchBox'); renderQueue(); }
 function renderQueue() {
-  $('admRows').innerHTML = queue.map((q, i) =>
-    '<tr class="app-row" onclick="openRecord(' + i + ')"><td class="mono">' + q.id + '</td><td>' + q.name + '</td>' +
-    '<td class="mono">' + q.filed + '</td><td class="r mono">' + peso(q.income) + '</td><td>' + statusChip(q.status) + '</td></tr>').join('');
-  $('admPending').textContent = queue.filter(q => q.status === 'open').length;
+  const term = admSearch.trim().toLowerCase();
+  const rows = queue
+    .map((q, i) => ({ q, i }))
+    .filter(({ q }) => admFilter === 'all' || q.status === admFilter)
+    .filter(({ q }) => !term || q.id.toLowerCase().includes(term) || q.name.toLowerCase().includes(term));
+  $('admRows').innerHTML = rows.length
+    ? rows.map(({ q, i }) =>
+        '<tr class="app-row" onclick="openRecord(' + i + ')"><td class="mono">' + q.id + '</td><td>' + q.name + '</td>' +
+        '<td>' + statusChip(q.status) + '</td></tr>').join('')
+    : '<tr><td colspan="3" style="color:var(--mist); padding:14px 2px;">No matching records.</td></tr>';
+  // counts (over the whole queue, independent of the active filter/search)
+  const nClosed = queue.filter(q => q.status === 'closed').length;
+  const nOpen = queue.filter(q => q.status === 'open').length;
+  $('cnt-all').textContent = queue.length;
+  $('cnt-closed').textContent = nClosed;
+  $('cnt-open').textContent = nOpen;
+  $('admQueueCount').textContent = 'Showing ' + rows.length + ' of ' + queue.length;
+  $('admPending').textContent = nOpen;
 }
 function openRecord(i) {
   admSel = i;
