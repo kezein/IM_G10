@@ -18,7 +18,7 @@
     --white: #FFFDF9;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Archivo', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.55; }
+  body { font-family: 'Archivo', sans-serif; background: #fff; color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.55; }
   h1, h2, h3, h4 { font-family: 'Fraunces', serif; font-weight: 600; }
   .mono { font-family: 'IBM Plex Mono', monospace; }
   .eyebrow { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mist); font-weight: 600; }
@@ -59,10 +59,10 @@
   /* legacy auth-card / auth-tabs styles removed — login is now a split-screen shell */
   .field { margin-bottom: 14px; }
   .field label { display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mist); font-weight: 600; margin-bottom: 6px; }
-  .field input, .field select { width: 100%; padding: 11px 13px; border: 1px solid var(--line); background: var(--white); font-family: 'Archivo', sans-serif; font-size: 14px; color: var(--ink); border-radius: 2px; }
+  .field input, .field select { width: 100%; padding: 11px 13px; border: 1px solid var(--line); background: var(--white); font-family: 'Archivo', sans-serif; font-size: 14px; color: var(--ink); border-radius: 8px; }
   .field input:focus, .field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,155,63,0.18); }
   .field input[readonly] { background: var(--paper-dark); color: var(--mist); }
-  .btn { border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 20px; border-radius: 2px; transition: background 0.15s; }
+  .btn { border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 20px; border-radius: 8px; transition: background 0.15s; }
   .btn-primary { background: var(--burgundy); color: var(--paper); }
   .btn-primary:hover { background: var(--burgundy-deep); }
   .btn-verde { background: var(--verde); color: var(--paper); }
@@ -73,11 +73,11 @@
   .btn-sm { padding: 8px 13px; font-size: 11px; }
   .auth-note { margin-top: 16px; padding: 12px 14px; border: 1px dashed var(--line); font-size: 12px; color: var(--mist); line-height: 1.7; background: var(--white); }
   .auth-note strong { color: var(--ink); }
-  .alert { display: none; padding: 10px 13px; font-size: 13px; margin-bottom: 14px; background: var(--rust-pale); color: var(--rust); border-left: 2px solid var(--rust); }
+  .alert { display: none; padding: 10px 13px; font-size: 13px; margin-bottom: 14px; background: var(--rust-pale); color: var(--rust); border-left: 2px solid var(--rust); border-radius: 8px; }
 
   /* ===== shell ===== */
   .screen { display: none; }
-  .masthead { background: var(--burgundy); color: var(--paper); padding: 0 max(22px, calc(50vw - 490px)); }
+  .masthead { background: var(--burgundy); color: var(--paper); padding: 0 max(22px, calc(50vw - 490px)); border-radius: 0 0 22px 22px; }
   .masthead-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; flex-wrap: wrap; gap: 10px; }
   .masthead .brand { display: flex; align-items: center; gap: 13px; }
   .masthead .crest { width: 40px; height: 40px; font-size: 13px; margin: 0; color: var(--gold); border-color: var(--gold); }
@@ -85,7 +85,7 @@
   .masthead .sub { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-pale); margin-top: 2px; }
   .session { display: flex; align-items: center; gap: 14px; font-size: 13px; }
   .session .who { color: var(--gold-pale); }
-  .session button { background: none; border: 1px solid rgba(246,241,231,0.35); color: var(--paper); font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; cursor: pointer; border-radius: 2px; }
+  .session button { background: none; border: 1px solid rgba(246,241,231,0.35); color: var(--paper); font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; cursor: pointer; border-radius: 8px; }
   .session button:hover { border-color: var(--gold); }
   .portal-nav { display: flex; gap: 0; border-top: 1px solid rgba(201,155,63,0.4); }
   .portal-nav button { background: none; border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(246,241,231,0.65); padding: 13px 18px; border-bottom: 2px solid transparent; }
@@ -99,14 +99,14 @@
   .serial .no { font-size: 18px; font-weight: 600; }
   .doc-rules { margin: 16px 0 24px; }
 
-  .demo-strip { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; margin-bottom: 24px; border: 1px dashed var(--gold); background: var(--white); font-size: 12.5px; color: var(--mist); }
+  .demo-strip { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; margin-bottom: 24px; border: 1px dashed var(--gold); background: var(--white); font-size: 12.5px; color: var(--mist); border-radius: 10px; }
   .demo-strip .btns { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .dash-grid { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
   @media (max-width: 780px) { .dash-grid { grid-template-columns: 1fr; } }
 
   /* ledger / receipt (left rail) */
-  .ledger { background: var(--white); border: 1px solid var(--line); }
+  .ledger { background: var(--white); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
   .ledger-head { padding: 15px 19px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; }
   .ledger-head h3 { font-size: 16px; color: var(--burgundy); }
   .entry { display: grid; grid-template-columns: 84px 1fr; padding: 12px 19px; position: relative; }
@@ -115,14 +115,14 @@
   .entry .what { font-size: 13.5px; color: var(--mist); }
   .entry.done .what { color: var(--ink); }
   .entry.done .date { color: var(--verde); }
-  .entry .tick { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: var(--verde); border: 1px solid var(--verde); padding: 1px 7px; border-radius: 2px; margin-top: 5px; text-transform: uppercase; }
+  .entry .tick { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: var(--verde); border: 1px solid var(--verde); padding: 1px 7px; border-radius: 8px; margin-top: 5px; text-transform: uppercase; }
   .entry.now { background: var(--paper); }
   .entry.now::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); }
   .entry.now .what { color: var(--burgundy); font-weight: 600; }
   .entry.now .tick { color: var(--gold); border-color: var(--gold); }
   .entry.todo { opacity: 0.55; }
 
-  .receipt { margin-top: 20px; background: var(--white); border: 1px solid var(--line); position: relative; padding: 18px 20px 15px; overflow: hidden; }
+  .receipt { margin-top: 20px; background: var(--white); border: 1px solid var(--line); position: relative; padding: 18px 20px 15px; overflow: hidden; border-radius: 12px; }
   .receipt::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: repeating-linear-gradient(90deg, var(--burgundy) 0 14px, var(--gold) 14px 28px); }
   .receipt .big { font-family: 'IBM Plex Mono', monospace; font-size: 21px; font-weight: 600; margin: 6px 0 10px; color: var(--burgundy); }
   .receipt .meta { font-size: 12px; color: var(--mist); line-height: 1.75; }
@@ -131,7 +131,7 @@
   .perf::before, .perf::after { content: ''; position: absolute; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line); }
   .perf::before { left: -7px; } .perf::after { right: -7px; }
 
-  .rail-panel { margin-top: 20px; background: var(--white); border: 1px solid var(--line); }
+  .rail-panel { margin-top: 20px; background: var(--white); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
   .rail-panel .panel-head { padding: 14px 19px 11px; }
   .rail-panel .panel-body { padding: 6px 19px 14px; }
   .notif-item { display: grid; grid-template-columns: 80px 1fr; padding: 10px 0; font-size: 12.5px; border-bottom: 1px dotted var(--line); }
@@ -139,11 +139,11 @@
   .notif-item .when { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--mist); padding-top: 2px; }
 
   /* panels */
-  .panel { background: var(--white); border: 1px solid var(--line); margin-bottom: 22px; }
+  .panel { background: var(--white); border: 1px solid var(--line); margin-bottom: 22px; border-radius: 12px; }
   .panel-head { padding: 15px 22px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
   .panel-head h3 { font-size: 17px; color: var(--burgundy); }
   .panel-body { padding: 20px 22px; position: relative; }
-  .chip { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 4px 10px; border-radius: 2px; white-space: nowrap; }
+  .chip { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
   .chip.gold { background: var(--gold-pale); color: #7A5A14; }
   .chip.verde { background: var(--verde-pale); color: var(--verde); }
   .chip.paper { background: var(--paper-dark); color: var(--mist); }
@@ -210,10 +210,10 @@
     .adm-detail-col { position: static; max-height: none; overflow: visible; }
   }
   /* queue search + category filter */
-  .q-search { width: 100%; padding: 9px 12px; border: 1px solid var(--line); background: var(--white); font-family: 'Archivo', sans-serif; font-size: 13px; color: var(--ink); border-radius: 2px; }
+  .q-search { width: 100%; padding: 9px 12px; border: 1px solid var(--line); background: var(--white); font-family: 'Archivo', sans-serif; font-size: 13px; color: var(--ink); border-radius: 8px; }
   .q-search:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,155,63,0.18); }
   .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-  .cat-tab { background: none; border: 1px solid var(--line); border-radius: 2px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 10px; color: var(--mist); }
+  .cat-tab { background: none; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 10px; color: var(--mist); }
   .cat-tab.on { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
   .cat-tab b { font-family: 'IBM Plex Mono', monospace; margin-left: 4px; }
   /* queue as a stacked list (reads better than a table in the narrow column) */
@@ -232,10 +232,85 @@
   .hint { font-size: 11.5px; color: var(--mist); margin-top: 4px; }
   .hint.ok { color: var(--verde); } .hint.bad { color: var(--rust); }
   .sect { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; border-bottom: 1px solid var(--line); padding-bottom: 7px; margin: 20px 0 15px; }
-  .notice { font-size: 13px; padding: 11px 15px; margin-bottom: 16px; background: var(--paper); border-left: 2px solid var(--gold); color: var(--mist); }
+  .notice { font-size: 13px; padding: 11px 15px; margin-bottom: 16px; background: var(--paper); border-left: 2px solid var(--gold); color: var(--mist); border-radius: 8px; }
   .notice strong { color: var(--ink); }
   .notice.err { display: none; background: var(--rust-pale); border-left-color: var(--rust); color: var(--rust); }
   .notice.verde { border-left-color: var(--verde); }
+
+  /* ===== admin console (redesigned: horizontal nav + dashboard) ===== */
+  .admin-mast .masthead-inner { padding: 12px 0; align-items: center; }
+  .mast-logo { width: 38px; height: 38px; border-radius: 9px; background: var(--verde); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .mast-logo svg { width: 20px; height: 20px; }
+  .mast-name { font-family: 'Fraunces', serif; font-size: 19px; color: #fff; font-weight: 600; }
+  .anav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .anav-btn { display: inline-flex; align-items: center; gap: 7px; background: rgba(246,241,231,0.08); border: 1px solid rgba(234,217,176,0.25); color: var(--gold-pale); font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; padding: 9px 15px; border-radius: 40px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .anav-btn svg { width: 15px; height: 15px; }
+  .anav-btn:hover { background: rgba(246,241,231,0.16); }
+  .anav-btn.on { background: var(--paper); color: var(--burgundy); border-color: var(--paper); }
+  .anav-btn.logout { background: var(--rust); color: #fff; border-color: var(--rust); }
+  .anav-btn.logout:hover { background: #9A3528; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 30px; }
+  @media (max-width: 860px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } }
+  .stat-card { background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--verde); border-radius: 10px; padding: 22px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .stat-card.c-green { border-left-color: var(--verde); }
+  .stat-card.c-blue { border-left-color: #3B6CA8; }
+  .stat-card.c-indigo { border-left-color: #5A5AA8; }
+  .stat-card.c-gold { border-left-color: var(--gold); }
+  .stat-card .ic { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .stat-card .ic svg { width: 21px; height: 21px; }
+  .ic.green { background: var(--verde-pale); color: var(--verde); }
+  .ic.blue { background: #E1EAF5; color: #3B6CA8; }
+  .ic.indigo { background: #E7E7F4; color: #5A5AA8; }
+  .ic.gold { background: var(--gold-pale); color: #7A5A14; }
+  .stat-card .sv { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; color: var(--burgundy-deep); line-height: 1; }
+  .stat-card .sl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); font-weight: 600; margin-top: 12px; }
+  .stat-card .ss { font-size: 12.5px; color: var(--mist); margin-top: 4px; }
+
+  .page-head { margin-bottom: 20px; }
+  .page-head h2 { font-size: 30px; color: var(--burgundy); line-height: 1.1; }
+  .page-head .lede { color: var(--mist); font-size: 14px; margin-top: 5px; }
+  .filter-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .search-wide { display: flex; align-items: center; gap: 8px; width: 280px; max-width: 100%; border: 1px solid var(--line); background: var(--white); border-radius: 8px; padding: 8px 12px; }
+  .search-wide svg { color: var(--mist); flex: none; }
+  .search-wide input { border: none; outline: none; background: none; font-family: 'Archivo', sans-serif; font-size: 13.5px; color: var(--ink); width: 100%; }
+  .filter-pill { background: var(--white); border: 1px solid var(--line); border-radius: 40px; padding: 8px 16px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; color: var(--mist); }
+  .filter-pill.on { border-color: var(--verde); color: var(--verde); background: var(--verde-pale); }
+  .btn-add { margin-left: auto; background: var(--burgundy); color: #fff; border: none; border-radius: 8px; padding: 10px 16px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; }
+  .btn-add:hover { background: var(--burgundy-deep); }
+
+  .data-card { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 4px 8px 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  .data-table th { text-align: left; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); font-weight: 600; padding: 16px 16px 12px; border-bottom: 1px solid var(--line); }
+  .data-table td { padding: 15px 16px; border-bottom: 1px solid var(--paper-dark); font-size: 14px; color: var(--ink); vertical-align: middle; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:hover td { background: var(--paper); }
+  .data-table .mono { font-size: 13px; }
+  .status-pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 40px; white-space: nowrap; }
+  .pill-green { background: var(--verde-pale); color: var(--verde); }
+  .pill-gold { background: var(--gold-pale); color: #7A5A14; }
+  .pill-gray { background: var(--paper-dark); color: var(--mist); }
+  .pill-rust { background: var(--rust-pale); color: var(--rust); }
+  .act-btn { background: var(--paper-dark); border: none; border-radius: 8px; padding: 7px 14px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; color: var(--mist); margin-right: 6px; }
+  .act-btn.edit { background: #E4EAF4; color: #3B6CA8; }
+  .act-btn.approve { background: var(--verde-pale); color: var(--verde); }
+  .act-btn.reject { background: var(--rust-pale); color: var(--rust); }
+  .act-btn:hover { filter: brightness(0.96); }
+  .table-foot { padding: 16px 16px 4px; font-size: 13px; color: var(--mist); }
+  .empty-stub { padding: 64px 20px; text-align: center; color: var(--mist); font-size: 14px; }
+  .empty-stub svg { width: 34px; height: 34px; color: var(--line); display: block; margin: 0 auto 14px; }
+
+  /* loan view modal (opened from a Loan Management row) */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(30,61,44,0.45); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.on { display: flex; }
+  .modal-card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; width: 100%; max-width: 440px; box-shadow: 0 24px 60px rgba(0,0,0,0.28); overflow: hidden; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .modal-head h3 { font-size: 18px; color: var(--burgundy); }
+  .modal-x { background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--mist); }
+  .modal-x:hover { color: var(--ink); }
+  .modal-body { padding: 18px 22px; }
+  .modal-foot { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; padding: 14px 22px; border-top: 1px solid var(--line); }
 
   /* wizard */
   .w-progress { display: flex; margin-bottom: 24px; border: 1px solid var(--line); background: var(--white); overflow-x: auto; }
@@ -247,7 +322,7 @@
   .w-seg.done { color: var(--verde); }
   .w-seg.clickable { cursor: pointer; }
   .w-seg.clickable:hover { background: var(--verde-pale); color: var(--burgundy); }
-  .wcard { background: var(--white); border: 1px solid var(--line); }
+  .wcard { background: var(--white); border: 1px solid var(--line); border-radius: 12px; }
   .wcard-head { padding: 20px 26px 15px; border-bottom: 1px solid var(--line); }
   .wcard-head h2 { font-size: 23px; color: var(--burgundy); }
   .wcard-head .sub { font-size: 13px; color: var(--mist); margin-top: 4px; }
@@ -304,6 +379,13 @@
 </head>
 <body>
 <div id="toastWrap"></div>
+<div class="modal-overlay" id="loanModal" onclick="if(event.target===this)closeLoanModal()">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="loanModalTitle">Loan</h3><button class="modal-x" onclick="closeLoanModal()" aria-label="Close">×</button></div>
+    <div class="modal-body" id="loanModalBody"></div>
+    <div class="modal-foot" id="loanModalFoot"></div>
+  </div>
+</div>
 
 <!-- ================= AUTH ================= -->
 <div id="authScreen" style="display:flex">
@@ -641,56 +723,72 @@
 
 <!-- ================= ADMIN PORTAL ================= -->
 <div class="screen" id="adminScreen">
-  <div class="masthead">
+  <div class="masthead admin-mast">
     <div class="masthead-inner">
-      <div class="brand"><div class="crest">PF</div>
-        <div><h1>Booking Officer Console</h1><div class="sub">Property of Friends, Inc. · Authorized personnel</div></div></div>
-      <div class="session"><span class="who" id="admUserName">Administrator · <span style="color:var(--gold)">Booking Officer</span></span><button onclick="logout()">Log out</button></div>
+      <div class="brand">
+        <span class="mast-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+        <span class="mast-name">Property of Friends, Inc.</span>
+      </div>
+      <nav class="anav">
+        <button id="anav-clients" class="anav-btn on" onclick="showAdminPage('clients')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Client Management</button>
+        <button id="anav-loans" class="anav-btn" onclick="showAdminPage('loans')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg>Loan Management</button>
+        <button id="anav-reports" class="anav-btn" onclick="showAdminPage('reports')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>Reports</button>
+        <button class="anav-btn logout" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Logout</button>
+      </nav>
     </div>
-    <div class="portal-nav">
-      <button id="anav-queue" class="on" onclick="showAdminPage('queue')">Queue</button>
-      <button id="anav-reports" onclick="showAdminPage('reports')">Reports / Inventory</button>
-    </div>
+    <span id="admUserName" hidden></span>
   </div>
 
   <div class="container">
-    <div class="page" id="adm-queue">
-    <div class="doc-head">
-      <div><h2>Applications</h2>
-        <p class="lede">Buyer records awaiting verification or closing. Select a record to review documents and encode loan particulars.</p></div>
-      <div class="serial"><span class="eyebrow">Pending action</span><br><span class="no mono" id="admPending">2</span></div>
-    </div>
-    <div class="rule-double doc-rules"></div>
-
-    <div class="adm-split">
-      <div class="adm-queue-col">
-        <div class="panel">
-          <div class="panel-head"><h3>Queue</h3><span class="eyebrow" id="admQueueCount">—</span></div>
-          <div class="panel-body" style="padding-bottom:10px">
-            <div style="display:flex; gap:8px; margin-bottom:12px;">
-              <input id="admSearchBox" class="q-search" placeholder="Search Buyer ID or name…" oninput="admSearch=this.value; renderQueue()">
-              <button class="btn btn-line btn-sm" onclick="doAdmSearch()">Search</button>
-            </div>
-            <div class="cat-tabs" id="admFilterTabs">
-              <button class="cat-tab on" data-f="all" onclick="setAdmFilter('all')">All<b id="cnt-all">0</b></button>
-              <button class="cat-tab" data-f="closed" onclick="setAdmFilter('closed')">Has loan(s)<b id="cnt-closed">0</b></button>
-              <button class="cat-tab" data-f="open" onclick="setAdmFilter('open')">For loan encoding<b id="cnt-open">0</b></button>
-            </div>
-          </div>
-          <div class="panel-body" style="padding-top:6px">
-            <div id="admRows" class="q-list"></div>
-          </div>
-        </div>
+    <!-- ===== Client Management ===== -->
+    <div class="page" id="adm-clients">
+      <div class="stat-grid" id="admStats"></div>
+      <div class="page-head">
+        <h2>Client Management</h2>
+        <p class="lede">View, search, and manage all registered clients.</p>
       </div>
-
-      <div class="adm-detail-col">
-        <div class="panel" id="admPlaceholder">
-          <div class="pending-state"><div class="keyline">§</div>
-            <h4>Select a record</h4>
-            <p>Choose a buyer from the queue to review their details, verify documents, and encode loan particulars.</p></div>
+      <div class="filter-bar">
+        <div class="search-wide">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+          <input id="admSearchBox" placeholder="Search clients…" oninput="admSearch=this.value; renderQueue()">
         </div>
+        <button class="filter-pill on" data-f="all" onclick="setAdmFilter('all')">All (<span id="cnt-all">0</span>)</button>
+        <button class="filter-pill" data-f="active" onclick="setAdmFilter('active')">Active</button>
+        <button class="filter-pill" data-f="pending" onclick="setAdmFilter('pending')">Pending</button>
+        <button class="filter-pill" data-f="review" onclick="setAdmFilter('review')">For Review</button>
+        <button class="btn-add" onclick="addClient()">+ Add Client</button>
+      </div>
+      <div class="data-card">
+        <table class="data-table">
+          <thead><tr><th>Client No.</th><th>Name</th><th>Contact</th><th>Property</th><th>Loan Status</th><th>Actions</th></tr></thead>
+          <tbody id="admRows"></tbody>
+        </table>
+        <div class="table-foot" id="admQueueCount">—</div>
+      </div>
+    </div>
 
-        <div class="admin-detail" id="admDetail">
+    <!-- ===== Loan Management ===== -->
+    <div class="page" id="adm-loans" style="display:none">
+      <div class="page-head">
+        <h2>Loan Management</h2>
+        <p class="lede">All housing loans recorded across buyers.</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-pill on">All Loans (<span id="lcnt-all">0</span>)</button>
+      </div>
+      <div class="data-card">
+        <table class="data-table">
+          <thead><tr><th>Loan No.</th><th>Client</th><th>Amount</th><th>Financing</th><th>Term</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="admLoanRows"></tbody>
+        </table>
+        <div class="table-foot" id="admLoanCount">—</div>
+      </div>
+    </div>
+
+    <!-- ===== Buyer detail (opened from a row's View) ===== -->
+    <div class="page" id="adm-detail" style="display:none">
+      <button class="btn btn-line btn-sm" style="margin-bottom:16px" onclick="closeRecord()">← Back to clients</button>
+      <div class="admin-detail" id="admDetail" style="display:block">
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -797,9 +895,7 @@
         </div>
       </div>
     </div><!-- /admDetail -->
-      </div><!-- /adm-detail-col -->
-    </div><!-- /adm-split -->
-    </div><!-- /adm-queue -->
+    </div><!-- /adm-detail -->
 
     <div class="page" id="adm-reports" style="display:none">
       <div class="doc-head">
@@ -895,8 +991,10 @@ let payments = [
 /* admin queue — built from the live database in loadQueue(). */
 let queue = [];
 let admSel = null;
-let admFilter = 'all';   // 'all' | 'closed' (has loan) | 'open' (for loan encoding)
+let admFilter = 'all';   // 'all' | 'active' (has loan) | 'pending'/'review' (no loan yet)
 let admSearch = '';      // search text (Buyer ID or name)
+let lastAdminPage = 'clients';  // nav page to return to when a buyer detail is closed
+let loanStatusMap = {};         // officer decision per loan id: 'approved' | 'rejected' (default active)
 function demoDocsFor(b) {
   // DEMO ONLY cosmetic checklist (no Document table). Real verification is not persisted.
   const list = [
@@ -1580,23 +1678,25 @@ function editApp() {
 }
 
 /* ================== admin portal ================== */
+const ADMIN_PAGES = ['clients', 'loans', 'reports'];
 async function openAdminFromDb() {
   show('adminScreen');
-  $('admUserName').innerHTML = (currentUser ? currentUser.name : 'Administrator') + ' · <span style="color:var(--gold)">Booking Officer</span>';
-  $('admDetail').style.display = 'none';
-  $('admPlaceholder').style.display = '';
-  showAdminPage('queue');
-  admFilter = 'all'; admSearch = '';
-  $('admSearchBox').value = '';
-  document.querySelectorAll('#admFilterTabs .cat-tab').forEach(b => b.classList.toggle('on', b.dataset.f === 'all'));
+  const nm = $('admUserName'); if (nm) nm.textContent = currentUser ? currentUser.name : 'Administrator';
+  admFilter = 'all'; admSearch = ''; admSel = null;
+  const sb = $('admSearchBox'); if (sb) sb.value = '';
+  document.querySelectorAll('#adm-clients .filter-pill').forEach(b => b.classList.toggle('on', b.dataset.f === 'all'));
+  showAdminPage('clients');
   await loadQueue();
   loadReports();
 }
 function showAdminPage(p) {
-  ['queue', 'reports'].forEach(k => {
+  lastAdminPage = p;
+  $('adm-detail').style.display = 'none';
+  ADMIN_PAGES.forEach(k => {
     $('adm-' + k).style.display = (k === p) ? 'block' : 'none';
-    $('anav-' + k).className = (k === p) ? 'on' : '';
+    $('anav-' + k).className = 'anav-btn' + (k === p ? ' on' : '');
   });
+  if (p === 'loans') renderLoanMgmt();
   window.scrollTo({ top: 0 });
 }
 // Build the queue from the live database (buyers + related rows + loans).
@@ -1639,37 +1739,137 @@ function statusChip(s) {
 }
 function setAdmFilter(f) {
   admFilter = f;
-  document.querySelectorAll('#admFilterTabs .cat-tab').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  document.querySelectorAll('#adm-clients .filter-pill').forEach(b => b.classList.toggle('on', b.dataset.f === f));
   renderQueue();
 }
 function doAdmSearch() { admSearch = val('admSearchBox'); renderQueue(); }
+// Client Management table — built from the live queue. Filters map onto the real
+// status (a buyer with any loan is "Active"; none yet is "Pending"/"For Review").
 function renderQueue() {
   const term = admSearch.trim().toLowerCase();
   const rows = queue
     .map((q, i) => ({ q, i }))
-    .filter(({ q }) => admFilter === 'all' || q.status === admFilter)
+    .filter(({ q }) => admFilter === 'all'
+      || (admFilter === 'active' && q.status === 'closed')
+      || ((admFilter === 'pending' || admFilter === 'review') && q.status === 'open'))
     .filter(({ q }) => !term || q.id.toLowerCase().includes(term) || q.name.toLowerCase().includes(term));
   $('admRows').innerHTML = rows.length
-    ? rows.map(({ q, i }) =>
-        '<div class="q-item' + (i === admSel ? ' sel' : '') + '" onclick="openRecord(' + i + ')">' +
-          '<div class="q-item-top"><span class="q-name">' + q.name + '</span>' + statusChip(q.status) + '</div>' +
-          '<span class="q-id mono">' + q.id + '</span>' +
-        '</div>').join('')
-    : '<div class="q-empty">No matching records.</div>';
-  // counts (over the whole queue, independent of the active filter/search)
-  const nClosed = queue.filter(q => q.status === 'closed').length;
-  const nOpen = queue.filter(q => q.status === 'open').length;
+    ? rows.map(({ q, i }) => {
+        const prop = (q.loans[0] && q.loans[0].unitId) ? q.loans[0].unitId : '—';
+        const contact = (q.info && q.info.mobile) ? q.info.mobile : '—';
+        const badge = q.status === 'closed'
+          ? '<span class="status-pill pill-green">Active</span>'
+          : '<span class="status-pill pill-gold">Pending</span>';
+        return '<tr>' +
+          '<td class="mono">' + q.id + '</td>' +
+          '<td>' + q.name + '</td>' +
+          '<td class="mono">' + contact + '</td>' +
+          '<td>' + prop + '</td>' +
+          '<td>' + badge + '</td>' +
+          '<td style="white-space:nowrap">' +
+            '<button class="act-btn view" onclick="openRecord(' + i + ')">View</button>' +
+            '<button class="act-btn edit" onclick="openRecord(' + i + ', true)">Edit</button>' +
+          '</td>' +
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="6" style="text-align:center;color:var(--mist);padding:28px">No matching clients.</td></tr>';
   $('cnt-all').textContent = queue.length;
-  $('cnt-closed').textContent = nClosed;
-  $('cnt-open').textContent = nOpen;
-  $('admQueueCount').textContent = 'Showing ' + rows.length + ' of ' + queue.length;
-  $('admPending').textContent = nOpen;
+  $('admQueueCount').textContent = 'Showing ' + rows.length + ' of ' + queue.length + ' clients';
+  renderAdminStats();
+  renderLoanMgmt();
 }
-function openRecord(i) {
+// Dashboard stat cards — all four values derive from the loaded queue.
+function renderAdminStats() {
+  const el = $('admStats'); if (!el) return;
+  const buyers = queue.length;
+  const allLoans = queue.reduce((a, q) => a.concat(q.loans), []);
+  const loanTotal = allLoans.reduce((s, l) => s + (l.loanAmount || 0), 0);
+  const loanCount = allLoans.length;
+  const benCount = queue.reduce((s, q) => s + (q.children.bens ? q.children.bens.length : 0), 0);
+  const hhCount = queue.reduce((s, q) => s + (q.children.hhs ? q.children.hhs.length : 0), 0);
+  const usersIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+  const homeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>';
+  const pesoIcon = '<span style="font-family:\'Fraunces\',serif;font-weight:600;font-size:21px">₱</span>';
+  const card = (cls, ic, icon, value, label, sub) =>
+    '<div class="stat-card ' + cls + '"><div class="ic ' + ic + '">' + icon + '</div>' +
+    '<div class="sv">' + value + '</div><div class="sl">' + label + '</div><div class="ss">' + sub + '</div></div>';
+  el.innerHTML =
+    card('c-green', 'green', usersIcon, buyers, 'Total Buyers', 'Registered in the system') +
+    card('c-blue', 'blue', pesoIcon, peso(loanTotal), 'Total Loan Value', loanCount + ' loan' + (loanCount === 1 ? '' : 's') + ' · ' + loanCount + ' active') +
+    card('c-indigo', 'indigo', usersIcon, benCount, 'Beneficiaries', 'Listed across all buyers') +
+    card('c-gold', 'gold', homeIcon, hhCount, 'Households', 'Household records on file');
+}
+// Loan Management table — every loan across all buyers.
+function renderLoanMgmt() {
+  const el = $('admLoanRows'); if (!el) return;
+  const rows = [];
+  queue.forEach(q => q.loans.forEach(l => rows.push({ l, name: q.name, id: q.id })));
+  el.innerHTML = rows.length
+    ? rows.map(({ l, name, id }) => {
+        const st = loanStatusMap[l.loanId] || 'active';
+        const badge = st === 'approved' ? '<span class="status-pill pill-green">Approved</span>'
+          : st === 'rejected' ? '<span class="status-pill pill-rust">Rejected</span>'
+          : '<span class="status-pill pill-green">Active</span>';
+        const view = '<button class="act-btn view" onclick="openLoanModal(\'' + l.loanId + '\')">View</button>';
+        const actions = st === 'active'
+          ? view +
+            '<button class="act-btn approve" onclick="approveLoan(\'' + l.loanId + '\')">Approve</button>' +
+            '<button class="act-btn reject" onclick="rejectLoan(\'' + l.loanId + '\')">Reject</button>'
+          : view;
+        return '<tr>' +
+          '<td class="mono">' + (l.loanId || '—') + '</td>' +
+          '<td>' + name + '</td>' +
+          '<td class="mono">' + peso(l.loanAmount || 0) + '</td>' +
+          '<td>' + (l.financeType || '—') + '</td>' +
+          '<td>' + (l.loanTerm ? l.loanTerm + ' yr' + (l.loanTerm === 1 ? '' : 's') : '—') + '</td>' +
+          '<td>' + badge + '</td>' +
+          '<td style="white-space:nowrap">' + actions + '</td>' +
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:var(--mist);padding:28px">No loans on record yet.</td></tr>';
+  const lc = $('lcnt-all'); if (lc) lc.textContent = rows.length;
+  const fc = $('admLoanCount'); if (fc) fc.textContent = 'Showing ' + rows.length + ' loan' + (rows.length === 1 ? '' : 's');
+}
+function addClient() {
+  toast('Add client', 'New buyers register through the application form (Create Account on the portal). Admin-side quick-add is coming soon.', 'info');
+}
+function openRecordById(id) { const i = queue.findIndex(q => q.id === id); if (i >= 0) openRecord(i); }
+function loanOwner(loanId) { for (const q of queue) { if (q.loans.some(l => l.loanId === loanId)) return q.name; } return ''; }
+function approveLoan(loanId) { loanStatusMap[loanId] = 'approved'; renderLoanMgmt(); if (modalLoanId === loanId) renderLoanModal(); toast('Loan approved', loanOwner(loanId) + ' — loan ' + loanId + ' marked approved.', ''); }
+function rejectLoan(loanId) { loanStatusMap[loanId] = 'rejected'; renderLoanMgmt(); if (modalLoanId === loanId) renderLoanModal(); toast('Loan rejected', loanOwner(loanId) + ' — loan ' + loanId + ' marked rejected.', 'warn'); }
+// Loan "View" — a small modal with the loan particulars. Approved/rejected loans
+// only show "View" in the table; the decision buttons (incl. Reject) live here.
+let modalLoanId = null;
+function openLoanModal(loanId) { modalLoanId = loanId; renderLoanModal(); $('loanModal').classList.add('on'); }
+function closeLoanModal() { $('loanModal').classList.remove('on'); modalLoanId = null; }
+function renderLoanModal() {
+  const id = modalLoanId; if (!id) return;
+  let loan = null, owner = '', buyerId = '';
+  for (const q of queue) { const f = q.loans.find(l => l.loanId === id); if (f) { loan = f; owner = q.name; buyerId = q.id; break; } }
+  if (!loan) { closeLoanModal(); return; }
+  const st = loanStatusMap[id] || 'active';
+  const badge = st === 'approved' ? '<span class="status-pill pill-green">Approved</span>'
+    : st === 'rejected' ? '<span class="status-pill pill-rust">Rejected</span>'
+    : '<span class="status-pill pill-green">Active</span>';
+  $('loanModalTitle').textContent = 'Loan ' + id;
+  $('loanModalBody').innerHTML =
+    '<table class="kv">' +
+    '<tr><th>Client</th><td>' + owner + ' <span class="mono" style="color:var(--mist)">(' + buyerId + ')</span></td></tr>' +
+    '<tr><th>Amount</th><td><span class="mono">' + peso(loan.loanAmount || 0) + '</span></td></tr>' +
+    '<tr><th>Financing</th><td>' + (loan.financeType || '—') + '</td></tr>' +
+    '<tr><th>Term</th><td>' + (loan.loanTerm ? loan.loanTerm + ' yrs' : '—') + '</td></tr>' +
+    '<tr><th>Status</th><td>' + badge + '</td></tr>' +
+    '</table>';
+  let btns = '<button class="btn btn-line btn-sm" onclick="closeLoanModal(); openRecordById(\'' + buyerId + '\')">Open client record</button>';
+  if (st !== 'approved') btns += '<button class="btn btn-sm" style="background:var(--verde);color:#fff" onclick="approveLoan(\'' + id + '\')">Approve</button>';
+  if (st !== 'rejected') btns += '<button class="btn btn-sm" style="background:var(--rust);color:#fff" onclick="rejectLoan(\'' + id + '\')">Reject</button>';
+  $('loanModalFoot').innerHTML = btns;
+}
+function openRecord(i, startEdit) {
   admSel = i;
   const q = queue[i];
-  $('admPlaceholder').style.display = 'none';
-  $('admDetail').style.display = 'block';
+  ADMIN_PAGES.forEach(k => $('adm-' + k).style.display = 'none');
+  $('adm-detail').style.display = 'block';
   $('admBuyerName').textContent = q.name;
   $('admBuyerId').textContent = q.id;
   const a = q.info;
@@ -1689,15 +1889,13 @@ function openRecord(i) {
   $('admBuyerErr').style.display = 'none';
   renderAdmDocs();
   renderAdmLoan();
-  renderQueue();   // refresh the list to highlight the selected item
-  $('admDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  window.scrollTo({ top: 0 });
+  if (startEdit) editBuyer();
 }
-// Collapse the open record (show the placeholder again).
+// Close the buyer detail and return to whichever page we came from.
 function closeRecord() {
-  $('admDetail').style.display = 'none';
-  $('admPlaceholder').style.display = '';
   admSel = null;
-  renderQueue();   // clear the selected highlight
+  showAdminPage(lastAdminPage);
 }
 // ----- Edit (update) a buyer record -> PUT /api/buyers/<id> -----
 function editBuyer() {
