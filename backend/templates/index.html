@@ -385,6 +385,112 @@
   .banner .bt { font-size: 13px; color: var(--ink); } .banner .bt b { color: var(--verde); }
 
   footer { text-align: center; padding: 22px; color: var(--mist); font-size: 11.5px; }
+
+  /* ===== Warm & Editorial theme — buyer portal ===== */
+  #buyerScreen .ledger,
+  #buyerScreen .rail-panel {
+    border: none;
+    background: var(--burgundy-deep);
+    border-radius: 16px;
+    color: var(--gold-pale);
+  }
+  #buyerScreen .ledger-head {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 20px 22px 16px;
+  }
+  #buyerScreen .ledger-head h3 {
+    color: var(--gold-pale);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  #buyerScreen .ledger-head .eyebrow {
+    color: rgba(234,217,176,0.45);
+  }
+  #buyerScreen .entry .date { color: rgba(234,217,176,0.45); }
+  #buyerScreen .entry .what { color: rgba(234,217,176,0.6); }
+  #buyerScreen .entry.done .what { color: var(--gold-pale); }
+  #buyerScreen .entry.done .date { color: #7EC89A; }
+  #buyerScreen .entry.now { background: rgba(255,255,255,0.05); }
+  #buyerScreen .entry.now::before { background: var(--gold); }
+  #buyerScreen .entry.now .what { color: var(--gold-pale); }
+  #buyerScreen .entry + .entry { border-top-color: rgba(255,255,255,0.07); }
+  #buyerScreen .entry.todo { opacity: 0.4; }
+  #buyerScreen .entry .tick { color: #7EC89A; border-color: #7EC89A; }
+  #buyerScreen .rail-panel .panel-head { padding: 18px 22px 0; }
+  #buyerScreen .rail-panel .panel-body { padding: 10px 22px 20px; }
+  #buyerScreen .rail-panel .panel-head h3 { color: var(--gold-pale); font-size: 14px; }
+  #buyerScreen .notif-item { border-bottom-color: rgba(255,255,255,0.07); color: rgba(234,217,176,0.75); }
+  #buyerScreen .notif-item .when { color: rgba(234,217,176,0.4); }
+
+  #buyerScreen .receipt {
+    border: none;
+    border-radius: 16px;
+    background: var(--paper);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 24px 24px 20px;
+  }
+  #buyerScreen .receipt::before {
+    background: var(--gold);
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+  #buyerScreen .receipt .big {
+    font-size: 23px;
+    color: var(--burgundy-deep);
+  }
+
+  #buyerScreen .panel {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    background: var(--white);
+    overflow: hidden;
+  }
+  #buyerScreen .panel-head {
+    border-bottom: 1px solid var(--paper-dark);
+    padding: 20px 24px 16px;
+    background: var(--paper);
+  }
+  #buyerScreen .panel-head h3 {
+    font-size: 16px;
+    color: var(--burgundy-deep);
+    font-weight: 600;
+  }
+  #buyerScreen .panel-body {
+    padding: 22px 24px 26px;
+  }
+  #buyerScreen .figures {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--paper-dark);
+  }
+  #buyerScreen .figure { background: var(--paper); }
+  #buyerScreen .bar { border-radius: 4px; height: 7px; background: var(--paper-dark); }
+  #buyerScreen .bar-fill { border-radius: 4px; background: var(--verde); }
+  #buyerScreen .doc-head h2 {
+    font-size: 32px;
+    color: var(--burgundy-deep);
+  }
+  #buyerScreen .pending-state .keyline {
+    width: 54px; height: 54px;
+    background: var(--paper);
+    border-color: var(--gold);
+  }
+
+  /* payments & documents */
+  #buyerScreen #page-payments .panel,
+  #buyerScreen #page-documents .panel {
+    border: none; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  #buyerScreen #page-payments .panel-head,
+  #buyerScreen #page-documents .panel-head { border-bottom: 1px solid var(--paper-dark); padding: 20px 24px 16px; background: var(--paper); }
+  #buyerScreen #page-payments .panel-head h3,
+  #buyerScreen #page-documents .panel-head h3 { font-size: 16px; color: var(--burgundy-deep); font-weight: 600; }
+  #buyerScreen #page-payments .panel-body,
+  #buyerScreen #page-documents .panel-body { padding: 22px 24px 26px; }
 </style>
 </head>
 <body>
@@ -2442,5 +2548,6 @@ async function toggleReport(n, el) {
     '</tbody></table></div>';
 }
 </script>
+
 </body>
 </html>

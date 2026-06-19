@@ -8,6 +8,10 @@ venv/
 backend/.env
 .env
 
+# Local-only mock files (no MySQL needed on this machine)
+backend/db_mock.py
+backend/run_local.py
+
 # Transient dev-server logs
 backend/_run_out.log
 backend/_run_err.log
