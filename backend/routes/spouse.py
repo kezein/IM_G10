@@ -51,7 +51,8 @@ def create_spouse():
     if missing:
         return jsonify(ok=False, error=f"Missing required fields: {', '.join(missing)}"), 400
     bad = first_invalid(body, email_fields=["Sps_EmailAdd"],
-                        numeric_fields=["Sps_GrossMonthlyIncome"])
+                        numeric_fields=["Sps_GrossMonthlyIncome"],
+                        tin_fields=["Sps_TIN"])
     if bad:
         return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400
 

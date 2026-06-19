@@ -60,6 +60,7 @@ def create_buyer():
         body,
         email_fields=["Personal_Email", "Work_Email"],
         numeric_fields=["Gross_MonthlyIncome"],
+        tin_fields=["TIN"],
     )
     if bad:
         return jsonify(ok=False, error=f"Invalid value for field: {bad}"), 400

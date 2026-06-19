@@ -77,18 +77,19 @@
 
   /* ===== shell ===== */
   .screen { display: none; }
-  .masthead { background: var(--burgundy); color: var(--paper); padding: 0 max(22px, calc(50vw - 490px)); border-radius: 0 0 22px 22px; }
-  .masthead-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; flex-wrap: wrap; gap: 10px; }
-  .masthead .brand { display: flex; align-items: center; gap: 13px; }
-  .masthead .crest { width: 40px; height: 40px; font-size: 13px; margin: 0; color: var(--gold); border-color: var(--gold); }
-  .masthead h1 { font-size: 17px; font-weight: 500; }
-  .masthead .sub { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-pale); margin-top: 2px; }
+  .masthead { background: linear-gradient(150deg, #16301F 0%, #1E3D2C 45%, #2F5D43 100%); color: var(--paper); padding: 0 max(22px, calc(50vw - 490px)); border-radius: 0; border-bottom: 1px solid rgba(201,155,63,0.45); box-shadow: 0 8px 28px rgba(22,48,31,0.22); }
+  .masthead-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; flex-wrap: wrap; gap: 10px; }
+  .masthead .brand { display: flex; align-items: center; gap: 15px; }
+  .masthead .crest { width: 50px; height: 50px; font-size: 16px; margin: 0; color: var(--gold); border-color: var(--gold); }
+  .masthead h1 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: #fff; letter-spacing: 0.01em; }
+  .masthead .sub { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-pale); margin-top: 3px; }
   .session { display: flex; align-items: center; gap: 14px; font-size: 13px; }
-  .session .who { color: var(--gold-pale); }
-  .session button { background: none; border: 1px solid rgba(246,241,231,0.35); color: var(--paper); font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; cursor: pointer; border-radius: 8px; }
-  .session button:hover { border-color: var(--gold); }
-  .portal-nav { display: flex; gap: 0; border-top: 1px solid rgba(201,155,63,0.4); }
-  .portal-nav button { background: none; border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(246,241,231,0.65); padding: 13px 18px; border-bottom: 2px solid transparent; }
+  .session .who { color: var(--gold-pale); letter-spacing: 0.02em; }
+  .session button { background: none; border: 1px solid rgba(234,217,176,0.45); color: var(--paper); font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; cursor: pointer; border-radius: 40px; transition: background 0.15s, border-color 0.15s; }
+  .session button:hover { border-color: var(--gold); background: rgba(201,155,63,0.14); }
+  .portal-nav { display: flex; gap: 4px; border-top: 1px solid rgba(201,155,63,0.3); }
+  .portal-nav button { background: none; border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(246,241,231,0.68); padding: 15px 20px; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .portal-nav button:hover { color: var(--gold-pale); }
   .portal-nav button.on { color: var(--gold-pale); border-bottom-color: var(--gold); }
   .container { max-width: 980px; margin: 0 auto; padding: 28px 22px 70px; }
 
@@ -239,14 +240,14 @@
 
   /* ===== admin console (redesigned: horizontal nav + dashboard) ===== */
   .admin-mast .masthead-inner { padding: 12px 0; align-items: center; }
-  .mast-logo { width: 38px; height: 38px; border-radius: 9px; background: var(--verde); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .mast-logo { width: 46px; height: 46px; border-radius: 50%; background: transparent; border: 1.5px solid var(--gold); color: var(--gold); display: flex; align-items: center; justify-content: center; }
   .mast-logo svg { width: 20px; height: 20px; }
-  .mast-name { font-family: 'Fraunces', serif; font-size: 19px; color: #fff; font-weight: 600; }
+  .mast-name { font-family: 'Fraunces', serif; font-size: 20px; color: #fff; font-weight: 600; letter-spacing: 0.01em; }
   .anav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .anav-btn { display: inline-flex; align-items: center; gap: 7px; background: rgba(246,241,231,0.08); border: 1px solid rgba(234,217,176,0.25); color: var(--gold-pale); font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; padding: 9px 15px; border-radius: 40px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .anav-btn { display: inline-flex; align-items: center; gap: 7px; background: rgba(246,241,231,0.08); border: 1px solid rgba(234,217,176,0.25); color: #fff; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; padding: 9px 15px; border-radius: 40px; cursor: pointer; transition: background 0.15s, color 0.15s; }
   .anav-btn svg { width: 15px; height: 15px; }
   .anav-btn:hover { background: rgba(246,241,231,0.16); }
-  .anav-btn.on { background: var(--paper); color: var(--burgundy); border-color: var(--paper); }
+  .anav-btn.on { background: var(--gold); color: #1E3D2C; border-color: var(--gold); }
   .anav-btn.logout { background: var(--rust); color: #fff; border-color: var(--rust); }
   .anav-btn.logout:hover { background: #9A3528; }
 
@@ -335,15 +336,24 @@
   .foot-status { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--mist); }
 
   /* grouped key-value info (replaces flat bullet rows) */
-  .info-group { margin-bottom: 18px; }
+  .info-group { margin-bottom: 24px; }
   .info-group:last-child { margin-bottom: 0; }
-  .info-group > .gh { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; padding-bottom: 7px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
-  .info-pairs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px 28px; }
+  .info-group > .gh { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+  .info-group > .gh::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none; }
+  .info-pairs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px 36px; }
   @media (max-width: 600px) { .info-pairs { grid-template-columns: 1fr; } }
-  .info-pair { display: flex; justify-content: space-between; gap: 14px; padding: 7px 0; border-bottom: 1px dotted var(--line); font-size: 13.5px; align-items: baseline; }
-  .info-pair .ik { color: var(--mist); font-size: 12.5px; white-space: nowrap; }
-  .info-pair .iv { text-align: right; font-weight: 500; }
+  .info-pair { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; border-bottom: 1px dotted var(--line); }
+  .info-pair .ik { color: var(--mist); font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; }
+  .info-pair .iv { text-align: left; font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.35; word-break: break-word; }
   .info-pair.full { grid-column: 1 / -1; }
+  /* accordion (account details) */
+  .acc-item { background: transparent; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 12px; overflow: hidden; }
+  .acc-item:last-child { margin-bottom: 0; }
+  .acc-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 17px 22px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--ink); }
+  .acc-ic { flex: none; width: 30px; height: 30px; border-radius: 50%; background: transparent; border: 1px solid var(--line); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 19px; line-height: 1; transition: background 0.15s, border-color 0.15s; }
+  .acc-head:hover .acc-ic { border-color: var(--gold); }
+  .acc-body { display: none; padding: 2px 22px 16px; }
+  .acc-item.open .acc-body { display: block; }
 
   /* review groups */
   .rev-group { border: 1px solid var(--line); margin-bottom: 14px; }
@@ -429,8 +439,8 @@
       <div id="regForm" style="display:none">
         <h1>Create account</h1>
         <p class="login-sub">Start your housing loan application</p>
-        <div class="field"><label>Full name</label><input id="rg_name" placeholder="Juan Dela Cruz"></div>
-        <div class="field"><label>Email</label><input id="rg_email" type="email" placeholder="you@example.com"></div>
+        <div class="field"><label>Full name</label><input id="rg_name" placeholder="Juan Dela Cruz" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <div class="field"><label>Email</label><input id="rg_email" type="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter'){event.preventDefault();doRegister();}"></div>
         <div class="auth-note">
           No password is set here. Buyers log in with their <strong>Buyer ID + last name</strong>;
           your Buyer ID is issued when you submit the application form.
@@ -475,7 +485,7 @@
           <div class="grid">
             <div class="field"><label class="req">Government ID</label>
               <select id="b_govid"><option value="">— select —</option><option>Passport</option><option>Driver's License</option><option>National ID</option><option>Postal ID</option><option>Voter's ID</option><option>SSS</option></select></div>
-            <div class="field"><label class="req">TIN</label><input id="b_tin" placeholder="123-456-789-000"></div>
+            <div class="field"><label class="req">TIN</label><input id="b_tin" inputmode="numeric" maxlength="15" oninput="tinMask(this)" placeholder="123-456-789-000"><div class="hint">12 digits — 9-digit TIN + 3-digit BIR branch code. Dashes are added automatically.</div></div>
             <div class="field"><label class="req">Gross monthly income (₱)</label><input id="b_income" type="number" min="0"></div>
           </div>
           <div class="sect">Contact &amp; bank</div>
@@ -499,7 +509,7 @@
             <div class="field"><label class="req">Citizenship</label><input id="s_citizen" value="Filipino"></div>
             <div class="field"><label class="req">Government ID</label>
               <select id="s_govid"><option value="">— select —</option><option>Passport</option><option>Driver's License</option><option>National ID</option><option>Postal ID</option><option>Voter's ID</option><option>SSS</option></select></div>
-            <div class="field"><label class="req">TIN</label><input id="s_tin" placeholder="e.g. 123-456-789-000"></div>
+            <div class="field"><label class="req">TIN</label><input id="s_tin" inputmode="numeric" maxlength="15" oninput="tinMask(this)" placeholder="e.g. 123-456-789-000"><div class="hint">12 digits — auto-formatted as 123-456-789-000.</div></div>
             <div class="field"><label class="req">Mobile number</label><input id="s_mobile" placeholder="e.g. 09181234567" oninput="mobileCheck(this,'s_mHint')"><div class="hint" id="s_mHint"></div></div>
             <div class="field"><label>Email</label><input id="s_email" type="email" placeholder="e.g. maria@email.com"></div>
             <div class="field"><label>Gross monthly income (₱)</label><input id="s_income" type="number" min="0" placeholder="e.g. 30000"></div>
@@ -508,7 +518,7 @@
 
         <div class="step-panel" id="panel-household" style="display:none">
           <div class="grid">
-            <div class="field"><label class="req">Residential address</label><input id="h_addr" placeholder="#123 Magsaysay St., Sta. Mesa, Manila"></div>
+            <div class="field"><label class="req">Permanent Address</label><input id="h_addr" placeholder="#123 Magsaysay St., Sta. Mesa, Manila"><div class="hint">Your permanent residential address — also used as your address on record.</div></div>
             <div class="field"><label class="req">Home ownership</label>
               <select id="h_own" onchange="specifyToggle('h_own','h_own_spec')"><option value="">— select —</option><option>Owned</option><option>Rented</option><option>Owned by Parents</option><option>Others</option></select></div>
             <div class="field" id="h_own_spec_wrap" style="display:none"><label class="req">Please specify ownership</label><input id="h_own_spec" placeholder="e.g. Company-provided housing"></div>
@@ -523,13 +533,13 @@
             <div class="grid">
               <div class="field"><label class="req">Children</label><input id="h_child" type="number" min="0" value="0"></div>
               <div class="field"><label class="req">Parents</label><input id="h_parents" type="number" min="0" value="0"></div>
-              <div class="field"><label class="req">Others</label><input id="h_others" type="number" min="0" value="0"></div>
+              <div class="field"><label class="req">Others</label><input id="h_others" type="number" min="0" value="0"><div class="hint">Other dependents living with you — e.g. relatives, grandparents, in-laws.</div></div>
             </div>
           </div>
         </div>
 
         <div class="step-panel" id="panel-employment" style="display:none">
-          <div class="notice">Declare at least <strong>one source of income</strong> (Business Rule #3).</div>
+          <div class="notice"><strong>Minimum 1, maximum 5</strong> sources of income (Business Rule #3). One record is enough — only add more if you actually have other income sources. You don't need to fill in all five.</div>
           <div id="empList"></div>
           <button class="add-row" onclick="addEmployment()">+ Add employment record</button>
         </div>
@@ -633,8 +643,11 @@
 
           <div class="panel">
             <div class="panel-head"><h3>My application</h3>
-              <button class="btn btn-line btn-sm" id="editBtn" onclick="editApp()">Edit</button></div>
-            <div class="panel-body"><div id="appSummary"></div></div>
+              <div style="display:flex; gap:8px; align-items:center">
+                <button class="btn btn-line btn-sm" id="appToggleBtn" onclick="toggleAppSummary()">Show details ▾</button>
+                <button class="btn btn-line btn-sm" id="editBtn" onclick="editApp()">Edit</button>
+              </div></div>
+            <div class="panel-body" id="appSummaryWrap" style="display:none"><div id="appSummary"></div></div>
           </div>
         </div>
       </div>
@@ -829,7 +842,7 @@
               <div class="field"><label class="req">Address</label><input id="ed_address" maxlength="100"></div>
               <div class="field"><label class="req">Gross monthly income (₱)</label><input id="ed_income" type="number" min="0"></div>
               <div class="field"><label class="req">Government ID</label><input id="ed_govid" maxlength="20"></div>
-              <div class="field"><label class="req">TIN</label><input id="ed_tin" maxlength="15"></div>
+              <div class="field"><label class="req">TIN</label><input id="ed_tin" inputmode="numeric" maxlength="15" oninput="tinMask(this)"></div>
               <div class="field"><label>Telephone</label><input id="ed_tel" maxlength="15"></div>
               <div class="field"><label class="req">Mobile number</label><input id="ed_mobile" maxlength="15"></div>
               <div class="field"><label class="req">Personal email</label><input id="ed_email" type="email" maxlength="50"></div>
@@ -843,6 +856,15 @@
               <button class="btn btn-line btn-sm" onclick="cancelEdit()">Cancel</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>Household, spouse, employment &amp; beneficiaries</h3>
+          <button class="btn btn-line btn-sm" id="admRelToggle" onclick="toggleRelated()">Edit records ▾</button></div>
+        <div class="panel-body">
+          <div class="notice err" id="admRelErr" style="display:none"></div>
+          <div id="admRelated" style="display:none"></div>
         </div>
       </div>
 
@@ -886,8 +908,8 @@
               <div class="field"><label class="req">Source of funds</label>
                 <select id="al_source" onchange="specifyToggle('al_source','al_source_spec')"><option value="">— select —</option><option>Employment</option><option>Business</option><option>Inheritance</option><option>Remittance</option><option>Others</option></select></div>
               <div class="field" id="al_source_spec_wrap" style="display:none"><label class="req">Specify source of funds</label><input id="al_source_spec" placeholder="e.g. Sale of property"></div>
-              <div class="field"><label>Booking officer</label><input id="al_officer" value="Administrator" readonly>
-                <div class="hint">Auto-filled from the logged-in session.</div></div>
+              <div class="field"><label class="req">Booking officer</label><input id="al_officer" maxlength="30" placeholder="e.g. Maria Santos">
+                <div class="hint">Full name of the officer recording this loan — shown to the buyer.</div></div>
             </div>
             <div class="notice err" id="admErr" style="margin-top:14px"></div>
             <button class="btn btn-primary" style="margin-top:8px" onclick="closeSale()">Record loan &amp; close sale</button>
@@ -931,13 +953,22 @@ let isSubmitting = false;          // re-entrancy guard so a double-click can't 
    JSON API ({ ok, data|error }); map* convert DB column names <-> the camelCase
    shape the render code uses. DB schema: database/profriends_inc.sql. */
 const API = {
-  async get(path) { const r = await fetch(path); return r.json(); },
+  async get(path) {
+    try { const r = await fetch(path); return r.json(); }
+    catch (e) { return { ok: false, error: 'Cannot reach the server. Is it running? (' + (e.message || 'network error') + ')' }; }
+  },
   async send(method, path, body) {
-    const r = await fetch(path, {
-      method, headers: { 'Content-Type': 'application/json' },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    return r.json();
+    try {
+      const r = await fetch(path, {
+        method, headers: { 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      return r.json();
+    } catch (e) {
+      // fetch() rejects on network-level failures (server down, connection
+      // refused) -> surface a clear message instead of a raw "Failed to fetch".
+      return { ok: false, error: 'Cannot reach the server. Is it running? (' + (e.message || 'network error') + ')' };
+    }
   },
 };
 // NOTE: the loan table has NO status column; status is client-side workflow only.
@@ -1087,6 +1118,8 @@ async function doLogin() {
 function doRegister() {
   const n = val('rg_name').trim(), e = val('rg_email').trim();
   if (!n) { showAlert('Please enter your full name.'); return; }
+  if (!e) { showAlert('Please enter your email address.'); return; }
+  if (!EMAIL_RE.test(e)) { showAlert('Please enter a valid email address (e.g. name@example.com).'); return; }
   buyerName = n; buyerEmail = e;
   currentUser = null; app = null; myLoans = []; married = false; stage = 1;
   empCount = 0; benCount = 0;
@@ -1161,9 +1194,22 @@ function validateStep(key) {
     if (m) return m;
     if (!/^09\d{9}$/.test(val('b_mobile')) && !val('b_mobile').startsWith('+'))
       return 'Mobile number must start with 09 (11 digits) or a country code.';
+    if (!EMAIL_RE.test(val('b_email').trim()))
+      return 'Please enter a valid personal email (e.g. name@example.com).';
+    if (val('b_workemail').trim() && !EMAIL_RE.test(val('b_workemail').trim()))
+      return 'Please enter a valid work email, or leave it blank.';
+    if (tinDigits(val('b_tin')).length !== 12)
+      return 'TIN must be 12 digits: a 9-digit TIN + 3-digit BIR branch (e.g. 123-456-789-000).';
   }
-  if (key === 'spouse')
-    return need(['s_name','s_bdate','s_bplace','s_citizen','s_govid','s_tin','s_mobile'], 'Spouse information is required when married.');
+  if (key === 'spouse') {
+    const m = need(['s_name','s_bdate','s_bplace','s_citizen','s_govid','s_tin','s_mobile'], 'Spouse information is required when married.');
+    if (m) return m;
+    if (val('s_email').trim() && !EMAIL_RE.test(val('s_email').trim()))
+      return 'Please enter a valid spouse email, or leave it blank.';
+    if (tinDigits(val('s_tin')).length !== 12)
+      return 'Spouse TIN must be 12 digits (e.g. 123-456-789-000).';
+    return null;
+  }
   if (key === 'household') {
     const base = need(['h_addr','h_own','h_hasdep'], 'Please complete the required household fields.');
     if (base) return base;
@@ -1178,8 +1224,14 @@ function validateStep(key) {
   if (key === 'employment') {
     const blocks = document.querySelectorAll('#empList .repeat-block');
     if (!blocks.length) return 'At least one employment record is required.';
-    for (const b of blocks) for (const inp of b.querySelectorAll('[data-req="1"]'))
-      if (!inp.value.trim()) return 'Please complete all required employment fields.';
+    if (blocks.length > 5) return 'You can declare at most 5 employment / income sources.';
+    for (const b of blocks) {
+      for (const inp of b.querySelectorAll('[data-req="1"]'))
+        if (!inp.value.trim()) return 'Please complete all required employment fields.';
+      const em = b.querySelector('input[type="email"]');
+      if (em && em.value.trim() && !EMAIL_RE.test(em.value.trim()))
+        return 'Please enter a valid employer email, or leave it blank.';
+    }
   }
   if (key === 'beneficiary') {
     for (const b of document.querySelectorAll('#benList .repeat-block'))
@@ -1188,6 +1240,14 @@ function validateStep(key) {
   }
   return null;
 }
+// TIN: keep digits only (max 12 = 9-digit TIN + 3-digit BIR branch) and
+// auto-insert dashes as the user types -> 123-456-789-000.
+function tinMask(input) {
+  const d = input.value.replace(/\D/g, '').slice(0, 12);
+  input.value = [d.slice(0, 3), d.slice(3, 6), d.slice(6, 9), d.slice(9, 12)].filter(Boolean).join('-');
+}
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const tinDigits = s => (s || '').replace(/\D/g, '');
 function mobileCheck(input, hintId) {
   const h = $(hintId);
   if (!input.value) { h.textContent = ''; return; }
@@ -1200,6 +1260,11 @@ function civilChanged() {
   renderStep();
 }
 function addEmployment() {
+  // Business rule: 1-5 sources of income.
+  if (document.querySelectorAll('#empList .repeat-block').length >= 5) {
+    toast('Limit reached', 'You can declare at most 5 employment / income sources.', 'warn');
+    return;
+  }
   empCount++;
   const d = document.createElement('div'); d.className = 'repeat-block';
   d.innerHTML = `<button class="remove-btn" onclick="removeBlock(this,'emp')">remove</button>
@@ -1338,11 +1403,19 @@ async function submitApp() {
       API.get('/api/employment'), API.get('/api/beneficiaries')
     ]);
     const data = r => (r && r.ok && Array.isArray(r.data)) ? r.data : [];
-    const buyerId = 'B-' + year + '-' + String(data(bRes).length + 1).padStart(3, '0');
-    const hhId = 'H-' + year + '-' + String(data(hRes).length + 1).padStart(3, '0');
-    const empBase = data(eRes).length;
-    const distinctBen = new Set(data(bnRes).map(x => x.BeneficiaryID)).size;
-    const benId = 'BEN-' + String(distinctBen + 1).padStart(3, '0');
+    // Generate IDs from the HIGHEST existing numeric suffix + 1, not the row
+    // count. count+1 collides after any record is deleted (e.g. 11 rows numbered
+    // up to 012 with one deleted -> count 11 -> regenerates an existing 011/012).
+    // Suffixes are a single running sequence across years, so scan all rows.
+    const maxSuffix = (rows, key) => rows.reduce((m, r) => {
+      const mt = String(r[key] || '').match(/(\d+)\s*$/);
+      return mt ? Math.max(m, parseInt(mt[1], 10)) : m;
+    }, 0);
+    const seq = n => String(n).padStart(3, '0');
+    const buyerId = 'B-' + year + '-' + seq(maxSuffix(data(bRes), 'BuyerID') + 1);
+    const hhId = 'H-' + year + '-' + seq(maxSuffix(data(hRes), 'HouseholdID') + 1);
+    const empBase = maxSuffix(data(eRes), 'EmploymentID');
+    const benId = 'BEN-' + seq(maxSuffix(data(bnRes), 'BeneficiaryID') + 1);
 
     // The design has no separate buyer-address field; the household residential
     // address (NOT NULL on buyer) doubles as the buyer's address.
@@ -1361,8 +1434,10 @@ async function submitApp() {
     });
     if (!r || !r.ok) throw new Error((r && r.error) || 'Could not save your buyer record.');
 
-    // 2) Spouse (only when married). Blank optional fields -> null.
-    if (married) {
+    // 2) Spouse (only when married AND a spouse name was entered). Skipping the
+    // POST when blank avoids inserting an all-NULL spouse row. Blank optional
+    // fields -> null.
+    if (married && val('s_name').trim()) {
       r = await API.send('POST', '/api/spouse', {
         BuyerID: buyerId, Sps_Name: cut(val('s_name'), 50), Sps_Bdate: val('s_bdate') || null,
         Sps_Bplace: cut(val('s_bplace'), 50), Sps_Citizenship: cut(val('s_citizen'), 20),
@@ -1480,7 +1555,7 @@ function buildAppFromDb(b, s, emps, hh, bens) {
     email: b.Personal_Email,
     addr: hh ? hh.Address : b.Address, own: hh ? hh.Home_Ownership : '—',
     stay: (hh && hh.Length_ofStay != null) ? String(hh.Length_ofStay) : '',
-    deps: depTxt, emp: empTxt, ben: benTxt,
+    deps: depTxt, emp: empTxt, ben: benTxt, bens: bens || [],
     income: Number(b.Gross_MonthlyIncome) || 0,
     mobile: b.Mobile_Num, tin: b.TIN, govid: b.GovID,
     bankName: b.Bank_Name, acct: b.Account_Type, bank: b.Bank_Name + ' — ' + b.Account_Type
@@ -1584,7 +1659,16 @@ function renderSummary() {
   const citizen = a.citizen || 'Filipino', tel = a.tel || '', workemail = a.workemail || '';
   const stay = a.stay || '5';
 
-  const g = (title, pairs) => '<div class="info-group"><div class="gh">' + title + '</div><div class="info-pairs">' + pairs + '</div></div>';
+  // Each section is an accordion card: a title + a +/− toggle, with the field
+  // grid revealed when open. The first section starts expanded.
+  let accFirst = true;
+  const g = (title, pairs) => {
+    const open = accFirst; accFirst = false;
+    return '<div class="acc-item' + (open ? ' open' : '') + '">' +
+      '<button class="acc-head" onclick="toggleAcc(this)"><span>' + title + '</span>' +
+      '<span class="acc-ic">' + (open ? '−' : '+') + '</span></button>' +
+      '<div class="acc-body"><div class="info-pairs">' + pairs + '</div></div></div>';
+  };
 
   $('appSummary').innerHTML =
     g('Personal', 
@@ -1601,7 +1685,10 @@ function renderSummary() {
       pair('Address', a.addr, true) + pair('Home ownership', a.own) + pair('Length of stay', stay ? stay + ' yrs' : '—') +
       pair('Dependents', a.deps, true)) +
     g('Financial profile',
-      pair('Employment', a.emp, true) + pair('Beneficiaries', a.ben) + pair('Bank account', a.bank));
+      pair('Employment', a.emp, true) + pair('Bank account', a.bank)) +
+    g('Beneficiaries', (a.bens && a.bens.length)
+      ? a.bens.map(x => pair(x.BenF_Name, (x.Relationship || '—') + (x.BenF_Bdate ? ' · ' + fmtDate(x.BenF_Bdate) : ''))).join('')
+      : pair('Designated', a.ben || 'None designated', true));
 }
 function renderNotifs() {
   const ref = currentUser ? currentUser.buyerId : '—';
@@ -1673,6 +1760,21 @@ function uploadDoc(i) {
   };
   inp.click();
 }
+// Collapse/expand the application summary so it isn't shown immediately on
+// opening the profile.
+function toggleAppSummary() {
+  const wrap = $('appSummaryWrap'), btn = $('appToggleBtn');
+  const open = wrap.style.display === 'none';
+  wrap.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? 'Hide details ▴' : 'Show details ▾';
+}
+// Expand/collapse a single accordion section in the application summary.
+function toggleAcc(btn) {
+  const item = btn.closest('.acc-item');
+  const open = item.classList.toggle('open');
+  const ic = item.querySelector('.acc-ic');
+  if (ic) ic.textContent = open ? '−' : '+';
+}
 function editApp() {
   toast('Edit your application', 'Online editing isn’t available in this build. Please contact your Booking Officer to amend a submitted application.', 'info');
 }
@@ -1718,11 +1820,13 @@ async function loadQueue() {
         bens.filter(x => x.BuyerID === id)),
       loans: loans.filter(l => l.BuyerID === id).map(mapLoan),
       // raw child rows, so a delete can remove them first (FK RESTRICT, no cascade)
+      // and so the admin can prefill the edit forms for each related record.
       children: {
         loans: loans.filter(l => l.BuyerID === id),
         bens: bens.filter(x => x.BuyerID === id),
         emps: emps.filter(e => e.BuyerID === id),
         hhs: hhs.filter(h => h.BuyerID === id),
+        sps: sps.find(x => x.BuyerID === id) || null,
         hasSpouse: sps.some(x => x.BuyerID === id)
       },
       docs: demoDocsFor(b)
@@ -1887,6 +1991,12 @@ function openRecord(i, startEdit) {
   $('admEditForm').style.display = 'none';
   $('admDelConfirm').style.display = 'none';
   $('admBuyerErr').style.display = 'none';
+  // Related records (household/spouse/employment/beneficiaries) stay hidden
+  // until the admin presses "Edit records".
+  admRelEdit = null;
+  $('admRelated').style.display = 'none';
+  $('admRelToggle').textContent = 'Edit records ▾';
+  $('admRelErr').style.display = 'none';
   renderAdmDocs();
   renderAdmLoan();
   window.scrollTo({ top: 0 });
@@ -1929,6 +2039,9 @@ async function saveBuyer() {
   const id = queue[admSel].id;
   const req = ['ed_name','ed_bdate','ed_bplace','ed_citizen','ed_address','ed_income','ed_govid','ed_tin','ed_mobile','ed_email','ed_bank'];
   for (const f of req) if (!val(f).trim()) { showAdmBuyerErr('Please complete all required fields.'); return; }
+  if (!EMAIL_RE.test(val('ed_email').trim())) { showAdmBuyerErr('Please enter a valid personal email.'); return; }
+  if (val('ed_workemail').trim() && !EMAIL_RE.test(val('ed_workemail').trim())) { showAdmBuyerErr('Please enter a valid work email, or leave it blank.'); return; }
+  if (tinDigits(val('ed_tin')).length !== 12) { showAdmBuyerErr('TIN must be 12 digits (9-digit TIN + 3-digit BIR branch).'); return; }
   const body = {
     BuyerName: cut(val('ed_name'), 50), Birthdate: val('ed_bdate'), Birthplace: cut(val('ed_bplace'), 100),
     Gender: val('ed_gender'), Civil_Status: val('ed_civil'), Citizenship: cut(val('ed_citizen'), 20),
@@ -1987,6 +2100,223 @@ function showAdmBuyerErr(msg) {
   const e = $('admBuyerErr'); e.textContent = msg; e.style.display = 'block';
   e.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
+/* ===== Admin: view & EDIT a buyer's related records on their behalf =====
+   Household, spouse, employment and beneficiaries. The PUT endpoints already
+   exist; one section is editable at a time (tracked by admRelEdit). */
+let admRelEdit = null;  // {kind:'hh'} | {kind:'sps'} | {kind:'emp',id} | {kind:'ben',idx}
+function showAdmRelErr(msg) {
+  const e = $('admRelErr'); e.textContent = msg; e.style.display = 'block';
+  e.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+const escH = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function relRow(k, v) { return '<tr><th>' + k + '</th><td>' + (v != null && String(v).trim() ? v : '—') + '</td></tr>'; }
+function relField(id, label, value, type, req) {
+  return '<div class="field"><label' + (req ? ' class="req"' : '') + '>' + label + '</label>' +
+    '<input id="' + id + '" ' + (type ? 'type="' + type + '" ' : '') + 'value="' + escH(value) + '"></div>';
+}
+function relEditBtn(js) { return '<div style="margin:6px 0 16px"><button class="btn btn-line btn-sm" onclick="' + js + '">Edit</button></div>'; }
+function relBtns(saveCall) {
+  return '<div style="display:flex;gap:8px;margin:6px 0 16px">' +
+    '<button class="btn btn-primary btn-sm" onclick="' + saveCall + '">Save</button>' +
+    '<button class="btn btn-line btn-sm" onclick="admRelEdit=null; renderRelated();">Cancel</button></div>';
+}
+function renderRelated() {
+  const el = $('admRelated'); if (!el) return;
+  if (admSel == null || !queue[admSel]) { el.innerHTML = ''; return; }
+  const c = queue[admSel].children;
+  const hh = c.hhs[0] || null, sps = c.sps;
+  let html = '';
+
+  // --- Household ---
+  html += '<div class="sect" style="margin-top:0">Household</div>';
+  if (!hh) {
+    html += '<p class="hint">No household record on file.</p>';
+  } else if (admRelEdit && admRelEdit.kind === 'hh') {
+    html += '<div class="grid">' +
+      relField('re_hh_address', 'Permanent address', hh.Address, '', true) +
+      relField('re_hh_own', 'Home ownership', hh.Home_Ownership, '', true) +
+      relField('re_hh_stay', 'Length of stay (years)', hh.Length_ofStay, 'number') +
+      relField('re_hh_child', 'Children', hh.Num_children, 'number', true) +
+      relField('re_hh_parents', 'Parents', hh.Num_parents, 'number', true) +
+      relField('re_hh_others', 'Others', hh.Num_others, 'number', true) +
+      relField('re_hh_details', 'Household details', hh.Household_Details) +
+      '</div>' + relBtns('saveHouseholdRel()');
+  } else {
+    html += '<table class="kv">' +
+      relRow('Permanent address', escH(hh.Address)) +
+      relRow('Home ownership', escH(hh.Home_Ownership)) +
+      relRow('Length of stay', hh.Length_ofStay != null ? hh.Length_ofStay + ' yrs' : '—') +
+      relRow('Dependents', Number(hh.Num_children || 0) + ' children · ' + Number(hh.Num_parents || 0) + ' parents · ' + Number(hh.Num_others || 0) + ' others') +
+      relRow('Details', escH(hh.Household_Details)) +
+      '</table>' + relEditBtn("admRelEdit={kind:'hh'}; renderRelated();");
+  }
+
+  // --- Spouse ---
+  html += '<div class="sect">Spouse</div>';
+  if (!sps) {
+    html += '<p class="hint">No spouse record on file.</p>';
+  } else if (admRelEdit && admRelEdit.kind === 'sps') {
+    html += '<div class="grid">' +
+      relField('re_sps_name', 'Name', sps.Sps_Name) +
+      relField('re_sps_bdate', 'Birthdate', sps.Sps_Bdate, 'date') +
+      relField('re_sps_bplace', 'Birthplace', sps.Sps_Bplace) +
+      relField('re_sps_citizen', 'Citizenship', sps.Sps_Citizenship) +
+      relField('re_sps_govid', 'Government ID', sps.Sps_GovID) +
+      relField('re_sps_tin', 'TIN', sps.Sps_TIN) +
+      relField('re_sps_tel', 'Telephone', sps.Sps_TelNum) +
+      relField('re_sps_mobile', 'Mobile', sps.Sps_MobNum) +
+      relField('re_sps_email', 'Email', sps.Sps_EmailAdd) +
+      relField('re_sps_income', 'Gross monthly income', sps.Sps_GrossMonthlyIncome, 'number') +
+      '</div>' + relBtns('saveSpouseRel()');
+  } else {
+    html += '<table class="kv">' +
+      relRow('Name', escH(sps.Sps_Name)) +
+      relRow('Birthdate', sps.Sps_Bdate ? fmtDate(sps.Sps_Bdate) : '—') +
+      relRow('Birthplace', escH(sps.Sps_Bplace)) +
+      relRow('Citizenship', escH(sps.Sps_Citizenship)) +
+      relRow('Government ID', escH(sps.Sps_GovID)) +
+      relRow('TIN', sps.Sps_TIN ? '<span class="mono">' + escH(sps.Sps_TIN) + '</span>' : '—') +
+      relRow('Telephone', escH(sps.Sps_TelNum)) +
+      relRow('Mobile', escH(sps.Sps_MobNum)) +
+      relRow('Email', escH(sps.Sps_EmailAdd)) +
+      relRow('Gross monthly income', sps.Sps_GrossMonthlyIncome != null ? peso(sps.Sps_GrossMonthlyIncome) : '—') +
+      '</table>' + relEditBtn("admRelEdit={kind:'sps'}; renderRelated();");
+  }
+
+  // --- Employment (1:N) ---
+  html += '<div class="sect">Employment</div>';
+  if (!c.emps.length) {
+    html += '<p class="hint">No employment records on file.</p>';
+  } else {
+    c.emps.forEach(e => {
+      const editing = admRelEdit && admRelEdit.kind === 'emp' && admRelEdit.id === e.EmploymentID;
+      if (editing) {
+        html += '<div class="repeat-block"><div class="grid">' +
+          relField('re_emp_type', 'Employment type', e.Emp_Type, '', true) +
+          relField('re_emp_name', 'Employer / business', e.Emp_Name, '', true) +
+          relField('re_emp_addr', 'Employer address', e.Emp_Address, '', true) +
+          relField('re_emp_occ', 'Occupation', e.Occupation, '', true) +
+          relField('re_emp_pos', 'Position', e.Position, '', true) +
+          relField('re_emp_tenure', 'Tenure (years)', e.Tenure, 'number', true) +
+          relField('re_emp_rank', 'Occupation rank', e.Occupation_rank) +
+          relField('re_emp_tel', 'Employer telephone', e.Emp_TelNum) +
+          relField('re_emp_email', 'Employer email', e.Emp_EmailAdd) +
+          '</div>' + relBtns("saveEmpRel('" + e.EmploymentID + "')") + '</div>';
+      } else {
+        html += '<div class="repeat-block"><table class="kv">' +
+          relRow('ID', '<span class="mono">' + escH(e.EmploymentID) + '</span>') +
+          relRow('Type', escH(e.Emp_Type)) + relRow('Employer', escH(e.Emp_Name)) +
+          relRow('Address', escH(e.Emp_Address)) + relRow('Occupation', escH(e.Occupation)) +
+          relRow('Position', escH(e.Position)) + relRow('Tenure', e.Tenure != null ? e.Tenure + ' yrs' : '—') +
+          relRow('Rank', escH(e.Occupation_rank)) + relRow('Telephone', escH(e.Emp_TelNum)) +
+          relRow('Email', escH(e.Emp_EmailAdd)) +
+          '</table>' + relEditBtn("admRelEdit={kind:'emp',id:'" + e.EmploymentID + "'}; renderRelated();") + '</div>';
+      }
+    });
+  }
+
+  // --- Beneficiaries (1:N). Name is part of the PK, so it can't be renamed here. ---
+  html += '<div class="sect">Beneficiaries</div>';
+  if (!c.bens.length) {
+    html += '<p class="hint">No beneficiaries on file.</p>';
+  } else {
+    c.bens.forEach((b, idx) => {
+      const editing = admRelEdit && admRelEdit.kind === 'ben' && admRelEdit.idx === idx;
+      if (editing) {
+        html += '<div class="repeat-block"><div class="grid">' +
+          '<div class="field"><label>Name</label><input value="' + escH(b.BenF_Name) + '" disabled><div class="hint">Name is a key field — to rename, delete and re-add the beneficiary.</div></div>' +
+          relField('re_ben_bdate', 'Birthdate', b.BenF_Bdate, 'date') +
+          relField('re_ben_rel', 'Relationship', b.Relationship) +
+          '</div>' + relBtns('saveBenRel(' + idx + ')') + '</div>';
+      } else {
+        html += '<div class="repeat-block"><table class="kv">' +
+          relRow('Name', escH(b.BenF_Name)) +
+          relRow('Birthdate', b.BenF_Bdate ? fmtDate(b.BenF_Bdate) : '—') +
+          relRow('Relationship', escH(b.Relationship)) +
+          '</table>' + relEditBtn("admRelEdit={kind:'ben',idx:" + idx + "}; renderRelated();") + '</div>';
+      }
+    });
+  }
+  el.innerHTML = html;
+}
+// Show/hide the editable related-records section.
+function toggleRelated() {
+  const el = $('admRelated'), btn = $('admRelToggle');
+  const open = el.style.display === 'none';
+  el.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? 'Hide records ▴' : 'Edit records ▾';
+  if (open) { admRelEdit = null; renderRelated(); }
+  else { $('admRelErr').style.display = 'none'; }
+}
+// After a successful sub-record save: refresh from DB, reopen the record, and
+// keep the related-records section visible so the change is shown.
+async function relFinish(buyerId, label) {
+  admRelEdit = null;
+  await loadQueue();
+  const idx = queue.findIndex(q => q.id === buyerId);
+  if (idx >= 0) {
+    openRecord(idx);
+    $('admRelated').style.display = 'block';
+    $('admRelToggle').textContent = 'Hide records ▴';
+    renderRelated();
+  }
+  toast('Record updated', label + ' saved to the database.', '');
+}
+async function saveHouseholdRel() {
+  const q = queue[admSel]; const hh = q.children.hhs[0]; if (!hh) return;
+  for (const f of ['re_hh_address', 're_hh_own', 're_hh_child', 're_hh_parents', 're_hh_others'])
+    if (!val(f).trim()) { showAdmRelErr('Please complete all required household fields.'); return; }
+  const body = {
+    Address: cut(val('re_hh_address'), 100), Home_Ownership: cut(val('re_hh_own'), 20),
+    Length_ofStay: val('re_hh_stay').trim() ? parseInt(val('re_hh_stay'), 10) : null,
+    Num_children: parseInt(val('re_hh_child'), 10) || 0, Num_parents: parseInt(val('re_hh_parents'), 10) || 0,
+    Num_others: parseInt(val('re_hh_others'), 10) || 0, Household_Details: cut(val('re_hh_details'), 50)
+  };
+  const r = await API.send('PUT', '/api/household/' + encodeURIComponent(hh.HouseholdID), body);
+  if (!r || !r.ok) { showAdmRelErr((r && r.error) || 'Could not save the household record.'); return; }
+  await relFinish(q.id, 'Household');
+}
+async function saveSpouseRel() {
+  const q = queue[admSel]; const sps = q.children.sps; if (!sps) return;
+  if (val('re_sps_email').trim() && !EMAIL_RE.test(val('re_sps_email').trim())) { showAdmRelErr('Enter a valid spouse email, or leave it blank.'); return; }
+  if (val('re_sps_tin').trim() && tinDigits(val('re_sps_tin')).length !== 12) { showAdmRelErr('Spouse TIN must be 12 digits, or left blank.'); return; }
+  const body = {
+    Sps_Name: cut(val('re_sps_name'), 50) || null, Sps_Bdate: val('re_sps_bdate') || null,
+    Sps_Bplace: cut(val('re_sps_bplace'), 50) || null, Sps_Citizenship: cut(val('re_sps_citizen'), 20) || null,
+    Sps_GovID: cut(val('re_sps_govid'), 20) || null, Sps_TIN: cut(val('re_sps_tin'), 15) || null,
+    Sps_TelNum: cut(val('re_sps_tel'), 15) || null, Sps_MobNum: cut(val('re_sps_mobile'), 15) || null,
+    Sps_EmailAdd: cut(val('re_sps_email'), 50) || null,
+    Sps_GrossMonthlyIncome: val('re_sps_income').trim() ? parseFloat(val('re_sps_income')) : null
+  };
+  const r = await API.send('PUT', '/api/spouse/' + encodeURIComponent(q.id), body);
+  if (!r || !r.ok) { showAdmRelErr((r && r.error) || 'Could not save the spouse record.'); return; }
+  await relFinish(q.id, 'Spouse');
+}
+async function saveEmpRel(empId) {
+  const q = queue[admSel];
+  for (const f of ['re_emp_type', 're_emp_name', 're_emp_addr', 're_emp_occ', 're_emp_pos', 're_emp_tenure'])
+    if (!val(f).trim()) { showAdmRelErr('Please complete all required employment fields.'); return; }
+  if (val('re_emp_email').trim() && !EMAIL_RE.test(val('re_emp_email').trim())) { showAdmRelErr('Enter a valid employer email, or leave it blank.'); return; }
+  const body = {
+    Emp_Type: cut(val('re_emp_type'), 30), Emp_Name: cut(val('re_emp_name'), 50),
+    Emp_Address: cut(val('re_emp_addr'), 100), Occupation: cut(val('re_emp_occ'), 30),
+    Position: cut(val('re_emp_pos'), 30), Tenure: parseInt(val('re_emp_tenure'), 10) || 0,
+    Occupation_rank: cut(val('re_emp_rank'), 30), Emp_TelNum: cut(val('re_emp_tel'), 15),
+    Emp_EmailAdd: cut(val('re_emp_email'), 50)
+  };
+  const r = await API.send('PUT', '/api/employment/' + encodeURIComponent(empId), body);
+  if (!r || !r.ok) { showAdmRelErr((r && r.error) || 'Could not save the employment record.'); return; }
+  await relFinish(q.id, 'Employment');
+}
+async function saveBenRel(idx) {
+  const q = queue[admSel]; const b = q.children.bens[idx]; if (!b) return;
+  const body = { BenF_Bdate: val('re_ben_bdate') || null, Relationship: cut(val('re_ben_rel'), 20) };
+  const path = '/api/beneficiaries/one?id=' + encodeURIComponent(b.BeneficiaryID) + '&name=' + encodeURIComponent(b.BenF_Name);
+  const r = await API.send('PUT', path, body);
+  if (!r || !r.ok) { showAdmRelErr((r && r.error) || 'Could not save the beneficiary record.'); return; }
+  await relFinish(q.id, 'Beneficiary');
+}
 function renderAdmDocs() {
   const q = queue[admSel];
   const states = {
@@ -2035,7 +2365,10 @@ function renderAdmLoan() {
     ? 'This buyer already holds ' + q.loans.length + ' loan(s). You may encode an <strong>additional</strong> loan for another unit below.'
     : 'Encode the loan particulars for this buyer’s unit purchase (Business Rule #6).';
   $('admLoanForm').style.display = 'block';
-  $('al_officer').value = currentUser ? currentUser.name : 'Administrator';
+  // Leave the booking-officer name blank so a real officer name is entered
+  // (the admin account is generic), unless a non-generic name is in session.
+  const nm = currentUser ? currentUser.name : '';
+  $('al_officer').value = (nm && nm !== 'Administrator') ? nm : '';
 }
 function loanMath() {
   const sp = parseFloat(val('al_price')) || 0, la = parseFloat(val('al_amount')) || 0, dp = parseFloat(val('al_dp')) || 0;
@@ -2048,7 +2381,7 @@ function loanMath() {
 }
 // Record a loan against the selected buyer. LoanID is auto-generated server-side.
 async function closeSale() {
-  const required = ['al_unit','al_price','al_amount','al_dp','al_resfee','al_procfee','al_orpr','al_orprdate','al_fin','al_dpterm','al_term','al_purpose','al_source'];
+  const required = ['al_unit','al_price','al_amount','al_dp','al_resfee','al_procfee','al_orpr','al_orprdate','al_fin','al_dpterm','al_term','al_purpose','al_source','al_officer'];
   for (const id of required) if (!val(id).trim()) {
     const e = $('admErr'); e.textContent = 'Please complete all loan fields (Business Rule #5).'; e.style.display = 'block'; return;
   }

@@ -23,7 +23,16 @@ def is_alpha_spaces(value):
     return bool(_ALPHA_SPACES_RE.match((value or "").strip()))
 
 
-def first_invalid(body, email_fields=(), numeric_fields=(), alpha_fields=()):
+def is_valid_tin(value):
+    """
+    TIN must be 12 digits total: a 9-digit taxpayer number + a 3-digit BIR branch
+    code, conventionally written XXX-XXX-XXX-XXX. Accept the dashed or raw form.
+    """
+    digits = re.sub(r"\D", "", (value or "").strip())
+    return len(digits) == 12
+
+
+def first_invalid(body, email_fields=(), numeric_fields=(), alpha_fields=(), tin_fields=()):
     """
     Return the name of the first field that is present but malformed, or None if all
     present fields are valid. Empty/missing values are skipped here (required-ness is
@@ -40,5 +49,9 @@ def first_invalid(body, email_fields=(), numeric_fields=(), alpha_fields=()):
     for f in alpha_fields:
         v = body.get(f)
         if v not in (None, "") and not is_alpha_spaces(v):
+            return f
+    for f in tin_fields:
+        v = body.get(f)
+        if v not in (None, "") and not is_valid_tin(str(v)):
             return f
     return None
