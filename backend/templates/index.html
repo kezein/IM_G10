@@ -305,13 +305,13 @@
   /* loan view modal (opened from a Loan Management row) */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(30,61,44,0.45); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.on { display: flex; }
-  .modal-card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; width: 100%; max-width: 440px; box-shadow: 0 24px 60px rgba(0,0,0,0.28); overflow: hidden; }
-  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .modal-card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; width: 100%; max-width: 440px; box-shadow: 0 24px 60px rgba(0,0,0,0.28); overflow: hidden; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
   .modal-head h3 { font-size: 18px; color: var(--burgundy); }
   .modal-x { background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--mist); }
   .modal-x:hover { color: var(--ink); }
-  .modal-body { padding: 18px 22px; }
-  .modal-foot { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; padding: 14px 22px; border-top: 1px solid var(--line); }
+  .modal-body { padding: 18px 22px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+  .modal-foot { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; padding: 14px 22px; border-top: 1px solid var(--line); flex-shrink: 0; }
 
   /* wizard */
   .w-progress { display: flex; margin-bottom: 24px; border: 1px solid var(--line); background: var(--white); overflow-x: auto; }
@@ -2050,13 +2050,17 @@ function rejectLoan(loanId) { loanStatusMap[loanId] = 'rejected'; renderLoanMgmt
 // Loan "View" — a small modal with the loan particulars. Approved/rejected loans
 // only show "View" in the table; the decision buttons (incl. Reject) live here.
 let modalLoanId = null;
-function openLoanModal(loanId) { modalLoanId = loanId; renderLoanModal(); $('loanModal').classList.add('on'); }
-function closeLoanModal() { $('loanModal').classList.remove('on'); modalLoanId = null; }
+let loanEditMode = false;   // true while the modal shows the editable loan form
+function openLoanModal(loanId) { modalLoanId = loanId; loanEditMode = false; renderLoanModal(); $('loanModal').classList.add('on'); }
+function openLoanEditModal(loanId) { modalLoanId = loanId; loanEditMode = true; renderLoanModal(); $('loanModal').classList.add('on'); }
+function closeLoanModal() { $('loanModal').classList.remove('on'); modalLoanId = null; loanEditMode = false; }
+function findLoan(id) { for (const q of queue) { const f = q.loans.find(l => l.loanId === id); if (f) return { loan: f, owner: q.name, buyerId: q.id }; } return null; }
 function renderLoanModal() {
   const id = modalLoanId; if (!id) return;
-  let loan = null, owner = '', buyerId = '';
-  for (const q of queue) { const f = q.loans.find(l => l.loanId === id); if (f) { loan = f; owner = q.name; buyerId = q.id; break; } }
-  if (!loan) { closeLoanModal(); return; }
+  const hit = findLoan(id);
+  if (!hit) { closeLoanModal(); return; }
+  const { loan, owner, buyerId } = hit;
+  if (loanEditMode) { renderLoanEditForm(id, loan, owner, buyerId); return; }
   const st = loanStatusMap[id] || 'active';
   const badge = st === 'approved' ? '<span class="status-pill pill-green">Approved</span>'
     : st === 'rejected' ? '<span class="status-pill pill-rust">Rejected</span>'
@@ -2071,9 +2075,66 @@ function renderLoanModal() {
     '<tr><th>Status</th><td>' + badge + '</td></tr>' +
     '</table>';
   let btns = '<button class="btn btn-line btn-sm" onclick="closeLoanModal(); openRecordById(\'' + buyerId + '\')">Open client record</button>';
+  btns += '<button class="act-btn edit" onclick="startLoanEdit()">Edit</button>';
   if (st !== 'approved') btns += '<button class="btn btn-sm" style="background:var(--verde);color:#fff" onclick="approveLoan(\'' + id + '\')">Approve</button>';
   if (st !== 'rejected') btns += '<button class="btn btn-sm" style="background:var(--rust);color:#fff" onclick="rejectLoan(\'' + id + '\')">Reject</button>';
   $('loanModalFoot').innerHTML = btns;
+}
+// Swap the modal into an editable form prefilled with the loan's current values.
+function startLoanEdit() { loanEditMode = true; renderLoanModal(); }
+function cancelLoanEdit() { loanEditMode = false; renderLoanModal(); }
+function renderLoanEditForm(id, loan, owner, buyerId) {
+  const num = (v) => (v == null ? '' : v);
+  const esc = (s) => (s == null ? '' : String(s)).replace(/"/g, '&quot;');
+  $('loanModalTitle').textContent = 'Edit loan ' + id;
+  $('loanModalBody').innerHTML =
+    '<div style="color:var(--mist);font-size:13px;margin-bottom:12px">' + owner +
+      ' <span class="mono">(' + buyerId + ')</span></div>' +
+    '<div class="grid">' +
+      '<div class="field"><label class="req">Unit I.D.</label><input id="le_unit" class="mono" maxlength="15" value="' + esc(loan.unitId) + '"></div>' +
+      '<div class="field"><label class="req">Selling price (₱)</label><input id="le_price" type="number" min="0" value="' + num(loan.sellPrice) + '"></div>' +
+      '<div class="field"><label class="req">Loan amount (₱)</label><input id="le_amount" type="number" min="0" value="' + num(loan.loanAmount) + '"></div>' +
+      '<div class="field"><label class="req">Downpayment (₱)</label><input id="le_dp" type="number" min="0" value="' + num(loan.downpayment) + '"></div>' +
+      '<div class="field"><label class="req">Finance type</label><input id="le_fin" maxlength="20" value="' + esc(loan.financeType) + '"></div>' +
+      '<div class="field"><label class="req">DP term (months)</label><input id="le_dpterm" type="number" min="0" value="' + num(loan.dpTerm) + '"></div>' +
+      '<div class="field"><label class="req">Loan term (years)</label><input id="le_term" type="number" min="0" value="' + num(loan.loanTerm) + '"></div>' +
+      '<div class="field"><label class="req">Purchase purpose</label><input id="le_purpose" maxlength="15" value="' + esc(loan.purchasePurpose) + '"></div>' +
+      '<div class="field"><label class="req">Source of funds</label><input id="le_source" maxlength="30" value="' + esc(loan.sourceFunds) + '"></div>' +
+      '<div class="field"><label class="req">Booking officer</label><input id="le_officer" maxlength="30" value="' + esc(loan.bookingOfficer) + '"></div>' +
+    '</div>' +
+    '<div class="notice err" id="loanEditErr" style="display:none;margin-top:12px"></div>';
+  $('loanModalFoot').innerHTML =
+    '<button class="btn btn-line btn-sm" onclick="cancelLoanEdit()">Cancel</button>' +
+    '<button class="btn btn-primary btn-sm" onclick="saveLoanEdit()">Save</button>';
+}
+// Validate then PUT the edited fields to /api/loans/<id>; update in-memory state.
+async function saveLoanEdit() {
+  const id = modalLoanId; if (!id) return;
+  const hit = findLoan(id); if (!hit) { closeLoanModal(); return; }
+  const err = $('loanEditErr');
+  const sp = parseFloat(val('le_price')), la = parseFloat(val('le_amount')), dp = parseFloat(val('le_dp'));
+  const dpt = parseInt(val('le_dpterm')), lt = parseInt(val('le_term'));
+  const unit = val('le_unit').trim(), fin = val('le_fin').trim();
+  const purpose = val('le_purpose').trim(), source = val('le_source').trim(), officer = val('le_officer').trim();
+  if ([sp, la, dp].some(n => isNaN(n) || n < 0) || isNaN(dpt) || dpt < 0 || isNaN(lt) || lt < 0 ||
+      !unit || !fin || !purpose || !source || !officer) {
+    err.textContent = 'Please complete every field with a valid, non-negative value.'; err.style.display = 'block'; return;
+  }
+  if (la + dp > sp) {
+    err.textContent = 'Loan amount + downpayment cannot exceed the selling price.'; err.style.display = 'block'; return;
+  }
+  err.style.display = 'none';
+  const r = await API.send('PUT', '/api/loans/' + encodeURIComponent(id), {
+    UnitID: cut(unit, 15), Sell_Price: sp, LoanAmount: la, Downpayment: dp,
+    Finance_Type: cut(fin, 20), DP_Term: dpt, Loan_Term: lt,
+    Purchase_Purpose: cut(purpose, 15), Source_Funds: cut(source, 30), Booking_Officer: cut(officer, 30),
+  });
+  if (!r || !r.ok) { err.textContent = (r && r.error) || 'Could not save the loan.'; err.style.display = 'block'; return; }
+  Object.assign(hit.loan, mapLoan(r.data));   // keep the queue copy in sync
+  loanEditMode = false;
+  renderLoanModal(); renderLoanMgmt();
+  if (queue[admSel]) renderAdmLoan();          // refresh the recorded-loans table if a client record is open
+  toast('Loan updated', hit.owner + ' — loan ' + id + ' particulars saved.', '');
 }
 function openRecord(i, startEdit) {
   admSel = i;
@@ -2455,9 +2516,10 @@ function renderAdmLoan() {
     $('admLoanList').innerHTML =
       '<div class="sect" style="margin-top:0">Recorded loans (' + q.loans.length + ')</div>' +
       '<div class="table-scroll"><table class="data-table" style="margin-bottom:16px">' +
-      '<thead><tr><th>Loan ID</th><th>Unit</th><th>Finance</th><th class="r">Loan amt</th><th class="r">Sell price</th></tr></thead><tbody>' +
+      '<thead><tr><th>Loan ID</th><th>Unit</th><th>Finance</th><th class="r">Loan amt</th><th class="r">Sell price</th><th></th></tr></thead><tbody>' +
       q.loans.map(l => '<tr><td class="mono">' + l.loanId + '</td><td class="mono">' + l.unitId + '</td><td>' + l.financeType +
-        '</td><td class="r mono">' + peso(l.loanAmount) + '</td><td class="r mono">' + peso(l.sellPrice) + '</td></tr>').join('') +
+        '</td><td class="r mono">' + peso(l.loanAmount) + '</td><td class="r mono">' + peso(l.sellPrice) +
+        '</td><td class="r"><button class="act-btn edit" onclick="openLoanEditModal(\'' + l.loanId + '\')">Edit</button></td></tr>').join('') +
       '</tbody></table></div>';
   } else {
     $('admLoanList').innerHTML = '';
